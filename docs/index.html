@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>FinistR: bootcamp R à Roscoff</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">FinistR 2019</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    accueil
+  </a>
+</li>
+<li>
+  <a href="https://github.com/StateOfTheR/finistR2019">
+    <span class="fa fa-github"></span>
+     
+    dépôt github
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">FinistR: bootcamp R à Roscoff</h1>
+<h4 class="date"><em>du 26 au 30 août 2018</em></h4>
+
+</div>
+
+
+<div id="ou-quand" class="section level2">
+<h2>Où ? Quand ?</h2>
+<p>La station biologique de Roscoff accueillera la troisième édition du R Bootcamp du groupe <a href="https://stateofther.github.io/">State Of The R</a> <strong>du 26 août au 30 août 2019</strong>.</p>
+<iframe src="https://www.google.com/maps/embed?pb=!1m17!1m11!1m3!1d863.0230997053625!2d-3.987533179360306!3d48.72647094495075!2m2!1f0!2f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4813e153cbdda967%3A0x6cd2956ee2bb8cfb!2sStation+Biologique+de+Roscoff!5e1!3m2!1sfr!2sfr!4v1557410926937!5m2!1sfr!2sfr" width="600" height="450" frameborder="0" style="border:0" allowfullscreen>
+</iframe>
+</div>
+<div id="quoi" class="section level2">
+<h2>Quoi ?</h2>
+<p>Cette semaine sera consacrée à l’approfondissement de diverses thématiques (méthodologiques, techniques) autour du logiciel <code>R</code>: ce site proposera un compte rendu des différents thèmes abordés. Les participants collaborent tous au contenu de ce site lors d’ateliers organisés en petits groupes.</p>
+<p>Le compte rendu des éditions précédentes sont disponibles</p>
+<ul>
+<li><a href="https://stateofther.github.io/finistR2018/">Finist’R 2018</a></li>
+<li><a href="https://stateofther.github.io/finistR2017/">Finist’R 2017</a></li>
+</ul>
+<!-- ## Qui -->
+<!-- ![Équipe finistR2018](img/finisteR18_1.jpg) -->
+<!-- ### 1er rang -->
+<!-- - [Marie Perrot](https://www6.inra.fr/mia-paris/Equipes/Membres/Marie-Perrot-Dockes) (UMR MIA Paris) -->
+<!-- - [Timothée Tabouy](https://tabouyt.github.io/) (UMR MIA Paris) -->
+<!-- - [Félix Cheysson](Félix Cheysson • Research - Institut Pasteur) (UMR MIA Paris) -->
+<!-- - [Mathieu Carmassi](https://mathieucarmassi.github.io/) (UMR MIA Paris - EDF) -->
+<!-- ### 2ème rang -->
+<!-- - [Marie-Pierre Étienne](https://irmar.univ-rennes1.fr/interlocuteurs/marie-pierre-etienne) (IRMAR/ Agrocampus Ouest) -->
+<!-- - [Antoine Bichat](https://github.com/abichat) (UMR Maiage - INRA) -->
+<!-- - [Julien Chiquet](http://julien.cremeriefamily.info) (UMR MIA Paris - INRA) -->
+<!-- - [Sophie Donnet](https://www6.inra.fr/mia-paris/Equipes/Membres/Sophie-Donnet) (UMR MIA Paris - INRA),  -->
+<!-- ### 3ème rang -->
+<!-- - Bewentaoré Sawadogo (UMR MIA Paris) -->
+<!-- - [Pierre Gloaguen](https://papayoun.github.io/) (UMR MIA Paris - Agroparistech) -->
+<!-- - [Avner Bar-Hen](https://twitter.com/a_bh?lang=en) (CNAM) -->
+<!-- - [Saint-Clair Chabert-Liddell](https://www.linkedin.com/in/saint-clair-chabert-liddell-33728b145) (UMR MIA Paris) -->
+<!-- - [Vincent Runge](https://vincentrunge.github.io/) (UMR LaMME - Université  Paris Saclay) -->
+<!-- - [Jean-Baptiste Lecomte](https://www6.rennes.inra.fr/ese/PERSONNELS/Personne_umr/(idpers)/280/(idlang)/) (UMR ESE - Agrocampus Ouest) -->
+<!-- - [Gabriel Lang](https://www6.inra.fr/mia-paris/Equipes/Membres/Gabriel-Lang) (UMR MIA Paris - Agroparistech) -->
+<!-- - [Raphaëlle Momal](https://rmomal.github.io) (UMR MIA Paris) -->
+<!-- - [Pierre Navaro](https://irmar.univ-rennes1.fr/interlocuteurs/pierre-navaro) (IRMAR - CNRS) -->
+<!-- - [Éric Parent](https://www6.inra.fr/mia-paris/Equipes/Membres/Eric-Parent) (UMR MIA Paris - Agroparistech) -->
+<!-- ## Planning indicatif -->
+<!-- ```{r programme, echo = FALSE} -->
+<!-- library(tidyr) -->
+<!-- library(dplyr) -->
+<!-- library(tibble) -->
+<!-- programme <- readODS::read.ods(file = '../Programme.ods')[[1]] %>%  -->
+<!--   rename(Horaire = A, Lundi = B, Mardi = C, Mercredi = D, Jeudi = E, Vendredi = F) %>%  -->
+<!--   filter(!(Horaire == '')) -->
+<!-- DT::datatable(programme) %>% DT::formatStyle( columns = colnames(programme)[-1], -->
+<!--   backgroundColor = DT::styleEqual(c('','Repas', 'Pause','Atelier 1 : Web scraping/ Textmining', 'Atelier 2 : R Interface', 'Atelier 3 : bonnes pratiques de programmation','Atelier 4 : SIG et représentation graphique', 'Rappel d\'optimisation', 'Package', 'Base de données', 'Atelier 3 : Point P. Navarro','Atelier 1 : Bilan','Atelier 2 : Bilan','Atelier 3 : Bilan','Atelier 4 : Bilan', 'Bilan', 'Finalisation des rendus' ), c('lightgray','#c9dfe8', '#c9dfe8','#def7cf',  '#c3f2a7','#b5f48d','#96e863','#f2fc9c', '#f2fc9c', '#f2fc9c', '#f2fc9c', '#9ceefc', '#9ceefc', '#9ceefc', '#9ceefc', '#9ceefc', '#9ceefc') )) -->
+<!-- ``` -->
+<!-- Les séquences en vert correspondent à des séances d'atelier en sous groupes. Les séquences en jaune correspondent à un panorama du sujet indiqué, tandis que les séquences en bleu correspondent à des temps de réflexion et rédaction sur le rendu final. -->
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

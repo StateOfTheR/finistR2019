@@ -1,0 +1,15 @@
+name: "FinistR, édition 2019"
+output_dir: "../docs"
+navbar:
+ title: "FinistR 2019"
+ left:
+  - text: "accueil"
+    icon: fa-home
+    href: index.html
+  - text: "dépôt github"
+    icon: fa-github
+    href: https://github.com/StateOfTheR/finistR2019
+output:
+  html_document:
+    theme: flatly
+    highlight: tango

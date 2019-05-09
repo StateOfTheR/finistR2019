@@ -1,0 +1,72 @@
+---
+title: "FinistR: bootcamp R à Roscoff"
+date: "du 26 au 30 août 2018"
+output: 
+  html_document:
+   toc: true
+   toc_float: true
+---
+
+## Où ? Quand ?
+
+
+La station biologique de Roscoff accueillera la troisième édition du R Bootcamp  du groupe  [State Of The R](https://stateofther.github.io/) **du 26 août  au 30 août 2019**.
+
+<iframe src="https://www.google.com/maps/embed?pb=!1m17!1m11!1m3!1d863.0230997053625!2d-3.987533179360306!3d48.72647094495075!2m2!1f0!2f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4813e153cbdda967%3A0x6cd2956ee2bb8cfb!2sStation+Biologique+de+Roscoff!5e1!3m2!1sfr!2sfr!4v1557410926937!5m2!1sfr!2sfr" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+## Quoi ?
+
+Cette semaine sera consacrée à l'approfondissement de diverses thématiques (méthodologiques, techniques) autour du logiciel `R`: ce site proposera un compte rendu des différents thèmes abordés. Les participants collaborent tous au contenu de ce site lors d'ateliers organisés en petits groupes.
+
+Le compte rendu des éditions précédentes sont disponibles 
+
+  - [Finist'R 2018](https://stateofther.github.io/finistR2018/)
+  - [Finist'R 2017](https://stateofther.github.io/finistR2017/)
+
+<!-- ## Qui -->
+
+<!-- ![Équipe finistR2018](img/finisteR18_1.jpg) -->
+
+<!-- ### 1er rang -->
+
+<!-- - [Marie Perrot](https://www6.inra.fr/mia-paris/Equipes/Membres/Marie-Perrot-Dockes) (UMR MIA Paris) -->
+<!-- - [Timothée Tabouy](https://tabouyt.github.io/) (UMR MIA Paris) -->
+<!-- - [Félix Cheysson](Félix Cheysson • Research - Institut Pasteur) (UMR MIA Paris) -->
+<!-- - [Mathieu Carmassi](https://mathieucarmassi.github.io/) (UMR MIA Paris - EDF) -->
+
+<!-- ### 2ème rang -->
+
+<!-- - [Marie-Pierre Étienne](https://irmar.univ-rennes1.fr/interlocuteurs/marie-pierre-etienne) (IRMAR/ Agrocampus Ouest) -->
+<!-- - [Antoine Bichat](https://github.com/abichat) (UMR Maiage - INRA) -->
+<!-- - [Julien Chiquet](http://julien.cremeriefamily.info) (UMR MIA Paris - INRA) -->
+<!-- - [Sophie Donnet](https://www6.inra.fr/mia-paris/Equipes/Membres/Sophie-Donnet) (UMR MIA Paris - INRA),  -->
+
+<!-- ### 3ème rang -->
+
+<!-- - Bewentaoré Sawadogo (UMR MIA Paris) -->
+<!-- - [Pierre Gloaguen](https://papayoun.github.io/) (UMR MIA Paris - Agroparistech) -->
+<!-- - [Avner Bar-Hen](https://twitter.com/a_bh?lang=en) (CNAM) -->
+<!-- - [Saint-Clair Chabert-Liddell](https://www.linkedin.com/in/saint-clair-chabert-liddell-33728b145) (UMR MIA Paris) -->
+<!-- - [Vincent Runge](https://vincentrunge.github.io/) (UMR LaMME - Université  Paris Saclay) -->
+<!-- - [Jean-Baptiste Lecomte](https://www6.rennes.inra.fr/ese/PERSONNELS/Personne_umr/(idpers)/280/(idlang)/) (UMR ESE - Agrocampus Ouest) -->
+<!-- - [Gabriel Lang](https://www6.inra.fr/mia-paris/Equipes/Membres/Gabriel-Lang) (UMR MIA Paris - Agroparistech) -->
+<!-- - [Raphaëlle Momal](https://rmomal.github.io) (UMR MIA Paris) -->
+<!-- - [Pierre Navaro](https://irmar.univ-rennes1.fr/interlocuteurs/pierre-navaro) (IRMAR - CNRS) -->
+<!-- - [Éric Parent](https://www6.inra.fr/mia-paris/Equipes/Membres/Eric-Parent) (UMR MIA Paris - Agroparistech) -->
+
+<!-- ## Planning indicatif -->
+
+<!-- ```{r programme, echo = FALSE} -->
+<!-- library(tidyr) -->
+<!-- library(dplyr) -->
+<!-- library(tibble) -->
+
+<!-- programme <- readODS::read.ods(file = '../Programme.ods')[[1]] %>%  -->
+<!--   rename(Horaire = A, Lundi = B, Mardi = C, Mercredi = D, Jeudi = E, Vendredi = F) %>%  -->
+<!--   filter(!(Horaire == '')) -->
+
+<!-- DT::datatable(programme) %>% DT::formatStyle( columns = colnames(programme)[-1], -->
+<!--   backgroundColor = DT::styleEqual(c('','Repas', 'Pause','Atelier 1 : Web scraping/ Textmining', 'Atelier 2 : R Interface', 'Atelier 3 : bonnes pratiques de programmation','Atelier 4 : SIG et représentation graphique', 'Rappel d\'optimisation', 'Package', 'Base de données', 'Atelier 3 : Point P. Navarro','Atelier 1 : Bilan','Atelier 2 : Bilan','Atelier 3 : Bilan','Atelier 4 : Bilan', 'Bilan', 'Finalisation des rendus' ), c('lightgray','#c9dfe8', '#c9dfe8','#def7cf',  '#c3f2a7','#b5f48d','#96e863','#f2fc9c', '#f2fc9c', '#f2fc9c', '#f2fc9c', '#9ceefc', '#9ceefc', '#9ceefc', '#9ceefc', '#9ceefc', '#9ceefc') )) -->
+<!-- ``` -->
+
+<!-- Les séquences en vert correspondent à des séances d'atelier en sous groupes. Les séquences en jaune correspondent à un panorama du sujet indiqué, tandis que les séquences en bleu correspondent à des temps de réflexion et rédaction sur le rendu final. -->
