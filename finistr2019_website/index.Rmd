@@ -34,6 +34,8 @@ Le compte rendu des éditions précédentes sont disponibles
 participants <- read.table('ListeParticipants_feuille3.csv', sep = ',', header= TRUE) %>% as_tibble()
 ```
 
+## Participants 
+
 L'atelier Finist'R 2019 se tient à la Station Biologique de Roscoff du 26 au 30 août 2018. Les participants sont
 
 ```{r, echo=FALSE}
@@ -68,59 +70,61 @@ prog %>%  gather(key = condition, value = activité, -Horaire) %>%  distinct(act
 Les séquences en vert correspondent à des séances d'atelier en sous groupes. Les séquences en orange correspondent à un panorama du sujet indiqué, tandis que les séquences en bleu correspondent à des temps de réflexion et rédaction sur le rendu final.
 
 
-## Atelier 1 : Distill, communication et diffusion avec R
+## Programme 
 
-### Exploration du package distill pour la creation de document scientifique
+### Atelier 1 : Distill, communication et diffusion avec R
 
-### R pour la communication
+#### Exploration du package distill pour la creation de document scientifique
+
+#### R pour la communication
 - des nouvelles de blogdown
 - des sites web avec R
 - ...
 
 
-### Idées de réalisation
+#### Idées de réalisation
 - Mise en place du site de rendu
 - Structuration d'un document distill pour la soumission dans des conférences (RencontreR 2020 ?)
 
 
 
-##  Atelier 2 : R écosysteme : Docker, R et Python, R et
+###  Atelier 2 : R écosysteme : Docker, R et Python, R et
 
-### Docker
+#### Docker
 
 - Mettre en place les élements pour créer une image Docker, tester différentes instances pour utiliser différentes versions de R sur la même machine
 - reticulate pour lier Python et R
 -
 
-### Idées de réalisation
+#### Idées de réalisation
 - Comparer les résultats (performance et temps de calcul) d'une approche de classification par forêts aléatoires en R et Python
 
 
 
 
-## Atelier 3 :  R for big data
+### Atelier 3 :  R for big data
 
-### Manipuler des données massives sous R
+#### Manipuler des données massives sous R
 
 - package  [data.table  ](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)
 
 
-### H20
+#### H20
 - [R et H2O ](https://www.h2o.ai/wp-content/uploads/2018/01/RBooklet.pdf)
 
 
-### Idées de réalisation
+#### Idées de réalisation
 - un gros jeu de données, on compare les performances de différents modèles d'apprentissage
 
 
-## Atelier 4 : tidyverse : quoi de neuf ?
+### Atelier 4 : tidyverse : quoi de neuf ?
 
 
 - Un tour des nouveautés dans le tidyverse
 
 
 
-## Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?
+### Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?
 
 -  les packages à comparer lme4,  lmerTest, MCMCglmm, mlmRev, broom.mixed, nlme, glmmmTMB
 -  [spaMM](https://kimura.univ-montp2.fr/~rousset/spaMM/spaMMintro.pdf)
