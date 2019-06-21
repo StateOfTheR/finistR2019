@@ -7,6 +7,12 @@ output:
    toc_float: true
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(stringr)
+```
+
 ## Où ? Quand ?
 
 
@@ -23,50 +29,104 @@ Le compte rendu des éditions précédentes sont disponibles
   - [Finist'R 2018](https://stateofther.github.io/finistR2018/)
   - [Finist'R 2017](https://stateofther.github.io/finistR2017/)
 
-<!-- ## Qui -->
 
-<!-- ![Équipe finistR2018](img/finisteR18_1.jpg) -->
+```{r, echo=FALSE}
+participants <- read.table('ListeParticipants_feuille3.csv', sep = ',', header= TRUE) %>% as_tibble()
+```
 
-<!-- ### 1er rang -->
+L'atelier Finist'R 2019 se tient à la Station Biologique de Roscoff du 26 au 30 août 2018. Les participants sont
 
-<!-- - [Marie Perrot](https://www6.inra.fr/mia-paris/Equipes/Membres/Marie-Perrot-Dockes) (UMR MIA Paris) -->
-<!-- - [Timothée Tabouy](https://tabouyt.github.io/) (UMR MIA Paris) -->
-<!-- - [Félix Cheysson](Félix Cheysson • Research - Institut Pasteur) (UMR MIA Paris) -->
-<!-- - [Mathieu Carmassi](https://mathieucarmassi.github.io/) (UMR MIA Paris - EDF) -->
+```{r, echo=FALSE}
+participants %>% DT::datatable()
+```
 
-<!-- ### 2ème rang -->
 
-<!-- - [Marie-Pierre Étienne](https://irmar.univ-rennes1.fr/interlocuteurs/marie-pierre-etienne) (IRMAR/ Agrocampus Ouest) -->
-<!-- - [Antoine Bichat](https://github.com/abichat) (UMR Maiage - INRA) -->
-<!-- - [Julien Chiquet](http://julien.cremeriefamily.info) (UMR MIA Paris - INRA) -->
-<!-- - [Sophie Donnet](https://www6.inra.fr/mia-paris/Equipes/Membres/Sophie-Donnet) (UMR MIA Paris - INRA),  -->
 
-<!-- ### 3ème rang -->
+Le programme proposé est  le suivant
 
-<!-- - Bewentaoré Sawadogo (UMR MIA Paris) -->
-<!-- - [Pierre Gloaguen](https://papayoun.github.io/) (UMR MIA Paris - Agroparistech) -->
-<!-- - [Avner Bar-Hen](https://twitter.com/a_bh?lang=en) (CNAM) -->
-<!-- - [Saint-Clair Chabert-Liddell](https://www.linkedin.com/in/saint-clair-chabert-liddell-33728b145) (UMR MIA Paris) -->
-<!-- - [Vincent Runge](https://vincentrunge.github.io/) (UMR LaMME - Université  Paris Saclay) -->
-<!-- - [Jean-Baptiste Lecomte](https://www6.rennes.inra.fr/ese/PERSONNELS/Personne_umr/(idpers)/280/(idlang)/) (UMR ESE - Agrocampus Ouest) -->
-<!-- - [Gabriel Lang](https://www6.inra.fr/mia-paris/Equipes/Membres/Gabriel-Lang) (UMR MIA Paris - Agroparistech) -->
-<!-- - [Raphaëlle Momal](https://rmomal.github.io) (UMR MIA Paris) -->
-<!-- - [Pierre Navaro](https://irmar.univ-rennes1.fr/interlocuteurs/pierre-navaro) (IRMAR - CNRS) -->
-<!-- - [Éric Parent](https://www6.inra.fr/mia-paris/Equipes/Membres/Eric-Parent) (UMR MIA Paris - Agroparistech) -->
 
-<!-- ## Planning indicatif -->
+```{r, echo=FALSE}
+prog <- as_tibble(readODS::read.ods(file = 'Programme.ods')[[1]])
+prog <- prog %>%  rename(Horaire=A, Lundi = B, Mardi=C, Mercredi=D, Jeudi=E, Vendredi=F) %>%
+  filter(!(Horaire==''))
+prog %>%  gather(key = condition, value = activité, -Horaire) %>%  distinct(activité) %>% as_vector -> activites
 
-<!-- ```{r programme, echo = FALSE} -->
-<!-- library(tidyr) -->
-<!-- library(dplyr) -->
-<!-- library(tibble) -->
+  activites %>% tibble::enframe(name = NULL) %>% mutate(col = ifelse ( str_detect(value ,'Bilan'), '#f9d194', '')) %>%
+     mutate(col = ifelse ( col =='' & str_detect(value ,'Atelier 1'), '#def7cf', col)) %>%
+     mutate(col = ifelse ( col =='' & str_detect(value ,'Atelier 2'), '#c3f2a7', col)) %>%
+     mutate(col = ifelse ( col =='' & str_detect(value ,'Atelier 3'), '#b5f48d', col)) %>%
+     mutate(col = ifelse ( col =='' & str_detect(value ,'Atelier 4'), '#96e863', col)) %>%
+     mutate(col = ifelse ( col =='' & str_detect(value ,'Atelier 5'), '#96cf47', col)) %>%
+     mutate(col = ifelse ( col =='' & str_detect(value ,'Repas'), '#d2d9d6', col))  %>%
+     mutate(col = ifelse ( col =='' & str_detect(value ,'Pause'), '#d2d9d6', col))%>%
+     mutate(col = ifelse ( col =='', '#9cd9d6', col)) %>%
+     mutate(col = ifelse ( value =='' , '', col)) %>% select(col) %>% as_vector()-> color_used
 
-<!-- programme <- readODS::read.ods(file = '../Programme.ods')[[1]] %>%  -->
-<!--   rename(Horaire = A, Lundi = B, Mardi = C, Mercredi = D, Jeudi = E, Vendredi = F) %>%  -->
-<!--   filter(!(Horaire == '')) -->
+  DT::datatable(prog) %>% DT::formatStyle( columns = c(2:ncol(prog)),   backgroundColor = DT::styleEqual(activites , color_used ))
+```
 
-<!-- DT::datatable(programme) %>% DT::formatStyle( columns = colnames(programme)[-1], -->
-<!--   backgroundColor = DT::styleEqual(c('','Repas', 'Pause','Atelier 1 : Web scraping/ Textmining', 'Atelier 2 : R Interface', 'Atelier 3 : bonnes pratiques de programmation','Atelier 4 : SIG et représentation graphique', 'Rappel d\'optimisation', 'Package', 'Base de données', 'Atelier 3 : Point P. Navarro','Atelier 1 : Bilan','Atelier 2 : Bilan','Atelier 3 : Bilan','Atelier 4 : Bilan', 'Bilan', 'Finalisation des rendus' ), c('lightgray','#c9dfe8', '#c9dfe8','#def7cf',  '#c3f2a7','#b5f48d','#96e863','#f2fc9c', '#f2fc9c', '#f2fc9c', '#f2fc9c', '#9ceefc', '#9ceefc', '#9ceefc', '#9ceefc', '#9ceefc', '#9ceefc') )) -->
-<!-- ``` -->
+Les séquences en vert correspondent à des séances d'atelier en sous groupes. Les séquences en jaune correspondent à un panorama du sujet indiqué, tandis que les séquences en bleu correspondent à des temps de réflexion et rédaction sur le rendu final.
 
-<!-- Les séquences en vert correspondent à des séances d'atelier en sous groupes. Les séquences en jaune correspondent à un panorama du sujet indiqué, tandis que les séquences en bleu correspondent à des temps de réflexion et rédaction sur le rendu final. -->
+
+## Atelier 1 : Distill, communication et diffusion avec R
+
+### Exploration du package distill pour la creation de document scientifique
+
+### R pour la communication
+- des nouvelles de blogdown
+- des sites web avec R
+- ...
+
+
+### Idées de réalisation
+- Mise en place du site de rendu
+- Structuration d'un document distill pour la soumission dans des conférences (RencontreR 2020 ?)
+
+
+
+##  Atelier 2 : R écosysteme : Docker, R et Python, R et
+
+### Docker
+
+- Mettre en place les élements pour créer une image Docker, tester différentes instances pour utiliser différentes versions de R sur la même machine
+- reticulate pour lier Python et R
+-
+
+### Idées de réalisation
+- Comparer les résultats (performance et temps de calcul) d'une approche de classification par forêts aléatoires en R et Python
+
+
+
+
+## Atelier 3 :  R for big data
+
+### Manipuler des données massives sous R
+
+- package  [data.table  ](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)
+
+
+### H20
+- [R et H2O ](https://www.h2o.ai/wp-content/uploads/2018/01/RBooklet.pdf)
+
+
+### Idées de réalisation
+- un gros jeu de données, on compare les performances de différents modèles d'apprentissage
+
+
+## Atelier 4 : tidyverse : quoi de neuf ?
+
+
+- Un tour des nouveautés dans le tidyverse
+
+
+
+## Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?
+
+-  les packages à comparer lme4,  lmerTest, MCMCglmm, mlmRev, broom.mixed, nlme, glmmmTMB
+-  [spaMM](https://kimura.univ-montp2.fr/~rousset/spaMM/spaMMintro.pdf)
+
+
+
+
+
+
