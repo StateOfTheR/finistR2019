@@ -8,9 +8,9 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
-library(stringr)
+library(DT)
 ```
 
 ## Où ? Quand ?
@@ -30,16 +30,16 @@ Le compte rendu des éditions précédentes sont disponibles
   - [Finist'R 2017](https://stateofther.github.io/finistR2017/)
 
 
-```{r, echo=FALSE}
-participants <- read.table('ListeParticipants_feuille3.csv', sep = ',', header= TRUE) %>% as_tibble()
+```{r}
+participants <- read_csv("ListeParticipants_feuille3.csv", col_types = "cccc")
 ```
 
 ## Participants 
 
 L'atelier Finist'R 2019 se tient à la Station Biologique de Roscoff du 26 au 30 août 2018. Les participants sont
 
-```{r, echo=FALSE}
-participants %>% DT::datatable()
+```{r}
+datatable(participants, options = list(pageLength = 17, dom = "t"))
 ```
 
 
@@ -47,13 +47,21 @@ participants %>% DT::datatable()
 Le programme proposé est  le suivant
 
 
-```{r, echo=FALSE}
+```{r}
 prog <- as_tibble(readODS::read.ods(file = 'Programme.ods')[[1]])
-prog <- prog %>%  rename(Horaire=A, Lundi = B, Mardi=C, Mercredi=D, Jeudi=E, Vendredi=F) %>%
-  filter(!(Horaire==''))
-prog %>%  gather(key = condition, value = activité, -Horaire) %>%  distinct(activité) %>% as_vector -> activites
+prog <- 
+  prog %>%
+  rename(Horaire = A, Lundi = B, Mardi = C, Mercredi = D, Jeudi = E, Vendredi = F) %>%
+  filter(Horaire != '')
+activites <-
+  prog %>%  
+  gather(key = condition, value = activité, -Horaire) %>%  
+  distinct(activité) %>% 
+  as_vector()
 
-  activites %>% tibble::enframe(name = NULL) %>% mutate(col = ifelse ( str_detect(value ,'Bilan'), '#97b1bd', '')) %>%
+activites %>% 
+  enframe(name = NULL) %>% 
+  mutate(col = ifelse ( str_detect(value ,'Bilan'), '#97b1bd', '')) %>%
      mutate(col = ifelse ( col =='' & str_detect(value ,'Atelier 1'), '#def7cf', col)) %>%
      mutate(col = ifelse ( col =='' & str_detect(value ,'Atelier 2'), '#c3f2a7', col)) %>%
      mutate(col = ifelse ( col =='' & str_detect(value ,'Atelier 3'), '#b5f48d', col)) %>%
@@ -62,9 +70,13 @@ prog %>%  gather(key = condition, value = activité, -Horaire) %>%  distinct(act
      mutate(col = ifelse ( col =='' & str_detect(value ,'Repas'), '#d2d9d6', col))  %>%
      mutate(col = ifelse ( col =='' & str_detect(value ,'Pause'), '#d2d9d6', col))%>%
      mutate(col = ifelse ( col =='', '#fea741', col)) %>%
-     mutate(col = ifelse ( value =='' , '', col)) %>% select(col) %>% as_vector()-> color_used
+     mutate(col = ifelse ( value =='' , '', col)) %>% select(col) %>% as_vector() -> color_used
 
-  DT::datatable(prog) %>% DT::formatStyle( columns = c(2:ncol(prog)),   backgroundColor = DT::styleEqual(activites , color_used ))
+prog %>% 
+  datatable(options = list(pageLength = 17, dom = "t", ordering = FALSE),
+              rownames = FALSE) %>%
+  formatStyle(columns = c(2:ncol(prog)),
+                  backgroundColor = DT::styleEqual(activites , color_used))
 ```
 
 Les séquences en vert correspondent à des séances d'atelier en sous groupes. Les séquences en orange correspondent à un panorama du sujet indiqué, tandis que les séquences en bleu correspondent à des temps de réflexion et rédaction sur le rendu final.
