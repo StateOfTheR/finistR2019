@@ -90,57 +90,69 @@ Les séquences en vert correspondent à des séances d'atelier en sous groupes. 
 #### Exploration du package distill pour la creation de document scientifique
 
 #### R pour la communication
-- des nouvelles de blogdown
-- des sites web avec R
+
+- Des nouvelles de __blogdown__
+- Des sites web avec R
+- Le site de mon package avec __pkgdown__
+- Des livres avec __bookdown__
 - ...
 
 
 #### Idées de réalisation
+
 - Mise en place du site de rendu
 - Structuration d'un document distill pour la soumission dans des conférences (RencontreR 2020 ?)
+- Écrire une thèse avec __bookdown__
 
 
-
-###  Atelier 2 : R écosysteme : Docker, R et Python, R et
+###  Atelier 2 : R écosysteme, Docker, R et Python, R et ...
 
 #### Docker
 
 - Mettre en place les élements pour créer une image Docker, tester différentes instances pour utiliser différentes versions de R sur la même machine
-- reticulate pour lier Python et R
--
+- __packrat__ pour la gestion de packages
+
+
+#### Interfaces
+
+- __reticulate__ pour lier Python et R
+- 
 
 #### Idées de réalisation
+
 - Comparer les résultats (performance et temps de calcul) d'une approche de classification par forêts aléatoires en R et Python
 
 
-
-
-### Atelier 3 :  R for big data
+### Atelier 3 : R for big data
 
 #### Manipuler des données massives sous R
 
-- package [data.table](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)
+- Package __[data.table](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)__
 
 
-#### H20
-- [R et H2O](https://www.h2o.ai/wp-content/uploads/2018/01/RBooklet.pdf)
+#### Machine learning
+- R et __[H2O](https://www.h2o.ai/wp-content/uploads/2018/01/RBooklet.pdf)__
+- __caret__
+- __parsnip__
 
 
 #### Idées de réalisation
-- un gros jeu de données, on compare les performances de différents modèles d'apprentissage
+
+- Un gros jeu de données, on compare les performances de différents modèles d'apprentissage
 
 
 ### Atelier 4 : tidyverse : quoi de neuf ?
 
 
 - Un tour des nouveautés dans le tidyverse
+- Programmation dans le tidyverse avec __rlang__
 
 
 
 ### Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?
 
--  les packages à comparer lme4,  lmerTest, MCMCglmm, mlmRev, broom.mixed, nlme, glmmmTMB
--  [spaMM](https://kimura.univ-montp2.fr/~rousset/spaMM/spaMMintro.pdf)
+- Les packages à comparer __lme4__, __lmerTest__, __MCMCglmm__, __mlmRev__, __broom.mixed__, __nlme__, __glmmmTMB__
+- __[spaMM](https://kimura.univ-montp2.fr/~rousset/spaMM/spaMMintro.pdf)__
 
 
 
