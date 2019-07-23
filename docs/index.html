@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -240,48 +241,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -423,11 +385,11 @@ div.tocify {
 <div id="participants" class="section level2">
 <h2>Participants</h2>
 <p>L’atelier Finist’R 2019 se tient à la Station Biologique de Roscoff du 26 au 30 août 2018. Les participants sont</p>
-<div id="htmlwidget-3cc40fa1513c05a657d7" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3cc40fa1513c05a657d7">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],["Aubert","Barbillon","Bichat","Chabert Liddell","Cheysson","Donnet","Étienne","Gayral","Gestraud","Gloaguen","Guitton","Lang","Momal","Morvan","Navaro","Perrot","Sundqvist"],["Julie","Pierre","Antoine","Saint-Clair","Félix","Sophie","Marie-Pierre","Claire","Pierre","Pierre","Jérôme","Gabriel","Raphaëlle","Marie","Pierre","Marie","Martina"],["Ingénieur INRA","MCF","Doctorant","Doctorant","Doctorant","Chargé Recherche","MCF","Doctorante","Chercheur","MCF","Ingénieur","Ingénieur IPEF","Doctorante","Doctorante","Ingénieur","Doctorante","Doctorante"],["MIA Paris INRA","MIA Paris INRA","INRA / Maiage","MIA Paris INRA","MIA Paris INRA","MIA Paris INRA","Agrocampus Ouest / IRMAR","LBBE","Institut Curie","AgroParisTech","Agrocampus","AgroParisTech","MIA Paris INRA","IRMAR","Université de Rennes / IRMAR","MIA Paris INRA","MIA Paris INRA"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Nom<\/th>\n      <th>Prénom<\/th>\n      <th>Statut<\/th>\n      <th>Organisme<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":17,"dom":"t","order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}],"lengthMenu":[10,17,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-e5fbc523b1c0cdad801f" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e5fbc523b1c0cdad801f">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],["Aubert","Barbillon","Bichat","Chabert Liddell","Cheysson","Donnet","Étienne","Gayral","Gestraud","Gloaguen","Guitton","Lang","Momal","Morvan","Navaro","Perrot","Sundqvist"],["Julie","Pierre","Antoine","Saint-Clair","Félix","Sophie","Marie-Pierre","Claire","Pierre","Pierre","Jérôme","Gabriel","Raphaëlle","Marie","Pierre","Marie","Martina"],["Ingénieur INRA","MCF","Doctorant","Doctorant","Doctorant","Chargé Recherche","MCF","Doctorante","Chercheur","MCF","Ingénieur","Ingénieur IPEF","Doctorante","Doctorante","Ingénieur","Doctorante","Doctorante"],["MIA Paris INRA","MIA Paris INRA","INRA / Maiage","MIA Paris INRA","MIA Paris INRA","MIA Paris INRA","Agrocampus Ouest / IRMAR","LBBE","Institut Curie","AgroParisTech","Agrocampus","AgroParisTech","MIA Paris INRA","IRMAR","Université de Rennes / IRMAR","MIA Paris INRA","MIA Paris INRA"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Nom<\/th>\n      <th>Prénom<\/th>\n      <th>Statut<\/th>\n      <th>Organisme<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":17,"dom":"t","order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}],"lengthMenu":[10,17,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 <p>Le programme proposé est le suivant</p>
-<div id="htmlwidget-c72f2eebf7f0eb60625c" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c72f2eebf7f0eb60625c">{"x":{"filter":"none","data":[["8h30-9h30","9h30-10h30","10h30-11h00","11h00-12h30","12h30-13h30","13h30-14h30","14h30-16h00","16h00-16h30","16h30-17h30","17h30-18h30"],["","","","","Repas","Introduction : Objectif, Organisation, Rendus","Atelier 1 : Distill, communication et diffusion avec R","Pause","Atelier 1 : Distill, communication et diffusion avec R","Atelier 1 : Bilan structuration du document bilan"],["Présentation Docker ","Atelier 2 : R écosysteme : Docker, R et Python, R et ….","Pause","Atelier 2 : R écosysteme : Docker, R et Python, R et ….","Repas","","Atelier 2 : R écosysteme : Docker, R et Python, R et ….","Pause","Atelier 2 : R écosysteme : Docker, R et Python, R et ….","Atelier 2 : Bilan structuration du document bilan"],["Big Data : Hadoop","","Pause","Atelier 3 : R for big data (data.table, H20, …)","Repas","","Atelier 3 : R for big data (data.table, H20, …)","Pause","Atelier 3 : R for big data (data.table, H20, …)","Atelier 3 : Bilan structuration du document bilan"],["Atelier 4 : tidyverse : quoi de neuf ?","Atelier 4 : tidyverse : quoi de neuf ?","Pause","Atelier 4 : tidyverse : quoi de neuf ?","Repas","","Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?","Pause","Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?","Atelier 4/5 : Bilan structuration du document bilan"],["Bilan global","Bilan : Mise au propre des rendus","Pause","Bilan : Mise au propre des rendus","","","","","",""]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Horaire<\/th>\n      <th>Lundi<\/th>\n      <th>Mardi<\/th>\n      <th>Mercredi<\/th>\n      <th>Jeudi<\/th>\n      <th>Vendredi<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":17,"dom":"t","ordering":false,"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[10,17,25,50,100],"rowCallback":"function(row, data) {\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker ' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, R et ….' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Big Data : Hadoop' ? '#fea741' : value == 'Atelier 3 : R for big data (data.table, H20, …)' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker ' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, R et ….' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Big Data : Hadoop' ? '#fea741' : value == 'Atelier 3 : R for big data (data.table, H20, …)' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker ' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, R et ….' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Big Data : Hadoop' ? '#fea741' : value == 'Atelier 3 : R for big data (data.table, H20, …)' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker ' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, R et ….' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Big Data : Hadoop' ? '#fea741' : value == 'Atelier 3 : R for big data (data.table, H20, …)' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker ' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, R et ….' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Big Data : Hadoop' ? '#fea741' : value == 'Atelier 3 : R for big data (data.table, H20, …)' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+<div id="htmlwidget-6dd9925d19d2e5f08d97" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6dd9925d19d2e5f08d97">{"x":{"filter":"none","data":[["8h30-9h30","9h30-10h30","10h30-11h00","11h00-12h30","12h30-13h30","13h30-14h30","14h30-16h00","16h00-16h30","16h30-17h30","17h30-18h30"],["","","","","Repas","Introduction : Objectif, Organisation, Rendus","Atelier 1 : Distill, communication et diffusion avec R","Pause","Atelier 1 : Distill, communication et diffusion avec R","Atelier 1 : Bilan structuration du document bilan"],["Présentation Docker ","Atelier 2 : R écosysteme : Docker, R et Python, R et ….","Pause","Atelier 2 : R écosysteme : Docker, R et Python, R et ….","Repas","","Atelier 2 : R écosysteme : Docker, R et Python, R et ….","Pause","Atelier 2 : R écosysteme : Docker, R et Python, R et ….","Atelier 2 : Bilan structuration du document bilan"],["Big Data : Hadoop","","Pause","Atelier 3 : R for big data (data.table, H20, …)","Repas","","Atelier 3 : R for big data (data.table, H20, …)","Pause","Atelier 3 : R for big data (data.table, H20, …)","Atelier 3 : Bilan structuration du document bilan"],["Atelier 4 : tidyverse : quoi de neuf ?","Atelier 4 : tidyverse : quoi de neuf ?","Pause","Atelier 4 : tidyverse : quoi de neuf ?","Repas","","Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?","Pause","Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?","Atelier 4/5 : Bilan structuration du document bilan"],["Bilan global","Bilan : Mise au propre des rendus","Pause","Bilan : Mise au propre des rendus","","","","","",""]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Horaire<\/th>\n      <th>Lundi<\/th>\n      <th>Mardi<\/th>\n      <th>Mercredi<\/th>\n      <th>Jeudi<\/th>\n      <th>Vendredi<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":17,"dom":"t","ordering":false,"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[10,17,25,50,100],"rowCallback":"function(row, data) {\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker ' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, R et ….' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Big Data : Hadoop' ? '#fea741' : value == 'Atelier 3 : R for big data (data.table, H20, …)' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker ' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, R et ….' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Big Data : Hadoop' ? '#fea741' : value == 'Atelier 3 : R for big data (data.table, H20, …)' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker ' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, R et ….' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Big Data : Hadoop' ? '#fea741' : value == 'Atelier 3 : R for big data (data.table, H20, …)' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker ' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, R et ….' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Big Data : Hadoop' ? '#fea741' : value == 'Atelier 3 : R for big data (data.table, H20, …)' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker ' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, R et ….' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Big Data : Hadoop' ? '#fea741' : value == 'Atelier 3 : R for big data (data.table, H20, …)' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
 <p>Les séquences en vert correspondent à des séances d’atelier en sous groupes. Les séquences en orange correspondent à un panorama du sujet indiqué, tandis que les séquences en bleu correspondent à des temps de réflexion et rédaction sur le rendu final.</p>
 </div>
 <div id="programme" class="section level2">
@@ -441,9 +403,10 @@ div.tocify {
 <h4>R pour la communication</h4>
 <ul>
 <li>Des nouvelles de <strong>blogdown</strong></li>
-<li>Des sites web avec R</li>
 <li>Le site de mon package avec <strong>pkgdown</strong></li>
+<li>Des sites web avec R</li>
 <li>Des livres avec <strong>bookdown</strong></li>
+<li>Des tables avec <strong>flextable</strong></li>
 <li>…</li>
 </ul>
 </div>
@@ -457,7 +420,7 @@ div.tocify {
 </div>
 </div>
 <div id="atelier-2-r-ecosysteme-docker-r-et-python-r-et" class="section level3">
-<h3>Atelier 2 : R écosysteme : Docker, R et Python, R et …</h3>
+<h3>Atelier 2 : R écosysteme, Docker, R et Python, R et …</h3>
 <div id="docker" class="section level4">
 <h4>Docker</h4>
 <ul>
@@ -469,7 +432,6 @@ div.tocify {
 <h4>Interfaces</h4>
 <ul>
 <li><strong>reticulate</strong> pour lier Python et R</li>
-<li></li>
 </ul>
 </div>
 <div id="idees-de-realisation-1" class="section level4">
@@ -536,6 +498,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

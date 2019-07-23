@@ -92,9 +92,10 @@ Les séquences en vert correspondent à des séances d'atelier en sous groupes. 
 #### R pour la communication
 
 - Des nouvelles de __blogdown__
-- Des sites web avec R
 - Le site de mon package avec __pkgdown__
+- Des sites web avec R
 - Des livres avec __bookdown__
+- Des tables avec __flextable__
 - ...
 
 
@@ -116,7 +117,6 @@ Les séquences en vert correspondent à des séances d'atelier en sous groupes. 
 #### Interfaces
 
 - __reticulate__ pour lier Python et R
-- 
 
 #### Idées de réalisation
 
