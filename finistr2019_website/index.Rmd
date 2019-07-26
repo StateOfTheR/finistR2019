@@ -88,6 +88,8 @@ Les séquences en vert correspondent à des séances d'atelier en sous groupes. 
 ### Atelier 1 : Distill, communication et diffusion avec R
 
 #### Exploration du package distill pour la creation de document scientifique
+[Une présentation de distill](https://rstudio.github.io/distill/website.html)
+
 
 #### R pour la communication
 
