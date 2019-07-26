@@ -102,7 +102,7 @@ Les séquences en vert correspondent à des séances d'atelier en sous groupes. 
 #### Idées de réalisation
 
 - Mise en place du site de rendu
-- Structuration d'un document distill pour la soumission dans des conférences (RencontreR 2020 ?)
+- Structuration d'un document distill pour la soumission dans des conférences (RencontreR 2020 : ajout de tags, customiser la mise en forme, importer une contribution depuis un dépot github)
 - Écrire une thèse avec __bookdown__
 
 
@@ -112,6 +112,7 @@ Les séquences en vert correspondent à des séances d'atelier en sous groupes. 
 
 - Mettre en place les élements pour créer une image Docker, tester différentes instances pour utiliser différentes versions de R sur la même machine
 - __packrat__ pour la gestion de packages
+- __renv__ pour la gestion de packages
 
 
 #### Interfaces
@@ -121,7 +122,7 @@ Les séquences en vert correspondent à des séances d'atelier en sous groupes. 
 #### Idées de réalisation
 
 - Comparer les résultats (performance et temps de calcul) d'une approche de classification par forêts aléatoires en R et Python
-
+- Mettre en place une image docker pour le contenu de la semaine. 
 
 ### Atelier 3 : R for big data
 

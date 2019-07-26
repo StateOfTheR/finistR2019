@@ -22,6 +22,39 @@ La restitution se fait sous forme de site web. Le site de l'édition 2018 est di
 
 L'atelier accueille un maximum de 25 personnes. Les personnes intéressées par l'atelier peuvent contacter les organisateurs à <stateofr@gmail.com>
 
+# Finalisation du programme 
+Le vendredi 26 juillet 2019. 
+
+Tutoriel à UseR
+
+- Bonnes pratiques pour la modélisation et unifier les sorties 
+[Package hardhat](https://tidymodels.github.io/hardhat/)
+
+- Unifier les notations et les arguments pour les métodes de machine learning
+[parsnip](https://cran.r-project.org/web/packages/parsnip/index.html) : un wrapper au tour de ranger, caret, randomForest 
+
+- Reticulate : Faire du Python depuis une console R et alterner du R et du Python dans un Markdown. Démarrer le chunk par  `python` au lieu de `r`.
+
+- Modèle non linéaire généralisé. Comment créer un modèle non linéaire
+[package gnm](https://cran.r-project.org/web/packages/gnm/index.html)
+
+
+- Les documents des tutoriels UseR2019 sont disponibles [ici](https://github.com/sowla/useR2019-materials)
+
+- Package rlang et operateur  `{{ }}` (operateur curly curly).
+
+- Package [nCompiler](https://github.com/nimble-dev/nCompiler) POur compiler du code R en C++.
+
+13/09
+
+
+
+
+
+
+
+
+
 # Programme
 
 Le programme est défini collectivement par les participants à la fin deu moi de juin.
