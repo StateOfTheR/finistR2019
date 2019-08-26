@@ -1,0 +1,53 @@
+# Introduction {#intro}
+
+
+**bookdown** est un package R développé par Yihui Xe qui permet d’écrire des livres en format Rmarkdown pour les publier en PDF ou HTML. Le principe de base consiste à utiliser un fichier Rmarkdown par chapitre.
+
+
+**bookdown** peut être installé depuis le CRAN 
+
+```{r cran, eval=FALSE}
+install.packages("bookdown")
+```
+
+ou depuis le repo GitHub
+
+```{r remotes, eval=FALSE}
+# install.packages("remotes")
+remotes::install_github("rstudio/bookdown")
+```
+
+
+Une fois ceci fait, on peut créer un fichoer via `File > New project > New directory > Book Project using bookdown` et choisir l'emplacement et le nom du futur livre.
+
+Un exemple minimal de livre est ainsi crée à cet emplacement et peut être compilé en cliquant sur ` Build > Build Book`
+
+On peut alors s'inspirer des fichiers déjà créés.
+
+
+
+
+
+
+
+
+
+You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
+
+Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
+
+```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
+par(mar = c(4, 4, .1, .1))
+plot(pressure, type = 'b', pch = 19)
+```
+
+Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
+
+```{r nice-tab, tidy=FALSE}
+knitr::kable(
+  head(iris, 20), caption = 'Here is a nice table!',
+  booktabs = TRUE
+)
+```
+
+You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
