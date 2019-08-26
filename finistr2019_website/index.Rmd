@@ -94,7 +94,7 @@ Les séquences en vert correspondent à des séances d'atelier en sous groupes. 
 #### R pour la communication
 
 - Des nouvelles de __blogdown__
-- Le site de mon package avec __pkgdown__
+- Le site de mon package avec __pkgdown__ : [le tuto de  C. Gillespie à useR2019](https://www.jumpingrivers.com/t/2019-user-git/#1) 
 - Des sites web avec R
 - Des livres avec __bookdown__
 - Des tables avec __flextable__
