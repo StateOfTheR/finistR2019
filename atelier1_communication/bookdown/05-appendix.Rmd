@@ -1,0 +1,22 @@
+# (APPENDIX) Appendices {-}
+
+# Triangle rectangle
+
+```{r}
+df <- tibble(x = c(0, 2, 0), y = c(0, 0, 1))
+ggplot(df) +
+  aes(x, y) +
+  geom_polygon() +
+  coord_equal() +
+  theme_void() 
+```
+
+
+# Ressources
+
+[Bookdown](https://bookdown.org/yihui/bookdown/)
+
+[Bookdown minimal example](https://bookdown.org/yihui/bookdown-demo/)
+
+[Writing your thesis with bookdown](https://eddjberry.netlify.com/post/writing-your-thesis-with-bookdown/)
+

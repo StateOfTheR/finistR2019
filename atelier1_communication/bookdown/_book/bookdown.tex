@@ -23,8 +23,8 @@
 }{}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
-            pdftitle={A Minimal Book Example},
-            pdfauthor={Yihui Xie},
+            pdftitle={Introduction à bookdown},
+            pdfauthor={Julie Aubert et Antoine Bichat},
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
@@ -80,6 +80,9 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\usepackage[normalem]{ulem}
+% avoid problems with \sout in headers with hyperref:
+\pdfstringdefDisableCommands{\renewcommand{\sout}{}}
 \IfFileExists{parskip.sty}{%
 \usepackage{parskip}
 }{% else
@@ -116,18 +119,34 @@
 
 \setlength{\droptitle}{-2em}
 
-  \title{A Minimal Book Example}
+  \title{Introduction à bookdown}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
-    \author{Yihui Xie}
+    \author{Julie Aubert et Antoine Bichat}
     \preauthor{\centering\large\emph}
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-08-26}
+    \date{Finist'R, 26 août 2019}
 
 \usepackage{booktabs}
 
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{conjecture}{Conjecture}[chapter]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\theoremstyle{definition}
+\newtheorem{example}{Example}[chapter]
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}[chapter]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{solution}{Solution}
+\let\BeginKnitrBlock\begin \let\EndKnitrBlock\end
 \begin{document}
 \maketitle
 
@@ -161,99 +180,264 @@ Une fois ceci fait, on peut créer un fichoer via \texttt{File\ \textgreater{}\ 
 
 Un exemple minimal de livre est ainsi crée à cet emplacement et peut être compilé en cliquant sur \texttt{Build\ \textgreater{}\ Build\ Book}
 
-You can label chapter and section titles using \texttt{\{\#label\}} after them, e.g., we can reference Chapter \ref{intro}. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \ref{methods}.
+On peut alors s'inspirer des fichiers déjà créés.
 
-Figures and tables with captions will be placed in \texttt{figure} and \texttt{table} environments, respectively.
+\hypertarget{structure}{%
+\chapter{Structure}\label{structure}}
+
+Un livre est composé de plusieurs fichiers \texttt{.Rmd}, un par chapitre.
+
+Par défaut, les fichiers sont compilés dans l'ordre alphabétique (sauf si présence d'un \texttt{index.Rmd}, qui passe en premier). Les fihciers commençant par un \texttt{\_} sont ignorés.
+
+Chaque fichier doit commencer un titre de niveau 1 (\texttt{\#}) suivi du nom du chapitre.
+
+On peut également rajouter des en-têtes de niveau 1 spécifiques à \textbf{bookdown} :
+
+\begin{itemize}
+\item
+  \texttt{\#(PART)\ Part\ I/II/...\ \{-\}}
+\item
+  \texttt{\#(APPENDIX)\ Appendix\ \{-\}}
+\end{itemize}
+
+\hypertarget{mise-en-forme}{%
+\chapter{Mise en forme}\label{mise-en-forme}}
+
+\hypertarget{police}{%
+\section{Police}\label{police}}
+
+\textbf{bookdown} suit la mise en forme de \textbf{rmarkdown}
+
+\texttt{On\ peut\ écrire\ en\ *italique*,\ **gras**,}espacement régulier\texttt{ou\ \textasciitilde{}\textasciitilde{}barré\textasciitilde{}\textasciitilde{}.}
+
+On peut écrire en \emph{italique}, \textbf{gras}, \texttt{espacement\ régulier} ou \sout{barré}.
+
+Les titres de niveau un (chapitres) sont délimités par \texttt{\#} et ceux de niveau suivant par \texttt{\#\#} ou \texttt{\#\#\#}.
+
+\hypertarget{refint}{%
+\section{Références internes}\label{refint}}
+
+\hypertarget{sections}{%
+\subsection{Sections}\label{sections}}
+
+On donne un label à ce sous-chapitre comme suit \texttt{\#\#\ Références\ internes\ \{\#refint\}}, et on y fait référence avec
+
+\begin{itemize}
+\item
+  \texttt{\textbackslash{}@ref(refint)} pour produire \ref{refint},
+\item
+  \texttt{{[}Références\ internes{]}} pour produire \protect\hyperlink{refint}{Références internes},
+\item
+  \texttt{{[}section\ sur\ les\ références\ internes{]}(\#refint)} pour produire \protect\hyperlink{refint}{section sur les références internes}.
+\end{itemize}
+
+\hypertarget{figures}{%
+\subsection{Figures}\label{figures}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, }\FloatTok{.1}\NormalTok{, }\FloatTok{.1}\NormalTok{))}
-\KeywordTok{plot}\NormalTok{(pressure, }\DataTypeTok{type =} \StringTok{'b'}\NormalTok{, }\DataTypeTok{pch =} \DecValTok{19}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\KeywordTok{ggplot}\NormalTok{(iris) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Sepal.Length, }\DataTypeTok{y =}\NormalTok{ Petal.Length) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{bookdown_files/figure-latex/nice-fig-1} 
-
-}
-
-\caption{Here is a nice figure!}\label{fig:nice-fig}
+\centering
+\includegraphics{bookdown_files/figure-latex/iris-scatter-1.pdf}
+\caption{\label{fig:iris-scatter}Nuage de points}
 \end{figure}
 
-Reference a figure by its code chunk label with the \texttt{fig:} prefix, e.g., see Figure \ref{fig:nice-fig}. Similarly, you can reference tables generated from \texttt{knitr::kable()}, e.g., see Table \ref{tab:nice-tab}.
+Le nom du chunck qui a produit la Figure \ref{fig:iris-scatter} chunck est \texttt{iris-scatter} et possède l'option \texttt{fig.cap="Nuage\ de\ points"}. On y fait référence via \texttt{\textbackslash{}@ref(fig:iris-scatter)}.
+
+\hypertarget{tables}{%
+\subsection{Tables}\label{tables}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}
-  \KeywordTok{head}\NormalTok{(iris, }\DecValTok{20}\NormalTok{), }\DataTypeTok{caption =} \StringTok{'Here is a nice table!'}\NormalTok{,}
-  \DataTypeTok{booktabs =} \OtherTok{TRUE}
-\NormalTok{)}
+\NormalTok{iris }\OperatorTok{%>%}\StringTok{  }\CommentTok{# Ce chunk s'appelle iris-head}
+\StringTok{  }\KeywordTok{head}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"iris-table"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{table}[t]
 
-\caption{\label{tab:nice-tab}Here is a nice table!}
+\caption{\label{tab:iris-head}iris-table}
 \centering
-\begin{tabular}{rrrrl}
-\toprule
+\begin{tabular}{r|r|r|r|l}
+\hline
 Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
-\midrule
+\hline
 5.1 & 3.5 & 1.4 & 0.2 & setosa\\
+\hline
 4.9 & 3.0 & 1.4 & 0.2 & setosa\\
+\hline
 4.7 & 3.2 & 1.3 & 0.2 & setosa\\
+\hline
 4.6 & 3.1 & 1.5 & 0.2 & setosa\\
+\hline
 5.0 & 3.6 & 1.4 & 0.2 & setosa\\
-\addlinespace
+\hline
 5.4 & 3.9 & 1.7 & 0.4 & setosa\\
-4.6 & 3.4 & 1.4 & 0.3 & setosa\\
-5.0 & 3.4 & 1.5 & 0.2 & setosa\\
-4.4 & 2.9 & 1.4 & 0.2 & setosa\\
-4.9 & 3.1 & 1.5 & 0.1 & setosa\\
+\hline
+\end{tabular}
+\end{table}
+
+Ici, on spécifie la légend directement via un argument de \texttt{knitr::kable()}. On fait précéder le label de \texttt{tab} pour produire la référénce : \texttt{\textbackslash{}@ref(tab:iris-head)} pour \ref{tab:iris-head}.
+
+\hypertarget{texte}{%
+\subsection{Texte}\label{texte}}
+
+
+
+Si on définit une référence textuelle via \texttt{(ref:bact)\ Faecalibacterium\ prausnitzii}, on peut écrire Faecalibacterium prausnitzii avec \texttt{(ref:bact)} et même plusieurs fois Faecalibacterium prausnitzii Faecalibacterium prausnitzii Faecalibacterium prausnitzii pour éviter de dupliquer le texte.
+
+\hypertarget{maths}{%
+\chapter{Maths}\label{maths}}
+
+\hypertarget{equations}{%
+\section{Équations}\label{equations}}
+
+On peut écrire des équations ou des environnements LaTeX dans le texte \(x = 3\) en les entourant par un \texttt{\$}, ou \[x = 3\] en les entourant de \texttt{\$\$}.
+
+Pour référencer et numéroter, on utilise un marqueur commençant par \texttt{\textbackslash{}\#eq:} et ne contenant que des caractères alphanumériques, \texttt{:}, \texttt{-} ou \texttt{/} :
+
+\begin{verbatim}
+\begin{equation}
+x = 3 \label{eq:x3}
+\end{equation}
+\end{verbatim}
+
+\begin{equation}
+x = 3 \label{eq:x3}
+\end{equation}
+
+Et on fait référence à \eqref{eq:x3} via \texttt{\textbackslash{}@ref(eq:x3)}. Les équations sans labels ne sont pas numérotées.
+
+On peut numéroter ligne par ligne \ldots{}
+
+\begin{verbatim}
+\begin{align}
+x & = 2 + 3*6 \label{eq:x236} \\
+  & = 2 + 18 \\
+  & = 20 \label{eq:x20}
+\end{align}
+\end{verbatim}
+
+\begin{align}
+x & = 2 + 3*6 \label{eq:x236} \\
+  & = 2 + 18 \\
+  & = 20 \label{eq:x20}
+\end{align}
+
+\ldots{} ou le calcul entier.
+
+\begin{verbatim}
+\begin{align}
+\begin{split}
+x & = 2+ 3 * 6 \\
+  & = 20
+\end{split}
+\label{eq:x2lignes}
+\end{align}
+\end{verbatim}
+
+\begin{align}
+\begin{split}
+x & = 2+ 3 * 6 \\
+  & = 20
+\end{split}
+\label{eq:x2lignes}
+\end{align}
+
+\hypertarget{environnements-mathematiques}{%
+\section{Environnements mathématiques}\label{environnements-mathematiques}}
+
+Il existe plusieurs environements mathématiques par défaut :
+
+\begin{table}[t]
+
+\caption{\label{tab:theorem-envs}(ref:theorem-envs)}
+\centering
+\begin{tabular}{lll}
+\toprule
+Environment & Printed Name & Label Prefix\\
+\midrule
+theorem & Theorem & thm\\
+lemma & Lemma & lem\\
+corollary & Corollary & cor\\
+proposition & Proposition & prp\\
+conjecture & Conjecture & cnj\\
 \addlinespace
-5.4 & 3.7 & 1.5 & 0.2 & setosa\\
-4.8 & 3.4 & 1.6 & 0.2 & setosa\\
-4.8 & 3.0 & 1.4 & 0.1 & setosa\\
-4.3 & 3.0 & 1.1 & 0.1 & setosa\\
-5.8 & 4.0 & 1.2 & 0.2 & setosa\\
-\addlinespace
-5.7 & 4.4 & 1.5 & 0.4 & setosa\\
-5.4 & 3.9 & 1.3 & 0.4 & setosa\\
-5.1 & 3.5 & 1.4 & 0.3 & setosa\\
-5.7 & 3.8 & 1.7 & 0.3 & setosa\\
-5.1 & 3.8 & 1.5 & 0.3 & setosa\\
+definition & Definition & def\\
+example & Example & exm\\
+exercise & Exercise & exr\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-You can write citations, too. For example, we are using the \textbf{bookdown} package \citep{R-bookdown} in this sample book, which was built on top of R Markdown and \textbf{knitr} \citep{xie2015}.
+Ceux-ci sont numérotés par défaut.
 
-\hypertarget{literature}{%
-\chapter{Literature}\label{literature}}
+\begin{verbatim}
+```{definition}
+Un triangle rectangle est un triangle qui possède un angle droit.
+```
+\end{verbatim}
 
-Here is a review of existing methods.
+\BeginKnitrBlock{definition}
+\protect\hypertarget{def:unnamed-chunk-2}{}{\label{def:unnamed-chunk-2} }Un triangle rectangle est un triangle qui possède un angle droit.
+\EndKnitrBlock{definition}
 
-\hypertarget{methods}{%
-\chapter{Methods}\label{methods}}
+On peut nommer et labeller un environnement \ldots{}
 
-We describe our methods in this chapter.
+\begin{verbatim}
+````{theorem, name="Pythagore", label = "pyth"}
+Dans un triangle rectangle, $a^2+b^2=c^2$.
+```
+\end{verbatim}
 
-\hypertarget{applications}{%
-\chapter{Applications}\label{applications}}
+\BeginKnitrBlock{theorem}[Pythagore]
+\protect\hypertarget{thm:pyth}{}{\label{thm:pyth} \iffalse (Pythagore) \fi{} }Dans un triangle rectangle, \(a^2+b^2=c^2\).
+\EndKnitrBlock{theorem}
 
-Some \emph{significant} applications are demonstrated in this chapter.
+et y faire réference via \texttt{\textbackslash{}@ref(thm:pyth)} : \ref{thm:pyth}. Il faut remplacer \texttt{thm} par le préfixe correspondant à l'environnement concerné.
 
-\hypertarget{example-one}{%
-\section{Example one}\label{example-one}}
+Il existe aussi des environnements non numérotés : \texttt{proof}, \texttt{remark} et \texttt{solution}, qui peuvent être nommé mais auxquels on ne peut pas faire référence.
 
-\hypertarget{example-two}{%
-\section{Example two}\label{example-two}}
+\BeginKnitrBlock{remark}[Al-Kashi]
+\iffalse{} {Remark (Al-Kashi). } \fi{}Il existe une généralisation du théorème \ref{thm:pyth} lorsque le triangle n'est pas rectangle.
+\EndKnitrBlock{remark}
 
-\hypertarget{final-words}{%
-\chapter{Final Words}\label{final-words}}
+\hypertarget{appendix-appendices}{%
+\appendix}
 
-We have finished a nice book.
+
+\hypertarget{triangle-rectangle}{%
+\chapter{Triangle rectangle}\label{triangle-rectangle}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df <-}\StringTok{ }\KeywordTok{tibble}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DataTypeTok{y =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\KeywordTok{ggplot}\NormalTok{(df) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{aes}\NormalTok{(x, y) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_polygon}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_equal}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_void}\NormalTok{() }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\hypertarget{ressources}{%
+\chapter{Ressources}\label{ressources}}
+
+\href{https://bookdown.org/yihui/bookdown/}{Bookdown}
+
+\href{https://bookdown.org/yihui/bookdown-demo/}{Bookdown minimal example}
+
+\href{https://eddjberry.netlify.com/post/writing-your-thesis-with-bookdown/}{Writing your thesis with bookdown}
 
 \bibliography{book.bib,packages.bib}
 

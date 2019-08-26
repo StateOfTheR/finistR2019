@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Introduction à bookdown</title>
+  <title>Chapter 4 Maths | Introduction à bookdown</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.13.1 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Introduction à bookdown" />
+  <meta property="og:title" content="Chapter 4 Maths | Introduction à bookdown" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Introduction à bookdown" />
+  <meta name="twitter:title" content="Chapter 4 Maths | Introduction à bookdown" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="structure.html"/>
+<link rel="prev" href="mise-en-forme.html"/>
+<link rel="next" href="triangle-rectangle.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -165,31 +165,139 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Introduction à bookdown</h1>
-<p class="author"><em>Julie Aubert et Antoine Bichat</em></p>
-<p class="date"><em>Finist’R, 26 août 2019</em></p>
+<div id="maths" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> Maths</h1>
+<div id="equations" class="section level2">
+<h2><span class="header-section-number">4.1</span> Équations</h2>
+<p>On peut écrire des équations ou des environnements LaTeX dans le texte <span class="math inline">\(x = 3\)</span> en les entourant par un <code>$</code>, ou <span class="math display">\[x = 3\]</span> en les entourant de <code>$$</code>.</p>
+<p>Pour référencer et numéroter, on utilise un marqueur commençant par <code>\#eq:</code> et ne contenant que des caractères alphanumériques, <code>:</code>, <code>-</code> ou <code>/</code> :</p>
+<pre><code>\begin{equation}
+x = 3 (\#eq:x3)
+\end{equation}</code></pre>
+<p><span class="math display" id="eq:x3">\[\begin{equation}
+x = 3 \tag{4.1}
+\end{equation}\]</span></p>
+<p>Et on fait référence à <a href="maths.html#eq:x3">(4.1)</a> via <code>\@ref(eq:x3)</code>. Les équations sans labels ne sont pas numérotées.</p>
+<p>On peut numéroter ligne par ligne …</p>
+<pre><code>\begin{align}
+x &amp; = 2 + 3*6 (\#eq:x236) \\
+  &amp; = 2 + 18 \\
+  &amp; = 20 (\#eq:x20)
+\end{align}</code></pre>
+<p><span class="math display" id="eq:x20" id="eq:x236">\[\begin{align}
+x &amp; = 2 + 3*6 \tag{4.2} \\
+  &amp; = 2 + 18 \\
+  &amp; = 20 \tag{4.3}
+\end{align}\]</span></p>
+<p>… ou le calcul entier.</p>
+<pre><code>\begin{align}
+\begin{split}
+x &amp; = 2+ 3 * 6 \\
+  &amp; = 20
+\end{split}
+(\#eq:x2lignes)
+\end{align}</code></pre>
+<p><span class="math display" id="eq:x2lignes">\[\begin{align}
+\begin{split}
+x &amp; = 2+ 3 * 6 \\
+  &amp; = 20
+\end{split}
+\tag{4.4}
+\end{align}\]</span></p>
 </div>
-<div id="intro" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
-<p><strong>bookdown</strong> est un package R développé par Yihui Xe qui permet d’écrire des livres en format Rmarkdown pour les publier en PDF ou HTML. Le principe de base consiste à utiliser un fichier Rmarkdown par chapitre.</p>
-<p><strong>bookdown</strong> peut être installé depuis le CRAN</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;bookdown&quot;</span>)</a></code></pre></div>
-<p>ou depuis le repo GitHub</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># install.packages(&quot;remotes&quot;)</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;rstudio/bookdown&quot;</span>)</a></code></pre></div>
-<p>Une fois ceci fait, on peut créer un fichoer via <code>File &gt; New project &gt; New directory &gt; Book Project using bookdown</code> et choisir l’emplacement et le nom du futur livre.</p>
-<p>Un exemple minimal de livre est ainsi crée à cet emplacement et peut être compilé en cliquant sur <code>Build &gt; Build Book</code></p>
-<p>On peut alors s’inspirer des fichiers déjà créés.</p>
+<div id="environnements-mathematiques" class="section level2">
+<h2><span class="header-section-number">4.2</span> Environnements mathématiques</h2>
+<p>Il existe plusieurs environements mathématiques par défaut :</p>
+<table>
+<caption><span id="tab:theorem-envs">Table 4.1: </span>(ref:theorem-envs)</caption>
+<thead>
+<tr class="header">
+<th align="left">Environment</th>
+<th align="left">Printed Name</th>
+<th align="left">Label Prefix</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">theorem</td>
+<td align="left">Theorem</td>
+<td align="left">thm</td>
+</tr>
+<tr class="even">
+<td align="left">lemma</td>
+<td align="left">Lemma</td>
+<td align="left">lem</td>
+</tr>
+<tr class="odd">
+<td align="left">corollary</td>
+<td align="left">Corollary</td>
+<td align="left">cor</td>
+</tr>
+<tr class="even">
+<td align="left">proposition</td>
+<td align="left">Proposition</td>
+<td align="left">prp</td>
+</tr>
+<tr class="odd">
+<td align="left">conjecture</td>
+<td align="left">Conjecture</td>
+<td align="left">cnj</td>
+</tr>
+<tr class="even">
+<td align="left">definition</td>
+<td align="left">Definition</td>
+<td align="left">def</td>
+</tr>
+<tr class="odd">
+<td align="left">example</td>
+<td align="left">Example</td>
+<td align="left">exm</td>
+</tr>
+<tr class="even">
+<td align="left">exercise</td>
+<td align="left">Exercise</td>
+<td align="left">exr</td>
+</tr>
+</tbody>
+</table>
+<p>Ceux-ci sont numérotés par défaut.</p>
+<pre><code>```{definition}
+Un triangle rectangle est un triangle qui possède un angle droit.
+```</code></pre>
+
+<div class="definition">
+<span id="def:unnamed-chunk-2" class="definition"><strong>Definition 4.1  </strong></span>Un triangle rectangle est un triangle qui possède un angle droit.
+</div>
+
+<p>On peut nommer et labeller un environnement …</p>
+<pre><code>````{theorem, name=&quot;Pythagore&quot;, label = &quot;pyth&quot;}
+Dans un triangle rectangle, $a^2+b^2=c^2$.
+```</code></pre>
+
+<div class="theorem">
+<span id="thm:pyth" class="theorem"><strong>Theorem 4.1  (Pythagore)  </strong></span>Dans un triangle rectangle, <span class="math inline">\(a^2+b^2=c^2\)</span>.
+</div>
+
+<p>et y faire réference via <code>\@ref(thm:pyth)</code> : <a href="maths.html#thm:pyth">4.1</a>. Il faut remplacer <code>thm</code> par le préfixe correspondant à l’environnement concerné.</p>
+<p>Il existe aussi des environnements non numérotés : <code>proof</code>, <code>remark</code> et <code>solution</code>, qui peuvent être nommé mais auxquels on ne peut pas faire référence.</p>
+
+<div class="remark">
+ <span class="remark"><em>Remark</em> (Al-Kashi). </span> Il existe une généralisation du théorème <a href="maths.html#thm:pyth">4.1</a> lorsque le triangle n’est pas rectangle.
+</div>
+
 
 </div>
+</div>
+
+
+
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="structure.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="mise-en-forme.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="triangle-rectangle.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
