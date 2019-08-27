@@ -23,14 +23,27 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 2. add/commit/push 
 
-```{r}
-
+### Add a file in your repository 
+Add a local document named "utilisation_GitHub.Rmd" in your git repository. You can display the differences between the local file and the current commit with git status.
+```{bash}
+$ git add utilisation_GitHub.Rmd
+$ git status
 ```
 
+### Commit a file in your repository 
+Create a new commit containing the current contents of the index and the given log message describing the changes. The following command is used to record what has been changed in the document :
+```{bash}
+$ git commit -m "Add my latest version of the document"
+```
+The modified file is not on the server yet. 
 
+### Synchronizing the file in the server
+Upload your file to the server:
+```{bash}
+$ git push
+```
 
-
-
+The different steps can be summarized by the figure displayed at the beginning.
 
 
 
