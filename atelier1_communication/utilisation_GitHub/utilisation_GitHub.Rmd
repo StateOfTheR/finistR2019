@@ -8,6 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Introduction 
+
 Git is a version management software. The idea is to save the different changements made on a projet, and create an historic of it. To do so, between two saved versions, changements will be added on git with the "add" command, and a little comment on the modification will be joint with the "commit" command as explained later.
 
 Github is a remote service, to save the different git versions. It also enable several people to work on a same project. To use it, you have to :   
@@ -16,7 +17,7 @@ Github is a remote service, to save the different git versions. It also enable s
 * create or join a repository
 * use the "push" and "pull" commands to share your work and get the advanced from others. 
 
-To have a global idea, to use git and GitHub : 
+To have a global idea of Git and GitHub : 
 ![Caption for the picture.](schema_git.png)
 
 
@@ -76,38 +77,60 @@ $ git clone git@github.com:StateOfTheR/finistR2019.git
 ```
 
 #### Where is my project ? 
-* On one of my repository : Create a new repository on github
+On GitHub, the project can be :
+
+* On one of your repository : Create a new repository on github
   
-* Join an existing project : In a project, your can choose to have collaborators (settings/collaborators). To be a collaborator enable to push/pull on the project. 
+* On an existing project in another person account : In a project, your can choose to have collaborators (settings/collaborators). To be a collaborator enable to push/pull on the project. 
 
 
 
-## 2. Basis commands 
+## 2. Basis commands on Git and GitHub 
 
-### 2.1 Add a file in your repository 
-Add a local document named "utilisation_GitHub.Rmd" in your git repository. You can display the differences between the local file and the current commit with git status.
+### 2.1 The different Git status
+Git is based on different status. The status is the state of the object in git. There are 4 different status : "untracked", "unmodified", "modified", "staged". 
+
+* untracked = the object is in the git file, but not tracked by git (yet). To be tacked, you need to "add" the object. The other status are tracked.
+* unmodified = tracked object, not modified since the last "add".
+* modified = tracked object, modified since the last "add".
+* staged = tracked object with the last modification commented by a commit 
+
+You can display the differences between the local file and the current commit with git status.
 ```bash
-$ git add utilisation_GitHub.Rmd
 $ git status
 ```
 
-### 2.2 Commit a file in your repository 
+### 2.2 Add a file in your repository 
+
+Add a local document named "utilisation_GitHub.Rmd" in your git repository.
+
+```bash
+$ git add utilisation_GitHub.Rmd
+```
+
+### 2.3 Commit a file in your repository 
 Create a new commit containing the current contents of the index and the given log message describing the changes. The following command is used to record what has been changed in the document :
+
 ```bash
 $ git commit -m "Add my latest version of the document"
 ```
 The modified file is not on the server yet. 
 
 ### 2.3 Synchronizing the file with the server
-Upload your file to the server:
-```bash
-$ git push
-```
-To upload the files from the server to your local repository.
+
+To upload the files from the server to your local repository, your need to have saved your work (```bash git add . ```  et ```bash git commit ```). Then, to update your local repository with what is on the remote one, the command is :
+
 ```bash
 $ git pull
 ```
 
+Finally, to upload your file to the server, the command is :
+
+```bash
+$ git push
+```
+
+Note that pushing/pulling your work can create some conflits with the work of other. We'll see how to manage the conflit errors in the next part.
 
 The different steps can be summarized by the figure displayed at the beginning.
 
@@ -132,7 +155,7 @@ An error message will then appear:
 `hint: 'git pull ...') before pushing again.`    
 `hint: See the 'Note about fast-forwards' in 'git push --help' for details.`    
  
-IF user B now try to do pull, the following message will appear: 
+If user B now try to do pull, the following message will appear: 
 
 ```{bash, eval = F}
 git pull
