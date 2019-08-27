@@ -195,4 +195,30 @@ git push
 ```
 
 
+## 4. Branches
+
+In GitHub you can work on different branches. The original branch is called « master ». To know on with branch you are type:
+
+```{bash, eval = F}
+git branch
+```
+`* master`       
+
+If you want to deviate your work from the master branch you can create a new branch, to do this, use the command:
+
+```{bash, eval = F}
+git branch "NAME_OF_NEW_BRANCH"
+```
+
+To change the branch that you work on, type:
+
+```{bash, eval = F}
+git checkout "NAME_OF_NEW_BRANCH"
+git branch
+```
+
+`*NAME_OF_NEW_BRANCH`        
+
+
+Working on another branch than the master branch allows to develop the original project in to different directions or to keep the master version in the present state and still continue to develop the project in the new branches. 
 
