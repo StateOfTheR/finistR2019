@@ -4,7 +4,69 @@ output: html_document
 ---
 
 Test: 
-```{rcpp}
 
+Pour faire appel a un code C++ en R il faut d'abord crée un fichier code.cpp. Ce fichier peut être crée dans RStudio (File **->** New File **->** C++ File).
+
+Puis crée ta function de C++, definie le type de l'image et de l'argument. 
+
+```{rcpp}
+RETURN_TYPE FUNCTION_NAME(ARGUMENT_TYPE ARGUMENT) {
+  INSTRUCTIONS ;
+  return ;
+}
 ```
+
+Afin de pouvoir exporter la function dans l'environnement R il faut mettre avant la function : ` // [[Rcpp::export]] `. Sinon, il sera pas "lu" par editor R.    
+
+Code dans le fichier test_code.cpp
+```{rcpp}
+#include <Rcpp.h>
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+int IntTimesTwo(int x) {
+  return x * 2;
+}
+```
+
+On ne peut pas executer du code C++ dans un fichier C++ (en R). Afin de vérifier la function (ou le débuger), on insère un balise R. Puis en faisant `Source` (coin supérieure droit), la function de C++ apparaitra dans l'environnement global de R et la balise R sera compilé 
+
+IntTimesTwo(10) # On n'execute pas du code c++ dans un fichier C++ en R
+
+```{rcpp}
+#include <Rcpp.h>
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+NumericVector timesTwo(NumericVector x) {
+  return x * 2;
+}
+
+
+/*** R
+timesTwo(42)
+*/
+
+// [[Rcpp::export]]
+int IntTimesTwo(int x) {
+  return x * 2;
+}
+
+/*** R
+timesTwo(42)
+*/
+```
+  
+Pour executer le code C++ en .Rmd il faut passer pas un **sourceCpp**
+```{r}
+library(Rcpp)
+sourceCpp("test_code.cpp") 
+```
+
+Les deux balises de code R sont alors compilés. Nous pouvons maintenant appeller la function C++ dans le code R présent.
+
+```{r}
+IntTimesTwo(10) 
+```
+
 
