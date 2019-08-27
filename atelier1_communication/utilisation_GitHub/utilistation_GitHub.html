@@ -370,7 +370,8 @@ summary {
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>Git is a version management software. The idea is to save the different changements made on a projet, and create an historic of it. To do so, between two saved versions, changements will be added on git with the “add” command, and a little comment on the modification will be joint with the “commit” command as explained later.</p>
-<p>Github is a remote service, to save the different git versions. It also enable several people to work on a same project. To use it, you have to :</p>
+<p>Github is a remote service, to save the different git versions. It also enable several people to work on a same project. To use it, you have to :<br />
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; a7962574e4a24d4cf246155d5cfe3f03b40de70f</p>
 <ul>
 <li>create a Git hub account</li>
 <li>make a link (ssh) between your computer and your account</li>
@@ -390,24 +391,46 @@ summary {
 <pre class="bash"><code>$ sudo apt-get update
 $ sudo apt-get install git</code></pre>
 </div>
+<div id="on-windows" class="section level4">
+<h4>On Windows</h4>
+<p>Install git for windows <a href="https://gitforwindows.org" class="uri">https://gitforwindows.org</a></p>
+<p>Search <em>git bash</em> on your computer and open the terminal.</p>
+<p>Let’s play.</p>
+</div>
 </div>
 <div id="github" class="section level3">
 <h3>1.2 GitHub :</h3>
 <div id="create-an-account" class="section level4">
 <h4>Create an account</h4>
-<p>First of all, you need to create a github account</p>
+<p>First of all, you need to create a github account. This is where your remote git repository is stored.</p>
 </div>
 <div id="create-a-link-between-your-account-and-your-computer-with-a-ssh-key" class="section level4">
 <h4>Create a link between your account and your computer with a SSH Key :</h4>
+<p>To make a secure link between your account and your computer, you need to generate a ssh key, and add it to your git account.</p>
+<p><strong>First step :</strong> create a ssh key</p>
+<pre class="bash"><code>$ ssh-keygen -t rsa -b 4096 -C &quot;my_email_github@email.com&quot;
+$ eval $(ssh-agent -s)
+
+$ ssh-add ~/.ssh/id_rsa</code></pre>
+<p>You can add a password.</p>
+<p>Save the key :</p>
+<pre class="bash"><code>$ clip &lt; ~/.ssh/id_rsa.pub</code></pre>
+<p>And you can past this key on your gitHub account :</p>
+<ul>
+<li>click on the bottom right</li>
+<li>SSH and GPG keys</li>
+<li>past key on the SSH emplacement</li>
+</ul>
+<p>Well done you can continue.</p>
+<p><strong>Second step : </strong>save file from GitHub with <em>clone</em></p>
+<pre class="bash"><code>$ git clone git@github.com:StateOfTheR/finistR2019.git</code></pre>
 </div>
 <div id="where-is-my-project" class="section level4">
 <h4>Where is my project ?</h4>
-<div id="on-one-of-my-repository" class="section level6">
-<h6>On one of my repository</h6>
-</div>
-<div id="join-an-existing-project" class="section level6">
-<h6>Join an existing project</h6>
-</div>
+<ul>
+<li><p>On one of my repository : Create a new repository on github</p></li>
+<li><p>Join an existing project : In a project, your can choose to have collaborators (settings/collaborators). To be a collaborator enable to push/pull on the project.</p></li>
+</ul>
 </div>
 </div>
 </div>
@@ -434,6 +457,21 @@ $ git status</code></pre>
 </div>
 <div id="confilit" class="section level2">
 <h2>3. Confilit</h2>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>69001cb93d2fd1a7f6d843df7347c3f8f24d6d2a</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 </div>
 
 
