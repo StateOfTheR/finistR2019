@@ -45,7 +45,7 @@ First of all, you need to create a github account
 ###### Join an existing project
 
 
-## 2. add/commit/push 
+## 2. Basis commands 
 
 ### Add a file in your repository 
 Add a local document named "utilisation_GitHub.Rmd" in your git repository. You can display the differences between the local file and the current commit with git status.
@@ -66,6 +66,11 @@ Upload your file to the server:
 ```{bash}
 $ git push
 ```
+To upload the files from the server to your local repository.
+```{bash}
+$ git pull
+```
+
 
 The different steps can be summarized by the figure displayed at the beginning.
 
