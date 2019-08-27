@@ -35,7 +35,69 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
-## 3. Confilit 
+## 3. Conflicts 
+
+A conflict will merge when 2 users has modified the same part (at the same time) of a file. For example, user A modifies part 1. of a document, add, commits and pushes the changes and user B modifies the same part of the document, add, commits and want to push before pulling the changements of user A. A conflict will then merge and user B will not be able to push its changes. \\
+
+To merge the conflict use commande:  
+```{bash, eval = F}
+git commit -m "add changes of user B"
+git push
+```
+
+An error message will then appear:
+` ! [rejected]        master -> master (non-fast-forward)`     
+`error: failed to push some refs to 'REPOSITORY'`   
+`hint: Updates were rejected because the tip of your current branch is behind`   
+`hint: its remote counterpart. Integrate the remote changes (e.g.`   
+`hint: 'git pull ...') before pushing again.`    
+`hint: See the 'Note about fast-forwards' in 'git push --help' for details.`    
+ 
+IF user B now try to do pull, the following message will appear: 
+
+```{bash, eval = F}
+git pull
+```
+ 
+
+`CONFLICT (content): Merge conflict in FILE.extension        ` 
+`Automatic merge failed; fix conflicts and then commit the result.     `    
+`(base) DIRECTORY/IN_LOCAL_COMPUTER$ git status   `        
+`On branch master`    
+`Your branch and 'origin/master' have diverged,`          
+`and have 1 and 1 different commits each, respectively.`        
+`(use "git pull" to merge the remote branch into yours)`    
+    
+To resolve the conflict the changes have to be merged, for this mergetool can be used:  
+```{bash, eval = F}
+git mergetool
+```
+  
+In the local document of user B, the conclict will now be merged and user B will see his/her own changes **and** the changes of user A. 
+   
+This will be indicated by:
+
+`<<<<<<< HEAD`   
+`my version (user B)`   
+`=======`   
+`the other version (user A)`  
+`>>>>>>> 05009543925932...`    
+
+To resolve the conflict you have to resolve it manually, descide what version (B or A) to keep, or merge them both (manually). You can now commit and push your changes and the conflict is solved.
+
+
+```{bash, eval = F}
+git add FILE.extension
+git commit -m "added changes of user B and resolved conflict with user A"
+git push
+```
+
+
+
+
+
+
+
 
 ```{r}
 
