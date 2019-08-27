@@ -9,6 +9,14 @@ navbar:
   - text: "dépôt github"
     icon: fa-github
     href: https://github.com/StateOfTheR/finistR2019
+ right:
+  - text: "Communication"
+    icon: fa-microphone
+    menu:
+        - text: "Web"
+        - text: "Distill website"
+          href: distill_presentation.html
+    
 output:
   html_document:
     theme: flatly
