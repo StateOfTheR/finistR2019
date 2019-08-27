@@ -44,7 +44,8 @@ Taper `usethis::use_build_ignore(".travis.yml")` pour créer un fichier buildign
 ## pkg_down
 
 voir felix
-question readme
+question readme avec template gitdocument 
+ajouter les boutons passed de travis ?
 
 
 ## Travis
