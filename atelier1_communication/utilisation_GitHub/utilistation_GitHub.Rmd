@@ -9,9 +9,46 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction 
 
+<<<<<<< HEAD
+
+
+Install git for windows https://gitforwindows.org
+
+Search *git bash* on your computer and open the terminal. 
+
+Let's play.
+
+**First step :** create a ssh key 
+
+```bash
+$ ssh-keygen -t rsa -b 4096 -C "my_email_github@email.com"
+$ eval $(ssh-agent -s)
+
+$ ssh-add ~/.ssh/id_rsa
+```
+You can add a password.
+
+Save the key :
+```bash
+$ clip < ~/.ssh/id_rsa.pub
+```
+And you can past this key on your gitHub account :
+
+- click on the bottom right
+- SSH and GPG keys
+- past key on the SSH emplacement
+
+Well done you can continue.
+
+**Second step : **save file from GitHub with *clone*
+```bash
+$ git clone git@github.com:StateOfTheR/finistR2019.git
+```
+=======
 Git is a version management software. The idea is to save the different changements made on a projet, and create an historic of it. To do so, between two saved versions, changements will be added on git with the "add" command, and a little comment on the modification will be joint with the "commit" command as explained later.
 
 Github is a remote service, to save the different git versions. It also enable several people to work on a same project. To use it, you have to :   
+>>>>>>> a7962574e4a24d4cf246155d5cfe3f03b40de70f
 
 * create a Git hub account
 * make a link (ssh) between your computer and your account
@@ -83,3 +120,4 @@ The different steps can be summarized by the figure displayed at the beginning.
 
 ```
 
+>>>>>>> 69001cb93d2fd1a7f6d843df7347c3f8f24d6d2a
