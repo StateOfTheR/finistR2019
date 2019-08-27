@@ -118,8 +118,9 @@ The different steps can be summarized by the figure displayed at the beginning.
 
 A conflict will merge when 2 users has modified the same part (at the same time) of a file. For example, user A modifies part 1. of a document, add, commits and pushes the changes and user B modifies the same part of the document, add, commits and want to push before pulling the changements of user A. A conflict will then merge and user B will not be able to push its changes. \\
 
-To merge the conflict use commande:  
+When user B tries to push its changes, the following will happen:  
 ```{bash, eval = F}
+git add FILE.EXTENSION
 git commit -m "add changes of user B"
 git push
 ```
