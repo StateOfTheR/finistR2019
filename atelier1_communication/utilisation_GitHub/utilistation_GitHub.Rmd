@@ -10,12 +10,38 @@ knitr::opts_chunk$set(echo = TRUE)
 ## 1. Get started
 
 
+
 Install git for windows https://gitforwindows.org
+
 Search *git bash* on your computer and open the terminal. 
+
 Let's play.
 
-```{r}
+**First step :** create a ssh key 
 
+```bash
+$ ssh-keygen -t rsa -b 4096 -C "my_email_github@email.com"
+$ eval $(ssh-agent -s)
+
+$ ssh-add ~/.ssh/id_rsa
+```
+You can add a password.
+
+Save the key :
+```bash
+$ clip < ~/.ssh/id_rsa.pub
+```
+And you can past this key on your gitHub account :
+
+- click on the bottom right
+- SSH and GPG keys
+- past key on the SSH emplacement
+
+Well done you can continue.
+
+**Second step : **save file from GitHub with *clone*
+```bash
+$ git clone git@github.com:StateOfTheR/finistR2019.git
 ```
 
 
