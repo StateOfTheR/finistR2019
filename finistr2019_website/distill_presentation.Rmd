@@ -1,0 +1,48 @@
+---
+title: "Utilisation de Distill pour créer un site web"
+description: |
+  Cette page d'utilisation de Distill a été produite avec Distill
+author:
+  - name: Marie-Pierre Etienne 
+    url: https://marieetienne.github.io/
+    affiliation: Agrocampus Ouest
+    affiliation_url: http://agrocampus-ouest.fr
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Présentation de Distill
+
+Distill est un format de publication pour les articles scientifiques publiés en ligne.  
+
+Cette page est produite avec Distill en suivant la [documentation](https://rstudio.github.io/distill).
+
+
+Dans un document RMarkdown, on peut spécifier que la sortie est un document Distill dans le champs output du yaml en début de fichier.
+
+Différents types de document distill sont disponibles :
+
+```{r dist_pres_1, eval=FALSE}
+title: "Utilisation de Distill pour créer un site web"
+description: |
+  Cette page d'utilisation de Distill a été produite avec Distill
+author:
+  - name: Marie-Pierre Etienne 
+    url: https://marieetienne.github.io/
+    affiliation: Agrocampus Ouest
+    affiliation_url: http://agrocampus-ouest.fr
+date: "`r Sys.Date()`"
+output: distill::distill_article
+```
+
+
+
+##  
+
+
+
