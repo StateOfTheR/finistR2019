@@ -61,7 +61,7 @@ $ git commit -m "Add my latest version of the document"
 ```
 The modified file is not on the server yet. 
 
-### Synchronizing the file in the server
+### Synchronizing the file with the server
 Upload your file to the server:
 ```{bash}
 $ git push
