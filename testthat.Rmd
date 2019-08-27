@@ -1,0 +1,62 @@
+---
+title: "testthat baby"
+author: "Sophie Donnet et Pierre Barbillon"
+date: "26/08/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tester le code
+
+Le package `testthat` permet de créer des tests unitaires des sorties des fonctions d'un package en développement. Par exemple, on veut tester qu'une fonction de simulation de données renvoie des objets du type et de la taille attendus. Ces tests seront utiles pour vérifier des modfications du code n'entrainent pas des erreurs.
+
+Dans le but d'automatiser l'éxécution de ces tests (voir travis ci-dessous), on génère l'arborescence des fonctions de tests en se plaçant dans le répertoire du package en développement et on utilise la commande ` usethis::use_test("name")` (qui nécessite donc le package ` usethis`). `name` est remplacé par le nom à donner aux tests. 
+
+Un nouveau sous-repertoire `tests`est alors créé dans le répertoire du package qui contient le fichier `test-name.R` qui peut contenir du code R appelant entre autres les fonctions du package.
+Un test est effecuté grâce au code
+
+```{r, eval=FALSE}
+context("test sur la fonction1 du package")
+arg1 = 1
+arg2 = "toto"
+res = fonction1(arg1,arg2)
+test_that("Vérification du type", {
+  expect_type(res,"numeric")
+})
+test_that("Vérification du signe", {
+  expect_gt(res,0)
+})
+```
+
+Dans le code ci-dessus, on a testé que le résultat de la fonction était bien de type numérique et qu'il était positif.
+Notons que les fonctions `expect_...` ne sont pas éxécutables en dehors d'une procédure de test.
+La ligne `context(...)` sert à l'affichage lors de l'éxécution des tests.
+
+Pour lancer les tests du package, il faut taper : `devtools::test()` dans la console.  
+
+
+Taper `usethis::use_build_ignore(".travis.yml")` pour créer un fichier buildignore pour ignorer des check dans travis.
+
+
+## pkg_down
+
+voir felix
+question readme
+
+
+## Travis
+
+
+
+un autre truc pour tester sous windows (Antoine)
+
+ajouter dans le commentaire du commit git [ci skip] pour éviter de lancer travis à chaque commit.
+
+
+
+
+
+
