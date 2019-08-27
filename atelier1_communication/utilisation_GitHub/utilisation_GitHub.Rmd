@@ -40,6 +40,7 @@ Install git for windows https://gitforwindows.org
 Search *git bash* on your computer and open the terminal. 
 
 Let's play.
+
 ### 1.2 GitHub :
 #### Create an account
 First of all, you need to create a github account. This is where your remote git repository is stored. 
