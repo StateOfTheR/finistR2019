@@ -130,6 +130,7 @@
     \date{Finist'R, 26 août 2019}
 
 \usepackage{booktabs}
+\usepackage{wasysym}
 
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}[chapter]
@@ -410,6 +411,40 @@ Il existe aussi des environnements non numérotés : \texttt{proof}, \texttt{rem
 \iffalse{} {Remark (Al-Kashi). } \fi{}Il existe une généralisation du théorème \ref{thm:pyth} lorsque le triangle n'est pas rectangle.
 \EndKnitrBlock{remark}
 
+\hypertarget{personalisation}{%
+\chapter{Personalisation}\label{personalisation}}
+
+\hypertarget{theme}{%
+\section{Thème}\label{theme}}
+
+On peut rajouter un en-tête et un pied de sommaire dans le \texttt{\_output.yml} comme ceci :
+
+\begin{verbatim}
+bookdown::gitbook:
+  css: style.css
+  config:
+    toc:
+      before: |
+        <li><a href="./">Introduction à bookdown</a></li>
+      after: |
+        <li><a href="https://stateofther.github.io/finistR2019/" target="blank">Fait pendant Finist'R 2019</a></li>
+\end{verbatim}
+
+\hypertarget{packages-latex}{%
+\section{Packages LaTeX}\label{packages-latex}}
+
+Il est possible d'utiliser des packages LaTeX dans la compilation au format PDF, par exemple pour écrire des symboles spéciaux : \(\scorpio\).
+
+Il suffit de rajouter \texttt{\textbackslash{}usepackage\{wasysym\}} dans le fichier \texttt{preamble.tex} et le spréciser dans le \texttt{\_bookdown.yml} :
+
+\begin{verbatim}
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex
+\end{verbatim}
+
+Cependant, ceci ne permet pas d'utiliser les packages pour une sortie au format HTML.
+
 \hypertarget{appendix-appendices}{%
 \appendix}
 
@@ -438,6 +473,8 @@ Il existe aussi des environnements non numérotés : \texttt{proof}, \texttt{rem
 \href{https://bookdown.org/yihui/bookdown-demo/}{Bookdown minimal example}
 
 \href{https://eddjberry.netlify.com/post/writing-your-thesis-with-bookdown/}{Writing your thesis with bookdown}
+
+\href{https://github.com/ismayc/thesisdown}{Thesisdown}
 
 \bibliography{book.bib,packages.bib}
 

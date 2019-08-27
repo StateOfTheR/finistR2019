@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>FinistR: bootcamp R à Roscoff</title>
+<title>FinistR : bootcamp R à Roscoff</title>
 
 <script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -31,9 +32,8 @@
 <script src="site_libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
 <link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 
 
@@ -66,9 +66,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -82,7 +80,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -92,6 +89,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -107,7 +107,6 @@ body {
   padding-top: 65px;
   margin-top: -65px;
 }
-
 .section h2 {
   padding-top: 65px;
   margin-top: -65px;
@@ -127,6 +126,43 @@ body {
 .section h6 {
   padding-top: 65px;
   margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -148,47 +184,65 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -237,8 +291,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -247,6 +299,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -288,7 +350,21 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-microphone"></span>
+     
+    Communication
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Web</li>
+    <li>
+      <a href="distill_presentation.html">Distill website</a>
+    </li>
+  </ul>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -298,8 +374,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">FinistR: bootcamp R à Roscoff</h1>
-<h4 class="date"><em>du 26 au 30 août 2019</em></h4>
+<h1 class="title toc-ignore">FinistR : bootcamp R à Roscoff</h1>
+<h4 class="date">du 26 au 30 août 2019</h4>
 
 </div>
 
@@ -322,11 +398,11 @@ div.tocify {
 <div id="participants" class="section level2">
 <h2>Participants</h2>
 <p>L’atelier Finist’R 2019 se tient à la Station Biologique de Roscoff du 26 au 30 août 2018. Les participants sont</p>
-<div id="htmlwidget-73ac48646ee65e2b3f7c" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-73ac48646ee65e2b3f7c">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],["Aubert","Barbillon","Bichat","Chabert Liddell","Cheysson","Donnet","Étienne","Gayral","Gestraud","Gloaguen","Lang","Marjou","Momal","Morvan","Navaro","Perrot","Sundqvist"],["Julie","Pierre","Antoine","Saint-Clair","Félix","Sophie","Marie-Pierre","Claire","Pierre","Pierre","Gabriel","Marine","Raphaëlle","Marie","Pierre","Marie","Martina"],["Ingénieur INRA","MCF","Doctorant","Doctorant","Doctorant","Chargé Recherche","MCF","Doctorante","Chercheur","MCF","Ingénieur IPEF","Ingénieure","Doctorante","Doctorante","Ingénieur","Doctorante","Doctorante"],["MIA Paris INRA","MIA Paris INRA","INRA / Maiage","MIA Paris INRA","MIA Paris INRA","MIA Paris INRA","Agrocampus Ouest / IRMAR","LBBE","Institut Curie","AgroParisTech","AgroParisTech","BioSP","MIA Paris INRA","IRMAR","CNRS / IRMAR","MIA Paris INRA","MIA Paris INRA"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Nom<\/th>\n      <th>Prénom<\/th>\n      <th>Statut<\/th>\n      <th>Organisme<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":17,"dom":"t","order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}],"lengthMenu":[10,17,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-92eebe99c141947d6633" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-92eebe99c141947d6633">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],["Aubert","Barbillon","Bichat","Chabert Liddell","Cheysson","Donnet","Étienne","Gayral","Gestraud","Gloaguen","Lang","Marjou","Momal","Morvan","Navaro","Perrot","Sundqvist"],["Julie","Pierre","Antoine","Saint-Clair","Félix","Sophie","Marie-Pierre","Claire","Pierre","Pierre","Gabriel","Marine","Raphaëlle","Marie","Pierre","Marie","Martina"],["Ingénieur INRA","MCF","Doctorant","Doctorant","Doctorant","Chargé Recherche","MCF","Doctorante","Chercheur","MCF","Ingénieur IPEF","Ingénieure","Doctorante","Doctorante","Ingénieur","Doctorante","Doctorante"],["MIA Paris INRA","MIA Paris INRA","INRA / Maiage","MIA Paris INRA","MIA Paris INRA","MIA Paris INRA","Agrocampus Ouest / IRMAR","LBBE","Institut Curie","AgroParisTech","AgroParisTech","BioSP","MIA Paris INRA","Université de Rennes 1 / IRMAR","CNRS / IRMAR","MIA Paris INRA","MIA Paris INRA"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Nom<\/th>\n      <th>Prénom<\/th>\n      <th>Statut<\/th>\n      <th>Organisme<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":17,"dom":"t","order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}],"lengthMenu":[10,17,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 <p>Le programme proposé est le suivant</p>
-<div id="htmlwidget-ab8c93e97649eb0c4396" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ab8c93e97649eb0c4396">{"x":{"filter":"none","data":[["8h30-9h30","9h30-10h30","10h30-11h00","11h00-12h30","12h30-13h30","13h30-14h30","14h30-16h00","16h00-16h30","16h30-17h30","17h30-18h30"],["","","","","Repas","Introduction : Objectif, Organisation, Rendus","Atelier 1 : Distill, communication et diffusion avec R","Pause","Atelier 1 : Distill, communication et diffusion avec R","Atelier 1 : Bilan structuration du document bilan"],["Présentation Docker – Pierre","Atelier 2 : R écosysteme : Docker, R et Python, RcppModules","Pause","Atelier 2 : R écosysteme : Docker, R et Python, RcppModules","Repas","Atelier 2 : R écosysteme : Docker, R et Python, RcppModules","Atelier 2 : R écosysteme : Docker, R et Python, RcppModules","Pause","Atelier 2 : R écosysteme : Docker, R et Python, RcppModules","Atelier 2 : Bilan structuration du document bilan"],["Atelier 3 : Calcul distribué : spark, hadoop and co","Atelier 3 : Calcul distribué : spark, hadoop and co","Pause","Atelier 3 : Calcul distribué : spark, hadoop and co","Repas","Atelier 3 : Calcul distribué : spark, hadoop and co","Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.","Pause","Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.","Atelier 3 : Bilan structuration du document bilan"],["Atelier 4 : tidyverse : quoi de neuf ?","Atelier 4 : tidyverse : quoi de neuf ?","Pause","Atelier 4 : tidyverse : quoi de neuf ?","Repas","Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?","Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?","Pause","Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?","Atelier 4/5 : Bilan structuration du document bilan"],["Bilan global","Bilan : Mise au propre des rendus","Pause","Bilan : Mise au propre des rendus","","","","","",""]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Horaire<\/th>\n      <th>Lundi<\/th>\n      <th>Mardi<\/th>\n      <th>Mercredi<\/th>\n      <th>Jeudi<\/th>\n      <th>Vendredi<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":17,"dom":"t","ordering":false,"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[10,17,25,50,100],"rowCallback":"function(row, data) {\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker – Pierre' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, RcppModules' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 3 : Calcul distribué : spark, hadoop and co' ? '#b5f48d' : value == 'Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker – Pierre' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, RcppModules' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 3 : Calcul distribué : spark, hadoop and co' ? '#b5f48d' : value == 'Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker – Pierre' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, RcppModules' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 3 : Calcul distribué : spark, hadoop and co' ? '#b5f48d' : value == 'Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker – Pierre' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, RcppModules' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 3 : Calcul distribué : spark, hadoop and co' ? '#b5f48d' : value == 'Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker – Pierre' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, RcppModules' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 3 : Calcul distribué : spark, hadoop and co' ? '#b5f48d' : value == 'Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+<div id="htmlwidget-fb89a5269bfe381650ad" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb89a5269bfe381650ad">{"x":{"filter":"none","data":[["8h30-9h30","9h30-10h30","10h30-11h00","11h00-12h30","12h30-13h30","13h30-14h30","14h30-16h00","16h00-16h30","16h30-17h30","17h30-18h30"],["","","","","Repas","Introduction : Objectif, Organisation, Rendus","Atelier 1 : Distill, communication et diffusion avec R","Pause","Atelier 1 : Distill, communication et diffusion avec R","Atelier 1 : Bilan structuration du document bilan"],["Présentation Docker – Pierre","Atelier 2 : R écosysteme : Docker, R et Python, RcppModules","Pause","Atelier 2 : R écosysteme : Docker, R et Python, RcppModules","Repas","Atelier 2 : R écosysteme : Docker, R et Python, RcppModules","Atelier 2 : R écosysteme : Docker, R et Python, RcppModules","Pause","Atelier 2 : R écosysteme : Docker, R et Python, RcppModules","Atelier 2 : Bilan structuration du document bilan"],["Atelier 3 : Calcul distribué : spark, hadoop and co","Atelier 3 : Calcul distribué : spark, hadoop and co","Pause","Atelier 3 : Calcul distribué : spark, hadoop and co","Repas","Atelier 3 : Calcul distribué : spark, hadoop and co","Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.","Pause","Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.","Atelier 3 : Bilan structuration du document bilan"],["Atelier 4 : tidyverse : quoi de neuf ?","Atelier 4 : tidyverse : quoi de neuf ?","Pause","Atelier 4 : tidyverse : quoi de neuf ?","Repas","Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?","Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?","Pause","Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?","Atelier 4/5 : Bilan structuration du document bilan"],["Bilan global","Bilan : Mise au propre des rendus","Pause","Bilan : Mise au propre des rendus","","","","","",""]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Horaire<\/th>\n      <th>Lundi<\/th>\n      <th>Mardi<\/th>\n      <th>Mercredi<\/th>\n      <th>Jeudi<\/th>\n      <th>Vendredi<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":17,"dom":"t","ordering":false,"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[10,17,25,50,100],"rowCallback":"function(row, data) {\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker – Pierre' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, RcppModules' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 3 : Calcul distribué : spark, hadoop and co' ? '#b5f48d' : value == 'Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker – Pierre' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, RcppModules' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 3 : Calcul distribué : spark, hadoop and co' ? '#b5f48d' : value == 'Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker – Pierre' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, RcppModules' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 3 : Calcul distribué : spark, hadoop and co' ? '#b5f48d' : value == 'Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker – Pierre' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, RcppModules' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 3 : Calcul distribué : spark, hadoop and co' ? '#b5f48d' : value == 'Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':value == '' ? '' : value == 'Repas' ? '#d2d9d6' : value == 'Introduction : Objectif, Organisation, Rendus' ? '#fea741' : value == 'Atelier 1 : Distill, communication et diffusion avec R' ? '#def7cf' : value == 'Pause' ? '#d2d9d6' : value == 'Atelier 1 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Présentation Docker – Pierre' ? '#fea741' : value == 'Atelier 2 : R écosysteme : Docker, R et Python, RcppModules' ? '#c3f2a7' : value == 'Atelier 2 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 3 : Calcul distribué : spark, hadoop and co' ? '#b5f48d' : value == 'Atelier 3 : Medium data, sparse matrix, BigMatrix, random svd.' ? '#b5f48d' : value == 'Atelier 3 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Atelier 4 : tidyverse : quoi de neuf ?' ? '#96e863' : value == 'Atelier 5 : Modèle mixte avec R : quelles sont les bonnes options ?' ? '#96cf47' : value == 'Atelier 4/5 : Bilan structuration du document bilan' ? '#97b1bd' : value == 'Bilan global' ? '#97b1bd' : value == 'Bilan : Mise au propre des rendus' ? '#97b1bd' : ''});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
 <p>Les séquences en vert correspondent à des séances d’atelier en sous groupes. Les séquences en orange correspondent à un panorama du sujet indiqué, tandis que les séquences en bleu correspondent à des temps de réflexion et rédaction sur le rendu final.</p>
 </div>
 <div id="programme" class="section level2">
@@ -438,6 +514,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
