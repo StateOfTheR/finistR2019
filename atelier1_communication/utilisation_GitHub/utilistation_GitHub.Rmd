@@ -18,6 +18,8 @@ Github is a remote service, to save the different git versions. It also enable s
 * create or join a repository
 * use the "push" and "pull" commands to share your work and get the advanced from others. 
 
+To have a global idea, to use git and GitHub : 
+![Caption for the picture.](schema_git.png)
 
 The goal of this little course is to get the basis of this tool, and its use. 
 
@@ -27,7 +29,7 @@ The goal of this little course is to get the basis of this tool, and its use.
 #### On Linux and MacOS :
 To use git on Linux or MacOS, you'll need to install the software with some command like :
 
-```{bash}
+```bash
 $ sudo apt-get update
 $ sudo apt-get install git
 ```
@@ -49,21 +51,21 @@ First of all, you need to create a github account
 
 ### Add a file in your repository 
 Add a local document named "utilisation_GitHub.Rmd" in your git repository. You can display the differences between the local file and the current commit with git status.
-```{bash}
+```bash
 $ git add utilisation_GitHub.Rmd
 $ git status
 ```
 
 ### Commit a file in your repository 
 Create a new commit containing the current contents of the index and the given log message describing the changes. The following command is used to record what has been changed in the document :
-```{bash}
+```bash
 $ git commit -m "Add my latest version of the document"
 ```
 The modified file is not on the server yet. 
 
 ### Synchronizing the file in the server
 Upload your file to the server:
-```{bash}
+```bash
 $ git push
 ```
 
