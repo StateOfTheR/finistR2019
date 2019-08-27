@@ -1,0 +1,57 @@
+# Mise en forme
+
+## Police
+
+**bookdown** suit la mise en forme de **rmarkdown**
+
+`On peut écrire en *italique*, **gras**, `espacement régulier` ou ~~barré~~.`
+
+On peut écrire en *italique*, **gras**, `espacement régulier` ou ~~barré~~.
+
+Les titres de niveau un (chapitres) sont délimités par `#` et ceux de niveau suivant par `##` ou `###`.
+
+
+
+## Références internes {#refint}
+
+### Sections
+
+On donne un label à ce sous-chapitre comme suit `## Références internes {#refint}`, et on y fait référence avec
+
+* `\@ref(refint)` pour produire \@ref(refint),
+
+* `[Références internes]` pour produire [Références internes],
+
+* `[section sur les références internes](#refint)` pour produire [section sur les références internes](#refint).
+
+
+
+### Figures
+
+```{r iris-scatter, fig.cap="Nuage de points"}
+library(tidyverse)
+ggplot(iris) +
+  aes(x = Sepal.Length, y = Petal.Length) +
+  geom_point()
+```
+
+Le nom du chunck qui a produit la Figure \@ref(fig:iris-scatter) chunck est `iris-scatter` et possède l'option `fig.cap="Nuage de points"`. On y fait référence via `\@ref(fig:iris-scatter)`.
+
+### Tables
+
+```{r iris-head}
+iris %>%  # Ce chunk s'appelle iris-head
+  head() %>% 
+  knitr::kable(caption = "iris-table")
+```
+
+Ici, on spécifie la légend directement via un argument de `knitr::kable()`. On fait précéder le label de `tab` pour produire la référénce : `\@ref(tab:iris-head)` pour \@ref(tab:iris-head).
+
+
+### Texte
+
+(ref:bact) Faecalibacterium prausnitzii
+
+Si on définit une référence textuelle via `(ref:bact) Faecalibacterium prausnitzii`, on peut écrire (ref:bact) avec `(ref:bact)` et même plusieurs fois (ref:bact) (ref:bact) (ref:bact) pour éviter de dupliquer le texte.
+
+

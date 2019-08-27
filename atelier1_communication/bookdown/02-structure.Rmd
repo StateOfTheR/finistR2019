@@ -1,0 +1,13 @@
+# Structure
+
+Un livre est composé de plusieurs fichiers `.Rmd`, un par chapitre. 
+
+Par défaut, les fichiers sont compilés dans l'ordre alphabétique (sauf si présence d'un `index.Rmd`, qui passe en premier). Les fihciers commençant par un `_` sont ignorés.
+
+Chaque fichier doit commencer un titre de niveau 1 (`#`) suivi du nom du chapitre.
+
+On peut également rajouter des en-têtes de niveau 1 spécifiques à **bookdown** :
+
+* `#(PART) Part I/II/... {-}`
+
+* `#(APPENDIX) Appendix {-}`
