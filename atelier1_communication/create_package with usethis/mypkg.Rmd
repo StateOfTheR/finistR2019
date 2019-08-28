@@ -293,7 +293,7 @@ usethis::use_rcpp_armadillo()
 Ne lancez pas `devtools::document()` malgré l'ordre de usethis ! L'instruction échoue sans fichier source et sans build.
 Commençons donc par ajouter un fichier source.
 ```{Rcpp}
-#----- Fichier 'src/matrix_mult.cpp'
+//----- Fichier 'src/matrix_mult.cpp'
 
 #include <RcppArmadillo.h>
 using namespace Rcpp;
@@ -316,9 +316,24 @@ arma::mat matrix_mult_cpp(arma::mat A, arma::mat B) {
   return A * B;
 }
 
-#----- Fin du fichier
+//----- Fin du fichier
 ```
 Encore une fois, le squelette Roxygen est important pour documenter la fonction, mais aussi pour préciser qu'il faut exporter la fonction dans le `NAMESPACE`.
+
+Pour éviter des problèmes mémoires et autres amuseries quand on détache le package, on ajoute une fonction `.onUnload` qui retire le DLL :
+```{r}
+#----- Fichier 'R/mypkg-package.R'
+
+[...]
+## usethis namespace: end
+NULL
+
+.onUnload <- function (libpath) {
+  library.dynam.unload("mypackage", libpath)
+}
+
+#----- Fin du fichier
+```
 
 A ce niveau, il est nécessaire de construire une première fois le package (`Ctrl+Shift+B`), puis de lancer `devtools::document()` (`Ctrl+Shift+D`) pour mettre à jour la documentation et le namespace.
 
@@ -449,7 +464,7 @@ Pour le PAT, la solution la plus simple (mais la plus permissive pour Travis et 
 travis::travis_set_pat()
 ```
 
-Pour donner moins de permission à Travis :
+Pour donner moins de permission à Travis (<https://happygitwithr.com/github-pat.html>):
 
 1. Créer un PAT sans aucun scope sur <https://github.com/settings/tokens>
 2. Ajouter le PAT à .Renviron
