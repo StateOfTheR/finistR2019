@@ -270,7 +270,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -404,9 +403,9 @@ t1r = Sys.time()
 tcalc_r = t1r - t0r
 
 tcalc_rF</code></pre>
-<pre><code>## Time difference of 1.199184 secs</code></pre>
+<pre><code>## Time difference of 1.565135 secs</code></pre>
 <pre class="r"><code>tcalc_r</code></pre>
-<pre><code>## Time difference of 0.5570638 secs</code></pre>
+<pre><code>## Time difference of 0.534363 secs</code></pre>
 <pre class="r"><code>RFrF</code></pre>
 <pre><code>## 
 ## Call:
@@ -415,12 +414,12 @@ tcalc_rF</code></pre>
 ##                      Number of trees: 500
 ## No. of variables tried at each split: 13
 ## 
-##         OOB estimate of  error rate: 4.46%
+##         OOB estimate of  error rate: 4.02%
 ## Confusion matrix:
 ##     ei  ie   n class.error
-## ei 379  11  13  0.05955335
-## ie  15 360   7  0.05759162
-## n    8  17 783  0.03094059</code></pre>
+## ei 365  12  16  0.07124682
+## ie  12 356  10  0.05820106
+## n    2  12 808  0.01703163</code></pre>
 <pre class="r"><code>RFr</code></pre>
 <pre><code>## Ranger result
 ## 
@@ -435,7 +434,7 @@ tcalc_rF</code></pre>
 ## Target node size:                 1 
 ## Variable importance mode:         none 
 ## Splitrule:                        gini 
-## OOB prediction error:             4.90 %</code></pre>
+## OOB prediction error:             4.46 %</code></pre>
 </div>
 <div id="avec-parsnip" class="section level3">
 <h3>3.1.2 Avec parsnip</h3>
@@ -457,16 +456,16 @@ rf_ranger &lt;-
 pred_r = predict(rf_ranger, DNA[test, ])
 
 library(mclust)</code></pre>
-<pre><code>## Package &#39;mclust&#39; version 5.4.5
-## Type &#39;citation(&quot;mclust&quot;)&#39; for citing this R package in publications.</code></pre>
+<pre><code>## Package 'mclust' version 5.4.1
+## Type 'citation(&quot;mclust&quot;)' for citing this R package in publications.</code></pre>
 <pre class="r"><code>adjustedRandIndex(DNA$Class[test], pred_rF$.pred_class)</code></pre>
-<pre><code>## [1] 0.8800862</code></pre>
+<pre><code>## [1] 0.8674805</code></pre>
 <pre class="r"><code>adjustedRandIndex(DNA$Class[test], pred_r$.pred_class)</code></pre>
-<pre><code>## [1] 0.8706565</code></pre>
+<pre><code>## [1] 0.8584452</code></pre>
 <pre class="r"><code>sum(DNA$Class[test] != pred_rF$.pred_class)/length(test)*100</code></pre>
-<pre><code>## [1] 4.268675</code></pre>
+<pre><code>## [1] 4.896422</code></pre>
 <pre class="r"><code>sum(DNA$Class[test] != pred_r$.pred_class)/length(test)*100</code></pre>
-<pre><code>## [1] 4.582549</code></pre>
+<pre><code>## [1] 5.27307</code></pre>
 </div>
 </div>
 <div id="avec-python" class="section level2">
@@ -484,13 +483,13 @@ skd = import(&quot;sklearn.datasets&quot;)</code></pre>
 <pre class="r"><code>RFpy  = sk$RandomForestClassifier(n_estimators=2000L)</code></pre>
 <p>Appliquer le modèle aux données DNA</p>
 <pre class="r"><code>X         = as.matrix(DNA[train, -ncol(DNA)])
-Y         = np$array(as.numeric(DNA$Class[train]))
+Y         = np$array(DNA$Class[train])
 fitpy     = RFpy$fit(X, Y)
 Xnew      = as.matrix(DNA[test, -ncol(DNA)])
 Ynew      = np$array(DNA$Class[test])
 pred_py   = RFpy$predict(Xnew)
 adjustedRandIndex(pred_py, Ynew)</code></pre>
-<pre><code>## [1] 0.8722548</code></pre>
+<pre><code>## [1] 0.8666088</code></pre>
 <div id="utiliser-une-fenetre-interactive-python-dans-la-session-r" class="section level3">
 <h3>3.2.2 Utiliser une fenêtre interactive Python dans la session R</h3>
 <pre class="r"><code>repl_python()
