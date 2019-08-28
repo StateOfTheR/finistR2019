@@ -1,0 +1,522 @@
+---
+title: "Créer et maintenir un package avec `usethis`."
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+À l'issue de ce tutoriel, nous aurons créé un package, qui inclue potentiellement du code C++ (via `Rcpp` et `RcppArmadillo`), documenté avec `roxygen2`, avec des tests unitaires via `testthat`, partagé sur GitHub, maintenu à l'aide de Travis-CI, avec un site Internet avec `pkgdown`.
+
+## TOO LONG, DIDN'T READ
+
+```{r}
+library(devtools)
+library(usethis)
+library(testthat)
+library(pkgdown)
+remotes::install_github("ropenscilabs/travis")
+remotes::install_github("ropenscilabs/tic")
+
+### CREATE PACKAGE
+create_package("name")
+use_package_doc()
+use_roxygen_md()
+
+### ADD DESCRIPTION FILES
+edit_file("DESCRIPTION")
+use_mit_license("Firstname Lastname")
+
+### ADD DEPENDENCIES (IF APPLICABLE)
+use_package("name_of_package")
+
+### ADD R FUNCTIONS AND THEIR DOCUMENTATION
+use_r("name_of_r_file")
+# Code > Insert Roxygen Skeleton (Ctrl+Alt+Shift+R)
+
+### ADD VIGNETTE-LIKE RMD TO YOUR PACKAGE
+use_readme_rmd()
+
+### ADD UNITARY TESTS
+use_testthat()
+use_test("name_of_test_file")
+test()
+
+### ADD RCPP SUPPORT
+use_rcpp()
+use_rcpp_armadillo()
+# File > New File > C++ File
+	#include <Rcpp.h>  >>>  #include <RcppArmadillo.h>
+	// [[Rcpp::depends(RcppArmadillo)]]
+# BUILD NOW AT LEAST ONCE, ELSE DEVTOOLS::DOCUMENT() WILL FAIL
+
+### SHARE TO GITHUB
+use_git()
+# Push to new repo: https://gist.github.com/mindplace/b4b094157d7a3be6afd2c96370d39fad
+
+### LINK TO TRAVIS-CI
+use_travis()
+# Go to travis-ci.org and link your repo
+
+### ADD PAT TO R
+# Create PAT: https://github.com/settings/tokens with "public_repo" scope.
+# Add the PAT to .Renviron
+edit_r_environ()
+# GITHUB_PAT=<GENERATED PAT>
+git_vaccinate()
+
+[travis::travis_set_pat() | BUT NEEDS MORE PERMISSIONS]
+
+### SETTING A WEBPAGE FOR YOUR PACKAGE
+use_pkgdown()
+use_pkgdown_travis()
+
+### CREATE SSH KEYPAIR FOR TRAVIS DEPLOY
+# Run use_travis_deploy_manual.R
+
+#----- 'use_travis_deploy', but manual
+
+# Generate SSH keypair
+key <- openssl::rsa_keygen()
+pub_key <- tic:::get_public_key(key)
+private_key <- tic:::encode_private_key(key)
+
+# Go to the GitHub repository page - then Settings > Deploy keys,
+# add the public key there (check the box for write-access).
+title <- "travis+tic"
+public_key <- travis:::create_key_data(pub_key, title)
+
+# Go to the Travis repository page - then More Options > Settings.
+# Add an environment-variable named id_rsa. Paste your clipboard-contents into its value.
+# Make sure you are not displaying the value in the log. Save.
+name <- "id_rsa"
+private_key
+
+#----- End of 'use_travis_deploy', but manual
+
+# Go to the GitHub repository page - then Settings > Deploy keys, add the public key there (check the box for write-access).
+# Go to the Travis repository page - then More Options > Settings. Add an environment-variable named id_rsa. Paste your clipboard-contents into its value. Make sure you are not displaying the value in the log. Save.
+
+[OR travis::use_travis_deploy() | TOO MANY PERMISSIONS]
+```
+
+## Prérequis
+* Avoir un compte GitHub et avoir déjà géré un repo dessus (voir le tutoriel <https://guides.github.com/activities/hello-world/> si nécessaire).
+
+* Installer les packages suivants :
+    ```{r}
+    install.packages(c("devtools", "pkgdown", "RcppArmadillo"))
+    remotes::install_github("ropenscilabs/travis")
+    remotes::install_github("ropenscilabs/tic")
+    ```
+
+## Un package minimal
+#### Création du package
+On commence par créer le package en spécifiant son chemin d'accès `path` (ne surtout pas le créer dans un dossier Dropbox, GoogleDrive, iCloud, ou que-sais-je de partagé) :
+```{r echo=FALSE}
+path <- file.path("C:/Users/Pheliks/Documents/safe zone", "mypkg")
+```
+
+```{r}
+usethis::create_package(path)
+#> ✔ Creating 'C:/Users/Pheliks/Documents/safe zone/mypkg/'
+#> ✔ Setting active project to 'C:/Users/Pheliks/Documents/safe zone/mypkg'
+#> ✔ Creating 'R/'
+#> ✔ Writing 'DESCRIPTION'
+#> Package: mypkg
+#> Title: What the Package Does (One Line, Title Case)
+#> Version: 0.0.0.9000
+#> Authors@R (parsed):
+#>     * First Last <first.last@example.com> [aut, cre] (<https://orcid.org/YOUR-ORCID-ID>)
+#> Description: What the package does (one paragraph).
+#> License: What license it uses
+#> Encoding: UTF-8
+#> LazyData: true
+#> ✔ Writing 'NAMESPACE'
+#> ✔ Writing 'mypkg.Rproj'
+#> ✔ Adding '.Rproj.user' to '.gitignore'
+#> ✔ Adding '^mypkg\\.Rproj$', '^\\.Rproj\\.user$' to '.Rbuildignore'
+#> ✔ Opening 'C:/Users/Pheliks/Documents/safe zone/mypkg/' in new RStudio session
+#> ✔ Setting active project to '<no active project>'
+```
+
+#### Documentation Roxygen
+On rajoute un cadre de travail `roxygen2` pour la documentation.
+```{r}
+usethis::use_package_doc()
+#> ✔ Setting active project to 'C:/Users/Pheliks/Documents/safe zone/mypkg'
+#> ✔ Writing 'R/mypkg-package.R'
+usethis::use_roxygen_md()
+#> ✔ Setting Roxygen field in DESCRIPTION to 'list(markdown = TRUE)'
+#> ✔ Setting RoxygenNote field in DESCRIPTION to '6.1.1'
+#> ● Run `devtools::document()`
+```
+et on exécute `devtools::document()` puisque c'est demandé :
+```{r}
+devtools::document()
+#> Updating mypkg documentation
+#> Writing NAMESPACE
+#> Loading mypkg
+#> Writing mypkg-package.Rd
+```
+
+#### DESCRIPTION et dépendences
+Vous pouvez modifier le fichier `DESCRIPTION` dès maintenant (titre, auteur, description) et rajouter une license si nécessaire.
+```{r}
+usethis::edit_file("DESCRIPTION")
+#> ● Modify 'DESCRIPTION'
+usethis::use_mit_license("Firstname Lastname")
+#> ✔ Setting License field in DESCRIPTION to 'MIT + file LICENSE'
+#> ✔ Writing 'LICENSE.md'
+#> ✔ Adding '^LICENSE\\.md$' to '.Rbuildignore'
+#> ✔ Writing 'LICENSE'
+```
+
+Si le package va inclure des dépendences, vous pouvez automatiser le procédé avec
+```{r}
+usethis::use_package("MASS")
+#> ✔ Adding 'MASS' to Imports field in DESCRIPTION
+#> ● Refer to functions with `MASS::fun()`
+```
+
+#### Une première fonction R
+Ajoutons notre première fonction R pour exemple.
+```{r}
+usethis::use_r("matrix_mult")
+#> ● Modify 'R/matrix_mult.R'
+
+#----- Fichier 'R/matrix_mult.R'
+
+#' Simple matrix multiplication
+#'
+#' @param A Matrix
+#' @param B Matrix
+#'
+#' @return Product of matrices
+#' @export
+#'
+#' @examples
+#' A <- matrix(1:9, 3, 3)
+#' B <- matrix(11:19, 3, 3)
+#' matrix_mult(A, B)
+matrix_mult <- function(A, B) {
+  return (A %*% B)
+}
+
+#----- Fin du fichier
+```
+La documentation Roxygen (repérée par les `#'` et les balises commençant par `@`) est essentielle, non seulement pour rendre votre package compréhensible, mais surtout parce que `roxygen2` va gérer le `NAMESPACE` automatiquement.
+En particulier, la balise `@export` spécifie que la fonction `matrix_mult` sera exportée, donc visible et utilisable pour l'utilisateur du package.
+Le squelette Roxygen se trouve dans `Code > Insert Roxygen Skeleton` (ou `Ctrl+Alt+Shift+R`).
+
+#### pkgdown
+On peut créer une page de documentation (type vignette) pour le package. En particulier, ce sera la page d'accueil du site web associé à votre package.
+```{r}
+usethis::use_readme_rmd()
+#> ✔ Writing 'README.Rmd'
+#> ✔ Adding '^README\\.Rmd$' to '.Rbuildignore'
+#> ● Modify 'README.Rmd'
+#> ✔ Writing '.git/hooks/pre-commit'
+```
+Cette page est générée principalement par le fichier 'README.Rmd' (à modifier à la main) et les documentations '.Rd' du dossier '/man' générées par Roxygen.
+
+## Tests unitaires
+On ajoute des tests unitaires simples à notre package.
+```{r}
+usethis::use_testthat()
+#> ✔ Adding 'testthat' to Suggests field in DESCRIPTION
+#> ✔ Creating 'tests/testthat/'
+#> ✔ Writing 'tests/testthat.R'
+#> ● Call `use_test()` to initialize a basic test file and open it for editing.
+usethis::use_test("name_of_test_file")
+#> ✔ Increasing 'testthat' version to '>= 2.1.0' in DESCRIPTION
+#> ✔ Writing 'tests/testthat/test-name_of_test_file.R'
+#> ● Modify 'tests/testthat/test-name_of_test_file.R'
+
+#----- Fichier 'tests/testthat/test-name_of_test_file.R'
+
+test_that("is a matrix", {
+  A = matrix(1:4, 2, 2)
+  B = matrix(4:1, 2, 2)
+  expect_that(matrix_mult(A, B), is_a("matrix"))
+})
+
+test_that("has good dimension", {
+  A = matrix(1:28, 4, 7)
+  B = matrix(101:121, 7, 3)
+  expect_equal(dim(matrix_mult(A, B)), c(4, 3))
+})
+
+test_that("matrix multiplication works", {
+  A = matrix(1:4, 2, 2)
+  B = matrix(4:1, 2, 2)
+  C = matrix(c(13, 20, 5, 8), 2, 2, byrow = FALSE)
+  expect_equal(matrix_mult(A, B), C)
+})
+
+#----- Fin du fichier
+
+```
+On peut vérifier que nos tests fonctionnent avec
+```{r}
+devtools::test()
+#> Loading mypkg
+#> Testing mypkg
+#> √ |  OK F W S | Context
+#> √ |   3       | name_of_test_file
+#> 
+#> == Results =====================================================================
+#> Duration: 0.1 s
+#> 
+#> OK:       3
+#> Failed:   0
+#> Warnings: 0
+#> Skipped:  0
+```
+
+## Ajout de Rcpp et RcppArmadillo
+On ajoute le support Rcpp et RcppArmadillo.
+```{r}
+usethis::use_rcpp_armadillo()
+#> ✔ Creating 'src/'
+#> ✔ Adding '*.o', '*.so', '*.dll' to 'src/.gitignore'
+#> ✔ Adding '@useDynLib mypkg, .registration = TRUE' to 'R/mypkg-package.R'
+#> ● Run `devtools::document()` to update 'NAMESPACE'
+#> ✔ Adding 'Rcpp' to LinkingTo field in DESCRIPTION
+#> ✔ Adding 'Rcpp' to Imports field in DESCRIPTION
+#> ✔ Adding '@importFrom Rcpp sourceCpp' to 'R/mypkg-package.R'
+#> ● Run `devtools::document()` to update 'NAMESPACE'
+#> ✔ Adding 'RcppArmadillo' to LinkingTo field in DESCRIPTION
+#> ✔ Created 'src/Makevars' and 'src/Makevars.win' with requested compilation settings.
+```
+Ne lancez pas `devtools::document()` malgré l'ordre de usethis ! L'instruction échoue sans fichier source et sans build.
+Commençons donc par ajouter un fichier source.
+```{Rcpp}
+#----- Fichier 'src/matrix_mult.cpp'
+
+#include <RcppArmadillo.h>
+using namespace Rcpp;
+// [[Rcpp::depends(RcppArmadillo)]]
+
+//' Simple matrix multiplication
+//'
+//' @param A Matrix
+//' @param B Matrix
+//'
+//' @return Product of matrices
+//' @export
+//'
+//' @examples
+//' A <- matrix(1:9, 3, 3)
+//' B <- matrix(11:19, 3, 3)
+//' matrix_mult_cpp(A, B)
+// [[Rcpp::export]]
+arma::mat matrix_mult_cpp(arma::mat A, arma::mat B) {
+  return A * B;
+}
+
+#----- Fin du fichier
+```
+Encore une fois, le squelette Roxygen est important pour documenter la fonction, mais aussi pour préciser qu'il faut exporter la fonction dans le `NAMESPACE`.
+
+A ce niveau, il est nécessaire de construire une première fois le package (`Ctrl+Shift+B`), puis de lancer `devtools::document()` (`Ctrl+Shift+D`) pour mettre à jour la documentation et le namespace.
+
+Rajoutons aussi un test unitaire pour notre nouvelle fonction .cpp :
+```{r}
+#----- Fichier 'tests/testthat/test-name_of_test_file.R'
+
+[...]
+
+test_that("is a matrix CPP", {
+  A = matrix(1:4, 2, 2)
+  B = matrix(4:1, 2, 2)
+  expect_that(matrix_mult_cpp(A, B), is_a("matrix"))
+})
+
+test_that("has good dimension CPP", {
+  A = matrix(1:28, 4, 7)
+  B = matrix(101:121, 7, 3)
+  expect_equal(dim(matrix_mult_cpp(A, B)), c(4, 3))
+})
+
+test_that("matrix multiplication works CPP", {
+  A = matrix(1:4, 2, 2)
+  B = matrix(4:1, 2, 2)
+  C = matrix(c(13, 20, 5, 8), 2, 2, byrow = FALSE)
+  expect_equal(matrix_mult_cpp(A, B), C)
+})
+
+#----- Fin du fichier
+```
+
+## Intégration à GitHub
+Il est temps d'intégrer votre package à Git.
+```{r}
+usethis::use_git()
+#> ✔ Setting active project to 'C:/Users/Pheliks/Documents/safe zone/mypkg'
+#> ✔ Initialising Git repo
+#> ✔ Adding '.Rhistory', '.RData' to '.gitignore'
+#> There are 11 uncommitted files:
+#> * '.gitignore'
+#> * '.Rbuildignore'
+#> * 'DESCRIPTION'
+#> * 'LICENSE'
+#> * 'LICENSE.md'
+#> * 'man/'
+#> * 'mypkg.Rproj'
+#> * 'NAMESPACE'
+#> * 'R/'
+#> * 'src/'
+#> * 'tests/'
+#> Is it ok to commit them?
+#> 
+#> 1: Negative
+#> 2: Yup
+#> 3: No way
+#> 
+#> Selection: 2
+#> ✔ Adding files
+#> ✔ Commit with message 'Initial commit'
+#> ● A restart of RStudio is required to activate the Git pane
+#> Restart now?
+#> 
+#> 1: Absolutely not
+#> 2: Nope
+#> 3: Yup
+#> 
+#> Selection: 3
+```
+Créez un nouveau repo sur votre compte GitHub et pushez votre package (voir <https://gist.github.com/mindplace/b4b094157d7a3be6afd2c96370d39fad> pour la procédure à suivre, retranscris ci-dessous au cas où le lien url venait à être cassé).
+
+#### Create a remote, empty folder/repository on Github.
+
+1. Login to your Github account.
+
+2. At the top right of any Github page, you should see a '+' icon. Click that, then select 'New Repository'.
+
+3. Give your repository a name--ideally the same name as your local project. If I'm building a travel application, its folder will be called 'travel-app' on my computer, and 'travel-app' will be the Github repository name as well.
+
+4. Click 'Create Repository'. The next screen you see will be important, so don't close it.
+
+#### Connect your local project folder to your empty folder/repository on Github.
+
+The screen you should be seeing now on Github is titled 'Quick setup — if you’ve done this kind of thing before'.
+
+Copy the link in the input right beneath the title, it should look something like this: https://github.com/mindplace/test-repo.git This is the web address that your local folder will use to push its contents to the remote folder on Github.
+
+1. Go back to your project in the terminal/command line.
+
+2. In your terminal/command line, type git remote add origin [copied web address]
+
+Example: git remote add origin https://github.com/mindplace/test-repo.git
+
+3. Push your branch to Github: git push origin master
+
+4. Go back to the folder/repository screen on Github that you just left, and refresh it. The title 'Quick setup — if you’ve done this kind of thing before' should disappear, and you should see your files there.
+
+## Intégration continue avec Travis-CI
+Commencez par créer un compte sur <https://travis-ci.org/> si ce n'est pas déjà fait (il faudra probablement vous connecter avec votre compte GitHub).
+L'intégration avec Travis-CI est rapide et sans douleur :
+```{r}
+usethis::use_travis()
+#> ✔ Setting active project to 'C:/Users/Pheliks/Documents/safe zone/mypkg'
+#> ✔ Writing '.travis.yml'
+#> ✔ Adding '^\\.travis\\.yml$' to '.Rbuildignore'
+#> ● Turn on travis for your repo at https://travis-ci.org/profile/fcheysson
+#> ● 
+#>   <!-- badges: start -->
+#>   [![Travis build status](https://travis-ci.org/fcheysson/mypkg.svg?branch=master)](https://travis-ci.org/fcheysson/mypkg)
+#>   <!-- badges: end -->
+#>   [Copied to clipboard]
+```
+Vos prochains pushes seront désormais testés avec Travis. Effectuez un commit-push maintenant.
+
+## Associer une page web GitHub à votre package
+Dans un premier temps, créez votre site.
+```{r}
+usethis::use_pkgdown()
+#> ✔ Adding '^_pkgdown\\.yml$', '^docs$' to '.Rbuildignore'
+#> ✔ Adding '^pkgdown$' to '.Rbuildignore'
+#> ✔ Writing '_pkgdown.yml'
+#> ● Modify '_pkgdown.yml'
+```
+Pour que Travis compile et associe automatiquement votre site Web, il lui faut deux choses : un Personal Access Token (PAT) (à créer et associer une bonne fois pour toutes) et une clé de déploiement (à créer et associer pour chaque repo de votre compte GitHub).
+
+#### PAT et `use_pkgdown_travis`
+Pour le PAT, la solution la plus simple (mais la plus permissive pour Travis et donc la moins secure) est la suivante:
+```{r}
+travis::travis_set_pat()
+```
+
+Pour donner moins de permission à Travis :
+
+1. Créer un PAT sans aucun scope sur <https://github.com/settings/tokens>
+2. Ajouter le PAT à .Renviron
+    ```{r}
+    usethis::edit_r_environ()
+    #> ● Modify 'C:/Users/Pheliks/Documents/.Renviron'
+    #> ● Restart R for changes to take effect
+    
+    #----- Fichier '.Renviron'
+    
+    GITHUB_PAT=126a456bc48e5490ff145671aec1630136bcca78
+    
+    #----- Fin de fichier
+    ```
+3. S'assurer que vous ne pusherez jamais votre PAT par mégarde.
+    ```{r}
+    usethis::git_vaccinate()
+    ```
+
+Maintenant, vous pouvez associer pkgdown à Travis pour qu'il compile votre site à chaque push.
+```{r}
+usethis::use_pkgdown_travis()
+#> ✔ Adding 'docs/' to '.gitignore'
+#> ● Set up deploy keys by running `travis::use_travis_deploy()`
+#> ● Insert the following code in '.travis.yml'
+#>   before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
+#>   deploy:
+#>     provider: script
+#>     script: Rscript -e 'pkgdown::deploy_site_github()'
+#>     skip_cleanup: true
+#>   [Copied to clipboard]
+```
+Je vous encourage également à rajouter la ligne 'warnings_are_errors: false' dans '.travis.yml'.
+Cela évite que Travis indique un échec juste parce que vous avez oublié de mettre un exemple dans votre documentation.
+
+#### Clé de déploiement et `use_travis_deploy`
+Pour la clé de déploiement, le plus simple, mais aussi le plus permissif (et donc le moins secure) est de lancer
+```{r}
+travis::use_travis_deploy()
+```
+
+Pour réduire les permissions de Travis, suivre ces étapes :
+
+1. Lancez le programme suivant pour générer une paire de clefs SSH
+    ```{r}
+    # use_travis_deploy, but manual
+    
+    # Generate SSH keypair
+    key <- openssl::rsa_keygen()
+    pub_key <- tic:::get_public_key(key)
+    private_key <- tic:::encode_private_key(key)
+    
+    # Go to the GitHub repository page - then Settings > Deploy keys,
+    # add the public key there (check the box for write-access).
+    title <- "travis+tic"
+    public_key <- travis:::create_key_data(pub_key, title)
+    
+    # Go to the Travis repository page - then More Options > Settings.
+    # Add an environment-variable named id_rsa. Paste your clipboard-contents into its value.
+    # Make sure you are not displaying the value in the log. Save.
+    name <- "id_rsa"
+    private_key
+    ```
+
+2. Sur la page de votre repo GitHub, allez dans Settings > Deploy keys, et ajoutez votre clef publique `public_key` (cochez la case 'Allow write access').
+
+3. Sur la page de votre repo Travis, allez dans More Options > Settings. Ajoutez une variable d'environnement appelée 'id_rsa'. Copiez la clef privée `private_key` dans value et assurez-vous que 'Display value in build log' est désactivé. 
+
+Désormais, chacun de vos pushes compile votre site à partir du fichier 'README.Rmd' et des documentations .Rd.
+Votre site est accessible sur <compte_github>.github.io/<nom_du_package> (par exemple, fcheysson.github.io/mypkg).
