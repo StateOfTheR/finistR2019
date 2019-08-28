@@ -38,7 +38,7 @@ La ligne `context(...)` sert à l'affichage lors de l'éxécution des tests.
 Pour lancer les tests du package, il faut taper : `devtools::test()` dans la console.  
 
 
-Taper `usethis::use_build_ignore(".travis.yml")` pour créer un fichier buildignore pour ignorer des check dans travis.
+
 
 
 ## pkg_down
@@ -46,6 +46,11 @@ Taper `usethis::use_build_ignore(".travis.yml")` pour créer un fichier buildign
 voir felix
 question readme avec template gitdocument 
 ajouter les boutons passed de travis ?
+
+`usethis::pkgdow()`
+
+
+
 
 
 ## Travis
@@ -57,7 +62,17 @@ un autre truc pour tester sous windows (Antoine)
 ajouter dans le commentaire du commit git [ci skip] pour éviter de lancer travis à chaque commit.
 
 
+Pour aider à configurer le repos courant afin d'utiliser travis, on peut utiliser le package 
+[ropenscilabs](https://ropenscilabs.github.io/travis/).
+Il faut notamment lancer les commandes pour donner les autorisations entre travis et github.
 
+Taper `usethis::use_build_ignore(".travis.yml")` pour créer un fichier buildignore pour ignorer des check dans travis. 
+
+
+Afin que pkgdown fonctionne on peut ajouter une commande dans le fichier `.travis.yml` en tapant : `usethis::pkgdow_travis()`. 
+
+
+Attention afin d'avoir le site web exporté de travis vers github, il faut bien vérifier qu'une branche `gh-pages` existe dans github. Voir également dans les réglages de github du package dans GitHub Pages, afin de choisir la branche gh-pages pour contenir les fichiers relatifs au site web.
 
 
 
