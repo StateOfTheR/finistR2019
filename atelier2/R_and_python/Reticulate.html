@@ -370,13 +370,58 @@ summary {
 </div>
 
 
+<p>Nous allons vous présenter brièvement comment utiliser la bibliothèque Reticulate, pour lancer un code python dans un environnement R, puis nous donnerons deux exemple d’utilisation : l’ouverture de fichiers et la comparaison de méthodes de RandomForest.</p>
 <div id="comment-ca-marche" class="section level1">
 <h1>1. Comment ça marche ?</h1>
-<p>Nous allons vous présenter brièvement comment utiliser la bibliothèque Reticulate, pour lancer un code python dans un environnement R. ## 1.1 Appel de librairies python dans l’environnement R ## 1.2 Fenêtre intéractive ## 1.3 Appel d’un script python</p>
+<p>Le package reticulate permet de lier R et Python en utilisant des appels Python dans R.</p>
+<pre class="r"><code>library(reticulate)
+use_python(&quot;/home/claire/Applications/python/conda/bin/python&quot;)
+# on prend un jeu de donnée jouet : 
+data(cars)</code></pre>
+<div id="appel-de-librairies-python-dans-lenvironnement-r" class="section level2">
+<h2>1.1 Appel de librairies python dans l’environnement R</h2>
+<p>Une première façon d’intégrer du code python dans R est d’utiliser ses bibliothèques/ modules de travail (qui contiennent les fonctions utilisées) avec la fonction reticulate::import(“my_py_library”)</p>
+<pre class="r"><code>np  = import(&quot;numpy&quot;)</code></pre>
+<p>Ensuite, on lance directement les fonctions pythons en précisant quelle librairie utiliser. Par exemple, si on veut faire la moyenne par variable de notre jeu de données cars :</p>
+<pre class="r"><code>print(np$mean(cars))</code></pre>
+<pre><code>## speed  dist 
+## 15.40 42.98</code></pre>
 </div>
-<div id="un-cas-detude-ouverture-de-fichiers-exotiques" class="section level1">
-<h1>2. Un cas d’étude : ouverture de fichiers exotiques</h1>
-<p>Nous allons présenter comment utiliser la bibliothèque “reticulate”, et mettre en évidence ses limites, au travers de l’ouverture de fichier via la librairie pandas. ## 2.1 Ouverture de csv “classiques” ## 2.2 Ouverture de gros csv ## 2.3 Ouverture de json emboités</p>
+<div id="fenetre-interactive" class="section level2">
+<h2>1.2 Fenêtre intéractive</h2>
+<p>Un deuxième moyen d’utiliser du python dans un script R est d’ouvrir une fenêtre intéractive avec repl_python :</p>
+<pre class="r"><code>repl_python()
+from sklearn.ensemble import RandomForestClassifier
+clf = RandomForestClassifier(n_estimators=20)
+exit</code></pre>
+<p>Le problème est que ça ne marche pas dans un markedown.</p>
+</div>
+<div id="appel-dun-script-python" class="section level2">
+<h2>1.3 Appel d’un script python</h2>
+<p>La dernière façon est de charger un script .py dans le script : les fonctions sont alors directement appelée comme dans 1.1</p>
+<pre class="r"><code>source_python(&#39;test.py&#39;)
+my_mean(cars)</code></pre>
+<pre><code>## speed  dist 
+## 15.40 42.98</code></pre>
+</div>
+<div id="probleme-de-typage" class="section level2">
+<h2>1.4 Problème de typage :</h2>
+<p>Le gros problème de la bibliothèque est la conversion entre les types python et les types R. Par exemple, * utiliser le script test pour montrer des conversion un peu bizarre (type int par ex)*</p>
+<p>Par ailleurs, l’appel de modules python dans un script R nécessite souvent des transformations de type : un array n’est pas un vector, etc.</p>
+</div>
+</div>
+<div id="un-premier-cas-detude-ouverture-de-fichiers-exotiques" class="section level1">
+<h1>2. Un premier cas d’étude : ouverture de fichiers exotiques</h1>
+<p>Nous allons présenter comment utiliser la bibliothèque “reticulate”, et mettre en évidence ses limites, au travers de l’ouverture de fichier via la librairie pandas.</p>
+<div id="ouverture-de-csv-classiques" class="section level2">
+<h2>2.1 Ouverture de csv “classiques”</h2>
+</div>
+<div id="ouverture-de-gros-csv" class="section level2">
+<h2>2.2 Ouverture de gros csv</h2>
+</div>
+<div id="ouverture-de-json-emboites" class="section level2">
+<h2>2.3 Ouverture de json emboités</h2>
+</div>
 </div>
 <div id="comparaison-des-resultats-de-random-forest-entre-r-et-python-via-r" class="section level1">
 <h1>3. Comparaison des résultats de Random Forest entre R et python via R :</h1>
@@ -404,9 +449,9 @@ t1r = Sys.time()
 tcalc_r = t1r - t0r
 
 tcalc_rF</code></pre>
-<pre><code>## Time difference of 1.199184 secs</code></pre>
+<pre><code>## Time difference of 1.356649 secs</code></pre>
 <pre class="r"><code>tcalc_r</code></pre>
-<pre><code>## Time difference of 0.5570638 secs</code></pre>
+<pre><code>## Time difference of 0.4629869 secs</code></pre>
 <pre class="r"><code>RFrF</code></pre>
 <pre><code>## 
 ## Call:
@@ -415,12 +460,12 @@ tcalc_rF</code></pre>
 ##                      Number of trees: 500
 ## No. of variables tried at each split: 13
 ## 
-##         OOB estimate of  error rate: 4.46%
+##         OOB estimate of  error rate: 5.02%
 ## Confusion matrix:
 ##     ei  ie   n class.error
-## ei 379  11  13  0.05955335
-## ie  15 360   7  0.05759162
-## n    8  17 783  0.03094059</code></pre>
+## ei 356  19  14  0.08483290
+## ie  13 368   7  0.05154639
+## n    6  21 789  0.03308824</code></pre>
 <pre class="r"><code>RFr</code></pre>
 <pre><code>## Ranger result
 ## 
@@ -435,7 +480,7 @@ tcalc_rF</code></pre>
 ## Target node size:                 1 
 ## Variable importance mode:         none 
 ## Splitrule:                        gini 
-## OOB prediction error:             4.90 %</code></pre>
+## OOB prediction error:             4.96 %</code></pre>
 </div>
 <div id="avec-parsnip" class="section level3">
 <h3>3.1.2 Avec parsnip</h3>
@@ -460,19 +505,17 @@ library(mclust)</code></pre>
 <pre><code>## Package &#39;mclust&#39; version 5.4.5
 ## Type &#39;citation(&quot;mclust&quot;)&#39; for citing this R package in publications.</code></pre>
 <pre class="r"><code>adjustedRandIndex(DNA$Class[test], pred_rF$.pred_class)</code></pre>
-<pre><code>## [1] 0.8800862</code></pre>
+<pre><code>## [1] 0.8851711</code></pre>
 <pre class="r"><code>adjustedRandIndex(DNA$Class[test], pred_r$.pred_class)</code></pre>
-<pre><code>## [1] 0.8706565</code></pre>
+<pre><code>## [1] 0.88214</code></pre>
 <pre class="r"><code>sum(DNA$Class[test] != pred_rF$.pred_class)/length(test)*100</code></pre>
-<pre><code>## [1] 4.268675</code></pre>
+<pre><code>## [1] 4.143126</code></pre>
 <pre class="r"><code>sum(DNA$Class[test] != pred_r$.pred_class)/length(test)*100</code></pre>
-<pre><code>## [1] 4.582549</code></pre>
+<pre><code>## [1] 4.268675</code></pre>
 </div>
 </div>
 <div id="avec-python" class="section level2">
 <h2>3.2 Avec Python</h2>
-<p>Le package reticulate permet de lier R et Python en utilisant des appels Python dans R.</p>
-<pre class="r"><code>library(reticulate)</code></pre>
 </div>
 <div id="en-utilisant-directement-les-modules-python-pour-modeliser-les-donnees" class="section level2">
 <h2>3.2.1 En utilisant directement les modules python pour modéliser les données</h2>
@@ -490,7 +533,7 @@ Xnew      = as.matrix(DNA[test, -ncol(DNA)])
 Ynew      = np$array(DNA$Class[test])
 pred_py   = RFpy$predict(Xnew)
 adjustedRandIndex(pred_py, Ynew)</code></pre>
-<pre><code>## [1] 0.8722548</code></pre>
+<pre><code>## [1] 0.8923388</code></pre>
 <div id="utiliser-une-fenetre-interactive-python-dans-la-session-r" class="section level3">
 <h3>3.2.2 Utiliser une fenêtre interactive Python dans la session R</h3>
 <pre class="r"><code>repl_python()

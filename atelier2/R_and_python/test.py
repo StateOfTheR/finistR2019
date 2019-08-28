@@ -5,6 +5,11 @@ Ceci est un script temporaire.
 """
 
 import pandas as pd
+import numpy as np
+
+def my_mean(table):
+    return(np.mean(table))
+
 
 #directory = "/home/claire/Documents/stat_of_the_R/FinistR2019/python_script/rp2016_td_pop1B1.csv"
 #my_header = 34
@@ -29,3 +34,5 @@ def return_input_type(my_object) :
     
 def return_input(my_object):
     return(my_object)
+
+print(my_mean(1))
