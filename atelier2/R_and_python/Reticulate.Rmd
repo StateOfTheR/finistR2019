@@ -110,7 +110,7 @@ RFpy  = sk$RandomForestClassifier(n_estimators=2000L)
 Appliquer le modèle aux données DNA
 ```{r}
 X         = as.matrix(DNA[train, -ncol(DNA)])
-Y         = np$array(as.numeric(DNA$Class[train]))
+Y         = np$array(DNA$Class[train])
 fitpy     = RFpy$fit(X, Y)
 Xnew      = as.matrix(DNA[test, -ncol(DNA)])
 Ynew      = np$array(DNA$Class[test])
