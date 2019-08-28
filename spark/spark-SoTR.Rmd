@@ -28,7 +28,7 @@ Remarque : il existe un toturiel ici <https://spark.rstudio.com/>, nous l'avons 
 
 L'intérêt d'utiliser le serveur spark est d'avoir accès à des fonctions parrallélisées et puissantes pour gérer les grosses données.
 
-Sont mis à disposition les fonctions du package dplyr, on peut aussi exécuter des requêtes SQL, faire du machine learning avec sparklyr (voir <https://spark.rstudio.com/mlib/> pur une liste complète des fonctions à disposition).
+Sont mis à disposition les fonctions du package dplyr, on peut aussi exécuter des requêtes SQL, faire du machine learning avec sparklyr (voir <https://spark.rstudio.com/mlib/> pour une liste complète des fonctions à disposition).
 
 
 
