@@ -1,5 +1,5 @@
 ---
-title: "Utilisation de Distill pour créer un site web"
+title: "Utilisation de Distill pour créer des documents scientifiques destinés au web"
 description: |
   Cette page d'utilisation de Distill a été produite avec Distill
 author:
@@ -8,7 +8,9 @@ author:
     affiliation: Agrocampus Ouest
     affiliation_url: http://agrocampus-ouest.fr
 date: "`r Sys.Date()`"
+bibliography: biblio.bib
 output: distill::distill_article
+
 ---
 
 ```{r setup, include=FALSE}
@@ -27,7 +29,7 @@ Dans un document RMarkdown, on peut spécifier que la sortie est un document Dis
 
 Différents types de document distill sont disponibles :
 
-```{r dist_pres_1, eval=FALSE}
+```{r dist_pres_1, eval=FALSE, echo=TRUE}
 title: "Utilisation de Distill pour créer un site web"
 description: |
   Cette page d'utilisation de Distill a été produite avec Distill
@@ -37,12 +39,48 @@ author:
     affiliation: Agrocampus Ouest
     affiliation_url: http://agrocampus-ouest.fr
 date: "`r Sys.Date()`"
+bibliography: biblio.bib
 output: distill::distill_article
 ```
 
 
+## Spécifités de la sortie distill_article
 
-##  
+Lorsque l'on spécifie le type distill_article, on a accès aux champs author dans le yml.
+Ce champ permet de spécifier facilement, les noms et les affilitations des différents auteurs.
+
+
+On peut également ajouter un fichier de bibliographie de type fichier .bib.  
+
+Si le fichier `biblio.bib`contient la référence 
+
+```{r, eval=FALSE, echo=TRUE}
+@book{xie2018r,
+  title={R markdown: The definitive guide},
+  author={Xie, Yihui and Allaire, Joseph J and Grolemund, Garrett},
+  year={2018},
+  publisher={Chapman and Hall/CRC}
+}
+
+```
+
+On peut le citer grâce à la commande  `[@xie2018r]`, par exemple [@xie2018r], [@xie2015] est une référence essentiel pour l'utilisation de Rmarkdown.
+
+
+On peut également ajouter des notes de coté  avec la commande `<aside> contenu </aside>`
+
+<aside>
+Ce commentaire apparaitra sur le coté 
+</aside>
 
 
 
+## Spécificités de la sortie distill_website
+
+
+
+
+## Acknowledgments {.appendix}
+
+This is a place to recognize people and institutions. It may also be a good place
+to acknowledge and cite software that makes your work possible.
