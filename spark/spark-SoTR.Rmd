@@ -12,14 +12,14 @@ knitr::opts_chunk$set(echo = TRUE, cache  =FALSE)
 ## Sparklyr : gestion des gros jeux de données.
 
 R studio gère entièrement l'installation de spark (librairie qui permet de gérer des taches) et sparklyr (package R qui permet d'utiliser un cluster spark). Pour ceci il suffit d'aller dans environnement -> new environnement -> spark.
-Une fois ceci fait on a crée un cluster spark (local dans ce cas-ci, en changeant l'option master il peut ne pas être local). EN local, il crée une collection parralèle en découpant tes données sur un nombre de coeur spécifié au moment de la création de la connection sur Rstudio en écrivant 
+Une fois ceci fait on  crée un cluster spark (local dans ce cas-ci, en changeant l'option master il peut ne pas être local). En local, il crée une collection parallèle en découpant les données sur un nombre de coeurs spécifié au moment de la création de la connection sur Rstudio en écrivant 
 
 ```{r connect, eval = TRUE,warning=FALSE, comment=FALSE}
 library(sparklyr)
 library(dplyr)
 sc <- spark_connect(master = "local")
 ``` 
-Ceci peut être fait pas presse-boutons depuis Rstudio. 
+Ceci peut être fait par presse-boutons depuis Rstudio. 
 Il est possible de spécifier le nombre de coeurs en utilisant la commande suivante: 
 ```{r connect2, eval = FALSE}
 sc <- spark_connect(master = "local[4]")
@@ -30,9 +30,9 @@ Si les données sont sur un serveur, on y accède en remplaçant local par l'adr
 
 En cliquant sur l'onglet Spark on a accès automatiquement à une interface web qui contient toutes les taches effectuées sur le cluster spark. Cette peut-être partagé, si les données sont sur un cluster, entre plusieurs personnes. 
 
-Remarque : il existe un toturiel ici <https://spark.rstudio.com/>, nous l'avons suivi en commençant à la section "Using dplyr" car spark et sparklyr ont été installé par la manipulation précédente.
+Remarque : il existe un tutoriel ici <https://spark.rstudio.com/>, nous l'avons suivi en commençant à la section "Using dplyr" car spark et sparklyr ont été installé par la manipulation précédente.
 
-L'intérêt d'utiliser le serveur spark est d'avoir accès à des fonctions parrallélisées et puissantes pour gérer les grosses données.
+L'intérêt d'utiliser le serveur spark est d'avoir accès à des fonctions parallélisées et puissantes pour gérer les grosses données.
 
 Sont mis à disposition les fonctions du package dplyr, on peut aussi exécuter des requêtes SQL, faire du machine learning avec sparklyr (voir <https://spark.rstudio.com/mlib/> pour une liste complète des fonctions à disposition).
 
@@ -124,6 +124,12 @@ ggplot(delay, aes(dist, delay)) +
   scale_size_area(max_size = 2)
 ``` 
 
+Afin de créer une nouvelle colonne on utilise
+```{r speed flight}
+mutate(flights, speed = distance / air_time * 60)
+```
+
+
 
 ## Machine Learning sous Spark. 
 
@@ -151,3 +157,11 @@ fit
 ```{r reg3}
 summary(fit)
 ```
+
+Pour avoir accès aux prédictions, on doit utiliser :
+
+```{r predtest}
+pred = ml_predict(fit,partitions$test)
+collect(select(pred,prediction))
+```
+
