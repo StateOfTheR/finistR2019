@@ -3,3 +3,6 @@
 .Rhistory
 .Rapp.history
 .RData
+spark/*_cache/
+spark/logs/
+spark/*_files/
