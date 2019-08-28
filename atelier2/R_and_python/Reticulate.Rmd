@@ -1,0 +1,130 @@
+---
+title: "Comparaison des résultats de Random Forest avec R et python avec le package reticulate"
+author: "Marie Morvan"
+date: "27/08/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Comparaison des résultats de RandomForest issus de plusieurs fonctions R
+```{r,  result = "hide", message = FALSE}
+library(parsnip)
+library(mlbench) 
+library(randomForest)
+library(ranger)
+```
+
+Le package mlbench met a disposition des données de machine learning. On utilise les données DNA comprenant 3 186 observations de 180 variables, et la variable de classe à prédire.
+```{r}
+data(DNA)
+train = sample(1:nrow(DNA), size = nrow(DNA)/2)
+test  = setdiff(1:nrow(DNA), train)
+```
+
+## Méthode classique 
+On utilise directement les différentes fonctions permettant de faire des forêts aléatoires.
+
+```{r}
+t0rF = Sys.time() 
+RFrF = randomForest(Class ~ ., data = DNA[train, ])
+t1rF = Sys.time() 
+tcalc_rF = t1rF - t0rF
+
+t0r = Sys.time() 
+RFr = ranger(Class ~ ., data = dta[train, ])
+t1r = Sys.time() 
+tcalc_r = t1r - t0r
+
+tcalc_rF
+tcalc_r
+
+RFrF
+RFr
+
+```
+
+## Avec parsnip 
+Le package permet d'homogeneiser l'utilisation de différentes fonctions permettant de faire de la classification par forêts aléatoires, et de faciliter la comparaison des résultats obtenus.
+
+```{r }
+model = rand_forest(mode = "classification", trees = 2000)
+
+rf_randomForest <- 
+  model %>%
+  set_engine("randomForest") %>%
+  fit(Class ~ ., data = DNA[train, ]) 
+
+pred_rF = predict(rf_randomForest, DNA[test, ])
+
+rf_ranger <-
+  model %>%
+  set_engine("ranger") %>%
+  fit(Class ~ ., data = DNA[train, ])
+
+pred_r = predict(rf_ranger, DNA[test, ])
+
+library(mclust)
+adjustedRandIndex(DNA$Class[test], pred_rF$.pred_class)
+adjustedRandIndex(DNA$Class[test], pred_r$.pred_class)
+sum(DNA$Class[test] != pred_rF$.pred_class)/length(test)*100
+sum(DNA$Class[test] != pred_r$.pred_class)/length(test)*100
+```
+
+# Avec Python
+Le package reticulate permet de lier R et Python en utilisant des appels Python dans R.
+```{r}
+library(reticulate)
+```
+
+## En utilisant directement les modules python pour modéliser les données
+Importer les modules de travail (qui contiennent les fonctions utilisées)
+
+```{r}
+np  = import("numpy")
+sk  = import("sklearn.ensemble")
+skd = import("sklearn.datasets")
+```
+
+Définir le modèle RandomForest
+```{r}
+RFpy  = sk$RandomForestClassifier(n_estimators=2000L)
+```
+
+Appliquer le modèle aux données DNA
+```{r}
+X         = as.matrix(DNA[train, -ncol(DNA)])
+Y         = np$array(as.numeric(DNA$Class[train]))
+fitpy     = RFpy$fit(X, Y)
+Xnew      = as.matrix(DNA[test, -ncol(DNA)])
+Ynew      = np$array(DNA$Class[test])
+pred_py   = RFpy$predict(Xnew)
+adjustedRandIndex(pred_py, Ynew)
+```
+
+## Utiliser une fenêtre interactive Python dans la session R
+```r
+repl_python()
+import sklearn.ensemble
+from sklearn.ensemble import RandomForestClassifier
+clf = RandomForestClassifier(n_estimators=2000)
+```
+
+## Importation de script Python
+Remarque : il est possible d'intégrer du code Python en Rmarkdown.
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+  def RF_DNA(X, y):
+  clf = RandomForestClassifier(n_estimators=100)
+  RF = clf.fit(X, y)
+  return RF
+```
+Dans R, on importe le script écrit en Python :
+```r
+source_python("RF_DNA.py")
+pred = RF_DNA(X, y)
+```
+
