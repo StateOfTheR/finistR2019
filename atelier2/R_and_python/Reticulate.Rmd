@@ -19,6 +19,7 @@ use_python("/home/claire/Applications/python/conda/bin/python")
 # on prend un jeu de donnée jouet : 
 data(cars)
 ```
+
 ## 1.1 Appel de librairies python dans l'environnement R
 Une première façon d'intégrer du code python dans R est d'utiliser ses bibliothèques/ modules de travail (qui contiennent les fonctions utilisées) avec la fonction reticulate::import("my_py_library")
 
@@ -58,11 +59,13 @@ Par exemple, * utiliser le script test pour montrer des conversion un peu bizarr
 Par ailleurs, l'appel de modules python dans un script R nécessite souvent des transformations de type : un array n'est pas un vector, etc. 
 
 # 2. Un premier cas d'étude : ouverture de fichiers exotiques
+
 Nous allons présenter comment utiliser la bibliothèque "reticulate", et mettre en évidence ses limites, au travers de l'ouverture de fichier via la librairie pandas.
 
 ## 2.1 Ouverture de csv "classiques"
 
 ## 2.2 Ouverture de gros csv
+
 ## 2.3 Ouverture de json emboités
 
 
@@ -150,7 +153,7 @@ RFpy  = sk$RandomForestClassifier(n_estimators=2000L)
 Appliquer le modèle aux données DNA
 ```{r}
 X         = as.matrix(DNA[train, -ncol(DNA)])
-Y         = np$array(as.numeric(DNA$Class[train]))
+Y         = np$array(DNA$Class[train])
 fitpy     = RFpy$fit(X, Y)
 Xnew      = as.matrix(DNA[test, -ncol(DNA)])
 Ynew      = np$array(DNA$Class[test])

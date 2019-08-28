@@ -1,0 +1,79 @@
+# repo2docker
+
+## Description
+
+repo2docker est un utilitaire écrit en python qui permet de transformer un dépôt
+git en image docker. Au lieu d'utiliser un fichier Dockerfile pour construire
+l'image, on utilise des fichiers de configuration spécifiques en fonction
+du langage. `repo2docker`permet de créer des images pour des applications Python,
+R ou Julia.
+
+## Installation
+
+- En premier lieu il faut installer [Docker](https://docs.docker.com/install/)
+- Installer `repo2docker` avec pip
+```
+python3 -m pip install jupyter-repo2docker
+```
+Attention `repo2docker` est encore au stade expérimental pour Windows.
+
+## Création du dépôt
+
+Nous nous intéressons uniquement à la création d'une image docker pour une
+application R. Le dépôt devra contenir des fichiers de configuration suivants:
+
+Si votre application est un package R, `repo2docker` lira le fichier DESCRIPTION
+et utilisera la commande `devtools::install_git(".")`. Vous devrez également
+fournir un fichier supplémentaire `runtime.txt` contenant la ligne
+```
+r-<YYYY>-<MM>-<DD>
+```
+ou YYYY-MM-DD sera la date du snapshot MRAN où chaque jour l'ensemble des packages
+du CRAN est sauvegardée depuis le 17 septembre 2014.
+
+Si vous souhaitez installer quelques packages supplémentaires, il faudra
+créer un fichier `install.R` qui peut contenir par exemple les lignes
+suivantes
+```R
+install.packages("tidyverse")
+install.packages("rmarkdown")
+install.packages("httr")
+install.packages("shinydashboard")
+install.packages('leaflet')
+```
+On peut également y ajouter des commandes R pour télécharger des données.
+
+Si certains de ces packages nécessite l'installation de packages linux spécifiques
+ceux-ci pourrant être mentionnés dans un fichier `apt.txt`
+
+Exemple pour LaTeX
+```
+texlive-latex-base
+texlive-latex-recommended
+texlive-science
+texlive-latex-extra
+texlive-fonts-recommended
+dvipng
+ghostscript
+```
+
+## Utilisation
+
+```
+jupyter-repo2docker --image-name r-example --user-id 1000 https://github.com/binder-examples/r
+```
+
+l'appication fournie une adresse de la forme http://127.0.0.1:XXXX/tree qui
+permet d'accéder au serveur jupyter. Vous pouvez accéder au serveur rstudio
+à l'adresse  http://127.0.0.1:XXXX/rstudio et l'application shiny à l'adresse
+ http://127.0.0.1:XXXX/shiny
+
+
+# Binder
+
+Vous pouvez également lancer ces applications sur binder en suivant les liens
+suivants:
+
+- Jupyter+R: http://mybinder.org/v2/gh/binder-examples/r/master?filepath=index.ipynb
+- RStudio: http://mybinder.org/v2/gh/binder-examples/r/master?urlpath=rstudio
+- RShiny: http://mybinder.org/v2/gh/binder-examples/r/master?urlpath=shiny/bus-dashboard/
