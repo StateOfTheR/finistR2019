@@ -1,5 +1,4 @@
 ---
-
 title: "Spark"
 author: "Navaro Pierre, Sophie Donnet, Pierre Barbillon, Martina Sundqvist, Timothée Tabouy"
 date: "28/08/2019"
@@ -7,15 +6,22 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, cache  =FALSE)
 ```
 
 ## Sparklyr : gestion des gros jeux de données.
 
 R studio gère entièrement l'installation de spark (librairie qui permet de gérer des taches) et sparklyr (package R qui permet d'utiliser un cluster spark). Pour ceci il suffit d'aller dans environnement -> new environnement -> spark.
-Une fois ceci fait on a crée un cluster spark (local dans ce cas-ci, en changeant l'option master il peut ne pas être local). EN local, il crée une collection parralèle en découpant tes données sur un nombre de coeur spécifié au moment de la création de la connection sur Rstudio en écrivant 
+Une fois ceci fait on  crée un cluster spark (local dans ce cas-ci, en changeant l'option master il peut ne pas être local). En local, il crée une collection parallèle en découpant les données sur un nombre de coeurs spécifié au moment de la création de la connection sur Rstudio en écrivant 
 
-```{r, eval = FALSE}
+```{r connect, eval = TRUE,warning=FALSE, comment=FALSE}
+library(sparklyr)
+library(dplyr)
+sc <- spark_connect(master = "local")
+``` 
+Ceci peut être fait par presse-boutons depuis Rstudio. 
+Il est possible de spécifier le nombre de coeurs en utilisant la commande suivante: 
+```{r connect2, eval = FALSE}
 sc <- spark_connect(master = "local[4]")
 ```
 pour 4 coeurs.
@@ -24,12 +30,138 @@ Si les données sont sur un serveur, on y accède en remplaçant local par l'adr
 
 En cliquant sur l'onglet Spark on a accès automatiquement à une interface web qui contient toutes les taches effectuées sur le cluster spark. Cette peut-être partagé, si les données sont sur un cluster, entre plusieurs personnes. 
 
-Remarque : il existe un toturiel ici <https://spark.rstudio.com/>, nous l'avons suivi en commençant à la section "Using dplyr" car spark et sparklyr ont été installé par la manipulation précédente.
+Remarque : il existe un tutoriel ici <https://spark.rstudio.com/>, nous l'avons suivi en commençant à la section "Using dplyr" car spark et sparklyr ont été installé par la manipulation précédente.
 
-L'intérêt d'utiliser le serveur spark est d'avoir accès à des fonctions parrallélisées et puissantes pour gérer les grosses données.
+L'intérêt d'utiliser le serveur spark est d'avoir accès à des fonctions parallélisées et puissantes pour gérer les grosses données.
 
 Sont mis à disposition les fonctions du package dplyr, on peut aussi exécuter des requêtes SQL, faire du machine learning avec sparklyr (voir <https://spark.rstudio.com/mlib/> pour une liste complète des fonctions à disposition).
 
 
 
+## Les données avec Spark
+
+L'objet `sc` est en gros l'adresse du cluster spark. C'est un objet de type `list`. 
+
+On va maintenant chercher à envoyer des données vers le serveur. 
+Pour notre cas, nous allons utiliser des données contenues dans les packages suivants: 
+
+```{r data,warning=FALSE, comment=FALSE}
+########### packages de données
+library("nycflights13")
+library("Lahman")
+library(dplyr)
+``` 
+
+Pour les envoyer dans le `sc`, nous utilisons la commande `copy_to`. 
+
+```{r copy }
+iris_tbl <- copy_to(sc, iris) # on copie les données 
+```
+
+Les données `iris `n'apparaissent pas dans l'environnement Rstudio.
+L'objet `iris_tbl` est une liste contenant *en gros* l'adresse des données sur le sc. 
+
+
+```{r what}
+names(iris_tbl)
+iris_tbl$src
+iris_tbl$ops
+``` 
+
+On peut afficher les données. On obtient alors un aperçu de la table dans lequel il est spécifié que c'est un objet spark. 
+```{r print}
+iris_tbl
+```
+
+```{r copy 2}
+flights_tbl <- copy_to(sc, nycflights13::flights, "flights") 
+batting_tbl <- copy_to(sc, Lahman::Batting, "batting")
+```
+
+Il est aussi possible d'envoyer  sur `sc` des données contenues dans un fichier (par exemple `.csv`) sans qu'elles ne passent dans l'envrionnement `Rstudio`. 
+A l'inverse, il est possible d'écrire des données du Spark dans un fichier type `.csv`. 
+
+```{r save, echo = TRUE, eval = TRUE}
+temp_csv <- tempfile(fileext = ".csv")
+spark_write_csv(iris_tbl, temp_csv)
+iris_csv_tbl <- spark_read_csv(sc, "iris_csv", temp_csv)
+```
+
+
+
+On obtient la liste des données dans le `sc` avec la commande suivante: 
+
+```{r ls }
+src_tbls(sc) # liste les objects sur sc. 
+```
+
+## Manipulation des données sous Spark
+
+
+Une fois les données sur le Spark, on utilise la fonction de `dplyr` de la même façon. Toutes les opérations se font sur les clusters (en parallèle). 
+Aucun objet n'apparaît dans l'environnement Rstudio. 
+
+```{r manip, warning = FALSE} 
+flights_tbl %>% filter(dep_delay == 2)
+flights_tbl %>% group_by(tailnum) %>% summarise(count = n(), dist = mean(distance), delay = mean(arr_delay)) %>% filter(count > 20, dist < 2000, !is.na(delay)) 
+ls()
+``` 
+
+Si on veut avoir des objets dans R, il faut faire utiliser `collect`. 
+```{r delay ,warning = FALSE} 
+delay <- flights_tbl %>% 
+  group_by(tailnum) %>%
+  summarise(count = n(), dist = mean(distance), delay = mean(arr_delay)) %>%
+  filter(count > 20, dist < 2000, !is.na(delay)) %>% collect
+``` 
+`delay` apparaît dans l'environnement. On peut maintenant faire des graphes. 
+
+```{r plot} 
+library(ggplot2)
+ggplot(delay, aes(dist, delay)) +
+  geom_point(aes(size = count), alpha = 1/2) +
+  geom_smooth() +
+  scale_size_area(max_size = 2)
+``` 
+
+Afin de créer une nouvelle colonne on utilise
+```{r speed flight}
+mutate(flights, speed = distance / air_time * 60)
+```
+
+
+
+## Machine Learning sous Spark. 
+
+Beaucoup de méthodes de machine Leanring sont codées pour spark. Elles sont listées ici
+[https://spark.rstudio.com/mlib/](https://spark.rstudio.com/mlib/). 
+
+```{r reg, warning = FALSE}
+mtcars_tbl <- copy_to(sc, mtcars)
+# transform our data set, and then partition into 'training', 'test'
+partitions <- mtcars_tbl %>%
+  filter(hp >= 100) %>%
+  mutate(cyl8 = cyl == 8) %>%
+  sdf_random_split(training = 0.5, test = 0.5, seed = 1099)
+```
+Tout est dans `sc` tant qu'on n'a pas utilisé `collect`.  
+On ajuste maintenant un modèle linéaire sur le Spark. Les fonctions s'appellent `ml_***`. 
+
+```{r reg2}
+fit <- partitions$training %>%
+  ml_linear_regression(response = "mpg", features = c("wt", "cyl"))
+fit
+```
+`fit` est un objet dans l'environnement de R. Les objets légers (estimation..) sont bien dans l'environnement. Par contre les choses lourdes (prédiction, données) restent sur `sc`. 
+
+```{r reg3}
+summary(fit)
+```
+
+Pour avoir accès aux prédictions, on doit utiliser :
+
+```{r predtest}
+pred = ml_predict(fit,partitions$test)
+collect(select(pred,prediction))
+```
 
