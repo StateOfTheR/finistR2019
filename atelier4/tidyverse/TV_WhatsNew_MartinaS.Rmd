@@ -1,0 +1,35 @@
+---
+title: "TidyVerse_WhatsNew_MartinaS"
+author: "Martina Sundqvist"
+date: "29/08/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Tidyverse <!-- {.tabset .tabset-fade .tabset-pills} use this code to make tabs, but does not work with the anchors (internal liks) --> 
+
+***
+Save space in your document using buttons or tabs for sub chapters. Add this code at the end of your title:
+
+## Tidyverse: Global overview 
+
+[![Image Title](logo_tidymodels.png){width=15%}](#tidymodels-link)
+
+mdfsljkfmdlsjdskm
+
+[![Image Title](logo_readr.png){width=13%}](#github-link)
+
+
+## Header1{#anchor} 
+
+Jump to [Header 1](#anchor)   
+
+
+
+## Tidymodels {#tidymodels-link}
+
+
+## Readr {#github-link}
