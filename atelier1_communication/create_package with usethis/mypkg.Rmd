@@ -99,6 +99,10 @@ private_key
 # Go to the Travis repository page - then More Options > Settings. Add an environment-variable named id_rsa. Paste your clipboard-contents into its value. Make sure you are not displaying the value in the log. Save.
 
 [OR travis::use_travis_deploy() | TOO MANY PERMISSIONS]
+
+### ADD TEST COVERAGE REPORTS
+use_coverage(type="codecov")
+# Go to the codecov repository page - then Add a repository > 'repo_name' > Copy Token. Then go to the Travis repository page - then More Options > Settings. Add an environment-variable named CODECOV_TOKEN. Paste your clipboard-contents into its value. 
 ```
 
 ## Prérequis
@@ -106,7 +110,7 @@ private_key
 
 * Installer les packages suivants :
     ```{r}
-    install.packages(c("devtools", "pkgdown", "RcppArmadillo"))
+    install.packages(c("devtools", "pkgdown", "RcppArmadillo", "covr"))
     remotes::install_github("ropenscilabs/travis")
     remotes::install_github("ropenscilabs/tic")
     ```
@@ -329,7 +333,7 @@ Pour éviter des problèmes mémoires et autres amuseries quand on détache le p
 NULL
 
 .onUnload <- function (libpath) {
-  library.dynam.unload("mypackage", libpath)
+  library.dynam.unload("mypkg", libpath)
 }
 
 #----- Fin du fichier
@@ -400,7 +404,7 @@ usethis::use_git()
 #> 2: Nope
 #> 3: Yup
 #> 
-#> Selection: 3
+#> Selection: 1
 ```
 Créez un nouveau repo sur votre compte GitHub et pushez votre package (voir <https://gist.github.com/mindplace/b4b094157d7a3be6afd2c96370d39fad> pour la procédure à suivre, retranscris ci-dessous au cas où le lien url venait à être cassé).
 
@@ -416,7 +420,7 @@ Créez un nouveau repo sur votre compte GitHub et pushez votre package (voir <ht
 
 #### Connect your local project folder to your empty folder/repository on Github.
 
-The screen you should be seeing now on Github is titled 'Quick setup — if you’ve done this kind of thing before'.
+The screen you should be seeing now on Github is titled 'Quick setup --- if you've done this kind of thing before'.
 
 Copy the link in the input right beneath the title, it should look something like this: https://github.com/mindplace/test-repo.git This is the web address that your local folder will use to push its contents to the remote folder on Github.
 
@@ -428,7 +432,7 @@ Example: git remote add origin https://github.com/mindplace/test-repo.git
 
 3. Push your branch to Github: git push origin master
 
-4. Go back to the folder/repository screen on Github that you just left, and refresh it. The title 'Quick setup — if you’ve done this kind of thing before' should disappear, and you should see your files there.
+4. Go back to the folder/repository screen on Github that you just left, and refresh it. The title 'Quick setup --- if you've done this kind of thing before' should disappear, and you should see your files there.
 
 ## Intégration continue avec Travis-CI
 Commencez par créer un compte sur <https://travis-ci.org/> si ce n'est pas déjà fait (il faudra probablement vous connecter avec votre compte GitHub).
@@ -439,13 +443,20 @@ usethis::use_travis()
 #> ✔ Writing '.travis.yml'
 #> ✔ Adding '^\\.travis\\.yml$' to '.Rbuildignore'
 #> ● Turn on travis for your repo at https://travis-ci.org/profile/fcheysson
-#> ● 
-#>   <!-- badges: start -->
-#>   [![Travis build status](https://travis-ci.org/fcheysson/mypkg.svg?branch=master)](https://travis-ci.org/fcheysson/mypkg)
-#>   <!-- badges: end -->
-#>   [Copied to clipboard]
+#> ✔ Adding Travis build status badge to 'README.Rmd'
+#> ● Re-knit 'README.Rmd'
 ```
 Vos prochains pushes seront désormais testés avec Travis. Effectuez un commit-push maintenant.
+
+#### Push sans faire appel à Travis
+Soyons green ! 
+Il est possible d'effectuer des pushes sans faire appel à Travis.
+Pour ceci, il faut que les commits contenus dans le push possèdent la chaine de caractère `[ci skip]` dans leur message de commit.
+Par exemple
+```{}
+commit -m 'Ceci est un message [ci skip]'
+```
+
 
 ## Associer une page web GitHub à votre package
 Dans un premier temps, créez votre site.
@@ -535,3 +546,20 @@ Pour réduire les permissions de Travis, suivre ces étapes :
 
 Désormais, chacun de vos pushes compile votre site à partir du fichier 'README.Rmd' et des documentations .Rd.
 Votre site est accessible sur <compte_github>.github.io/<nom_du_package> (par exemple, fcheysson.github.io/mypkg).
+
+## Couverture de tests
+Pour rajouter le niveau de couverture de vos tests unitaires sur votre page GitHub et le site web du package :
+```{r}
+usethis::use_coverage(type="codecov")
+#> ✔ Adding 'covr' to Suggests field in DESCRIPTION
+#> ✔ Writing 'codecov.yml'
+#> ✔ Adding '^codecov\\.yml$' to '.Rbuildignore'
+#> ✔ Adding Codecov test coverage badge to 'README.Rmd'
+#> ● Re-knit 'README.Rmd'
+#> ● Add to '.travis.yml':
+#>   after_success:
+#>     - Rscript -e 'covr::codecov()'
+#>   [Copied to clipboard]
+```
+Il faut ensuite lier codecov à votre GitHub.
+Pour ceci, rendez-vous sur <https://codecov.io/>, connectez-vous avec votre compte GitHub et associez votre repo en suivant les instructions (dans votre repo Travis, dans More options > Settings, ajoutez une variable d'environnement nommée `CODECOV_TOKEN` ayant pour valeur celle donnée par codecov.io).
