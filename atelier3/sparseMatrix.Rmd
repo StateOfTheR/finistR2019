@@ -1,7 +1,7 @@
 ---
 title: "sparseMatrix"
 author: "Marine Marjou"
-date: "28 août 2019"
+date: "29 août 2019"
 output: html_document
 ---
 
@@ -88,7 +88,7 @@ Avec :
 
 ```{r}
 mat_sparse_triplet <- sparseMatrix(i = i, j = j, x = k)
-object.size(mat_sparse3)
+object.size(mat_sparse_triplet)
 ```
 
 ```{r}
@@ -122,7 +122,7 @@ Attention :
 ```{r}
 slam.matrix
 ```
-`slam` n'enregistre pas *la forme de la matrice* comme on a pu le voir avec `Matrix` mais l'ensemble du triplet renseigné dans la fonction :
+`slam` n'enregistre pas *la forme de la matrice* comme on a pu le voir avec `Matrix` mais l'ensemble du triplet est renseigné dans la fonction :
 ```{r eval=FALSE, include=TRUE}
 slam.matrix$i
 slam.matrix$j
@@ -130,7 +130,17 @@ slam.matrix$v
 ```
 
 
+# 3. Quelques infos utiles 
 
+Les triplets de `Matrix` et `slam` sont similaires. Et il est intéressant de transformer des matrices pleines en matrices creuses à partir de 50% de 0.  
+Les matrices creuses prennent donc moins de places et donc peuvent être stocker dans l'environnement R plus facilement et le temps de calcul peut être considérablement réduit.
+
+
+
+# Liens utiles
+
+https://www.gormanalysis.com/blog/sparse-matrix-construction-and-use-in-r/  
+https://r2014-mtp.sciencesconf.org/file/92662  
 
 
 
