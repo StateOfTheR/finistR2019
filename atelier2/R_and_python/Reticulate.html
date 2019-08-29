@@ -270,6 +270,7 @@ code {
 }
 img {
   max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -382,12 +383,12 @@ data(cars)</code></pre>
 <p>Une première façon d’intégrer du code python dans R est d’utiliser ses bibliothèques/ modules de travail (qui contiennent les fonctions utilisées) avec la fonction reticulate::import(“my_py_library”)</p>
 <pre class="r"><code>np  = import(&quot;numpy&quot;)</code></pre>
 <p>Ensuite, on lance directement les fonctions pythons en précisant quelle librairie utiliser. Par exemple, si on veut faire la moyenne par variable de notre jeu de données cars :</p>
-<pre class="r"><code>print(np$mean(cars))</code></pre>
+<pre class="r"><code>np$mean(cars)</code></pre>
 <pre><code>## speed  dist 
 ## 15.40 42.98</code></pre>
 </div>
 <div id="fenetre-interactive" class="section level2">
-<h2>1.2 Fenêtre intéractive</h2>
+<h2>1.2 Fenêtre interactive</h2>
 <p>Un deuxième moyen d’utiliser du python dans un script R est d’ouvrir une fenêtre intéractive avec repl_python :</p>
 <pre class="r"><code>repl_python()
 from sklearn.ensemble import RandomForestClassifier
@@ -398,7 +399,8 @@ exit</code></pre>
 <div id="appel-dun-script-python" class="section level2">
 <h2>1.3 Appel d’un script python</h2>
 <p>La dernière façon est de charger un script .py dans le script : les fonctions sont alors directement appelée comme dans 1.1</p>
-<pre class="r"><code>source_python(&#39;test.py&#39;)
+<pre class="r"><code>use_python(&quot;/home/claire/Applications/python/conda/bin/python&quot;)
+source_python(&#39;test.py&#39;)
 my_mean(cars)</code></pre>
 <pre><code>## speed  dist 
 ## 15.40 42.98</code></pre>
@@ -448,15 +450,9 @@ t1r = Sys.time()
 tcalc_r = t1r - t0r
 
 tcalc_rF</code></pre>
-<<<<<<< HEAD
-<pre><code>## Time difference of 1.356649 secs</code></pre>
+<pre><code>## Time difference of 1.340775 secs</code></pre>
 <pre class="r"><code>tcalc_r</code></pre>
-<pre><code>## Time difference of 0.4629869 secs</code></pre>
-=======
-<pre><code>## Time difference of 1.565135 secs</code></pre>
-<pre class="r"><code>tcalc_r</code></pre>
-<pre><code>## Time difference of 0.534363 secs</code></pre>
->>>>>>> 7e3ae99f0c7bbd5b348c5244d5fd513a046074ce
+<pre><code>## Time difference of 0.5925188 secs</code></pre>
 <pre class="r"><code>RFrF</code></pre>
 <pre><code>## 
 ## Call:
@@ -465,21 +461,12 @@ tcalc_rF</code></pre>
 ##                      Number of trees: 500
 ## No. of variables tried at each split: 13
 ## 
-<<<<<<< HEAD
-##         OOB estimate of  error rate: 5.02%
+##         OOB estimate of  error rate: 4.71%
 ## Confusion matrix:
 ##     ei  ie   n class.error
-## ei 356  19  14  0.08483290
-## ie  13 368   7  0.05154639
-## n    6  21 789  0.03308824</code></pre>
-=======
-##         OOB estimate of  error rate: 4.02%
-## Confusion matrix:
-##     ei  ie   n class.error
-## ei 365  12  16  0.07124682
-## ie  12 356  10  0.05820106
-## n    2  12 808  0.01703163</code></pre>
->>>>>>> 7e3ae99f0c7bbd5b348c5244d5fd513a046074ce
+## ei 353  14  14  0.07349081
+## ie   9 363  15  0.06201550
+## n    6  17 802  0.02787879</code></pre>
 <pre class="r"><code>RFr</code></pre>
 <pre><code>## Ranger result
 ## 
@@ -494,11 +481,7 @@ tcalc_rF</code></pre>
 ## Target node size:                 1 
 ## Variable importance mode:         none 
 ## Splitrule:                        gini 
-<<<<<<< HEAD
-## OOB prediction error:             4.96 %</code></pre>
-=======
-## OOB prediction error:             4.46 %</code></pre>
->>>>>>> 7e3ae99f0c7bbd5b348c5244d5fd513a046074ce
+## OOB prediction error:             4.52 %</code></pre>
 </div>
 <div id="avec-parsnip" class="section level3">
 <h3>3.1.2 Avec parsnip</h3>
@@ -520,26 +503,16 @@ rf_ranger &lt;-
 pred_r = predict(rf_ranger, DNA[test, ])
 
 library(mclust)</code></pre>
-<pre><code>## Package 'mclust' version 5.4.1
-## Type 'citation(&quot;mclust&quot;)' for citing this R package in publications.</code></pre>
+<pre><code>## Package &#39;mclust&#39; version 5.4.5
+## Type &#39;citation(&quot;mclust&quot;)&#39; for citing this R package in publications.</code></pre>
 <pre class="r"><code>adjustedRandIndex(DNA$Class[test], pred_rF$.pred_class)</code></pre>
-<<<<<<< HEAD
-<pre><code>## [1] 0.8851711</code></pre>
+<pre><code>## [1] 0.8604855</code></pre>
 <pre class="r"><code>adjustedRandIndex(DNA$Class[test], pred_r$.pred_class)</code></pre>
-<pre><code>## [1] 0.88214</code></pre>
+<pre><code>## [1] 0.8533368</code></pre>
 <pre class="r"><code>sum(DNA$Class[test] != pred_rF$.pred_class)/length(test)*100</code></pre>
-<pre><code>## [1] 4.143126</code></pre>
+<pre><code>## [1] 5.14752</code></pre>
 <pre class="r"><code>sum(DNA$Class[test] != pred_r$.pred_class)/length(test)*100</code></pre>
-<pre><code>## [1] 4.268675</code></pre>
-=======
-<pre><code>## [1] 0.8674805</code></pre>
-<pre class="r"><code>adjustedRandIndex(DNA$Class[test], pred_r$.pred_class)</code></pre>
-<pre><code>## [1] 0.8584452</code></pre>
-<pre class="r"><code>sum(DNA$Class[test] != pred_rF$.pred_class)/length(test)*100</code></pre>
-<pre><code>## [1] 4.896422</code></pre>
-<pre class="r"><code>sum(DNA$Class[test] != pred_r$.pred_class)/length(test)*100</code></pre>
-<pre><code>## [1] 5.27307</code></pre>
->>>>>>> 7e3ae99f0c7bbd5b348c5244d5fd513a046074ce
+<pre><code>## [1] 5.461394</code></pre>
 </div>
 </div>
 <div id="avec-python" class="section level2">
@@ -561,11 +534,7 @@ Xnew      = as.matrix(DNA[test, -ncol(DNA)])
 Ynew      = np$array(DNA$Class[test])
 pred_py   = RFpy$predict(Xnew)
 adjustedRandIndex(pred_py, Ynew)</code></pre>
-<<<<<<< HEAD
-<pre><code>## [1] 0.8923388</code></pre>
-=======
-<pre><code>## [1] 0.8666088</code></pre>
->>>>>>> 7e3ae99f0c7bbd5b348c5244d5fd513a046074ce
+<pre><code>## [1] 0.8581665</code></pre>
 <div id="utiliser-une-fenetre-interactive-python-dans-la-session-r" class="section level3">
 <h3>3.2.2 Utiliser une fenêtre interactive Python dans la session R</h3>
 <pre class="r"><code>repl_python()
