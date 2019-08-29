@@ -21,3 +21,4 @@ Ces étapes se divisent en plusieurs sous-étapes :
 
 ![Etapes de modélisation](tidymodels2.png)
 
+Pour plus d'infos : <https://rviews.rstudio.com/2019/06/19/a-gentle-intro-to-tidymodels/>.
