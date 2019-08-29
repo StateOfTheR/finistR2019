@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Wed Aug 28 15:06:05 CEST 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-016c-d855-5022-0000080bbe70 
-on database directory memory:D:\WORK_ALL\RESSOURCES_INFORMATIQUES\Semaines_FinistR\finistR2019\spark\databaseName=metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@26643945 
-Loaded from file:/C:/Users/Donnet/AppData/Local/spark/spark-2.2.0-bin-hadoop2.7/jars/derby-10.12.1.1.jar
-java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_191-b12
-user.dir=D:\WORK_ALL\RESSOURCES_INFORMATIQUES\Semaines_FinistR\finistR2019\spark
-os.name=Windows 7
-os.arch=amd64
-os.version=6.1
+Thu Aug 29 10:01:09 CEST 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-016c-dc64-7e7d-00000ae5b658 
+on database directory /Users/aubert/finistR2019/spark/metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@35c5328 
+Loaded from file:/Users/aubert/Library/Caches/spark/spark-2.4.3-bin-hadoop2.7/jars/derby-10.12.1.1.jar
+java.vendor=AdoptOpenJDK
+java.runtime.version=1.8.0_222-b10
+user.dir=/Users/aubert/finistR2019/spark
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.14.5
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''

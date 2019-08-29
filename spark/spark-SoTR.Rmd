@@ -36,6 +36,20 @@ L'intérêt d'utiliser le serveur spark est d'avoir accès à des fonctions para
 
 Sont mis à disposition les fonctions du package dplyr, on peut aussi exécuter des requêtes SQL, faire du machine learning avec sparklyr (voir <https://spark.rstudio.com/mlib/> pour une liste complète des fonctions à disposition).
 
+#### Remarque sous Mac
+Spark utilise la version 8 de Java. Si Java n'est pas installé sur votre Mac ou la version n'est pas la 8, les commandes
+à taper dans le terminal pour installer la version 8 de Java :
+```{r, eval = FALSE}
+# desinstaller java
+brew cask remove java
+# reinstaller java version 8.0
+brew cask install homebrew/cask-versions/adoptopenjdk8
+```
+
+Il reste alors à spécifier dans R
+```{r path_java}
+Sys.setenv(JAVA_HOME = "/path/to/java/installation")
+```
 
 
 ## Les données avec Spark
