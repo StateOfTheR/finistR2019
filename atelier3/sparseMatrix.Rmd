@@ -1,5 +1,5 @@
 ---
-title: "Medium and Big data"
+title: "sparseMatrix"
 author: "Marine Marjou"
 date: "28 août 2019"
 output: html_document
@@ -13,13 +13,13 @@ library(microbenchmark)
 ```
 
 
-# 1. Introduction
+# 1. Qu'est ce que c'est ?
+
+Les matrices creuses ou *sparse matrix* sont des matrices qui contiennent beaucoup de zéros (ex: matrice d'adjacence, matrice diagonale, etc...). Ces matrices peuvent prendre beaucoup de places et il est donc judicieux d'utiliser des fonctions spéciales pour ce genre de matrice afin de les rendre plus *légères* : les valeurs nulles vont être remplacées par un point `.`.
 
 # 2. Utilisation des matrices creuses
 
-Les matrices creuses ou *sparse matrix* sont des matrices qui contiennent beaucoup de zéros (ex: matrice d'adjacence, matrice diagonale, etc...). Ces matrices peuvent prendre beaucoup de places et il est donc judicieux d'utiliser des fonctions spéciales pour ce genre de matrice afin de les rendre plus *légères*.
-
-## 2.1 `Matrix`
+## 2.1 Avec le package `Matrix`
 
 ```{r}
 m1 <- matrix(0, nrow = 1000, ncol = 1000)
@@ -33,7 +33,7 @@ object.size(m2)
 
 Selon le type de données que l'on possède plusieurs stratégies de création de matrice creuse sont possibles :
 
-### 1- Transformer à l'aide de la fonction `as` ou `Matrix`
+### 2.1.1- Transformer à l'aide des fonctions `as` ou `Matrix`
 
 ```{r}
 mat <- matrix(rbinom(10000, 1, 0.1), ncol = 100, nrow = 100)
@@ -46,18 +46,29 @@ mat_sparse2 <- Matrix(mat, sparse = TRUE)
 object.size(mat_sparse2)
 ```
 
-Il est possible de choisir dans quel sens on décide de compresser sa matrice : 
+Par défaut, lorsque l'on renseigne la classe `sparseMatrix` la compression se fera automatiquement par COLONNE, mais il est possible de choisir entre une compression par ligne ou par colonne avec les arguments suivant :
 
 - par colonne avec `as(dt, "dgCMatrix")` 
 - par ligne avec `as(dt, "dgRMatrix")`
 
 Ce choix de compression peut s'avérer utile selon si on veut travailler par ligne ou par colonne.
 
+Autre choix de compression :
 
-### 2- Transformation en matrice creuse avec un stockage en triplet avec `sparseMatrix`:
+Class | Compression | Type
+------|-------------|----------------
+ngeMatrix	|none	|logicals
+dgeMatrix	|none	|real numbers
+dgCMatrix	|compressed sparse column	|real numbers
+dgRMatrix	|compressed sparse row	|real numbers
+ngCMatrix	|compressed sparse column	|logicals
+ngRMatrix	|compressed sparse row	|real numbers
+
+
+### 2.1.2- Transformation avec un stockage en triplet avec `sparseMatrix`:
 
 ```{r}
-# données
+# Génération de la matrice
 k <- c(4,5,7,1,3,2,6)
 i <- c(1,1,5,4,2,1,3)
 j <- c(3,4,4,1,2,2,4)
@@ -76,9 +87,7 @@ Avec :
 - k : valeurs non-nulles  
 
 ```{r}
-mat_sparse3 <- sparseMatrix(i = i,
-                            j = j,
-                            x = k)
+mat_sparse_triplet <- sparseMatrix(i = i, j = j, x = k)
 object.size(mat_sparse3)
 ```
 
@@ -93,14 +102,13 @@ object.size(mat_sparse5)
 ### 2.1.3 Enregistrer/charger une sparseMatrix
 
 ```{r eval=FALSE, include=TRUE}
-writeMM(obj = mat_spars3, file = "sparse_matrix.mtx")
+writeMM(obj = mat_spars_triplet, file = "sparse_matrix.mtx")
 
 sp_matrix_read <- readMM("sparse_matrix.mtx")
 ```
 
 
-
-## 2.2 `slam`
+## 2.2 Avec le package `slam`
 
 ```{r}
 library(slam)
@@ -110,6 +118,16 @@ slam.matrix <- as.simple_triplet_matrix(my.matrix)
 object.size(slam.matrix)
 ```
 
+Attention :
+```{r}
+slam.matrix
+```
+`slam` n'enregistre pas *la forme de la matrice* comme on a pu le voir avec `Matrix` mais l'ensemble du triplet renseigné dans la fonction :
+```{r eval=FALSE, include=TRUE}
+slam.matrix$i
+slam.matrix$j
+slam.matrix$v
+```
 
 
 
