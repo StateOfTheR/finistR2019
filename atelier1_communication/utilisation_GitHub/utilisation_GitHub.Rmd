@@ -195,30 +195,54 @@ git push
 ```
 
 
-## 4. Branches
+## 4. Work with several people
 
-In GitHub you can work on different branches. The original branch is called « master ». To know on with branch you are type:
+When working together on a github project, the good use is not to push directly on the principal branch, called "master". It is linked to the management of conflicts : as it is steneous to manage conflicts (add, commit, pull, mergetools ...), the common use of git, working with several people, is to create one's own branch. Let's call it "my_branch". 
+Then, working on a github project means modifing a branch. To get the current branch, the command is :
+<!-- In GitHub you can work on different branches. The original branch is called « master ». To know on with branch you are type: -->
 
 ```{bash, eval = F}
 git branch
 ```
 `* master`       
 
-If you want to deviate your work from the master branch you can create a new branch, to do this, use the command:
+To create your new branch use the command:
 
 ```{bash, eval = F}
-git branch "NAME_OF_NEW_BRANCH"
+git push origin my_branch
 ```
 
 To change the branch that you work on, type:
 
 ```{bash, eval = F}
-git checkout "NAME_OF_NEW_BRANCH"
-git branch
+git checkout my_branch
+git branch # to check the current branch == my_branch
 ```
 
-`*NAME_OF_NEW_BRANCH`        
-
-
 Working on another branch than the master branch allows to develop the original project in to different directions or to keep the master version in the present state and still continue to develop the project in the new branches. 
+The command are the same as on master branch push, pull, add, commit, ... And you can specify on the branch you push, pull, add ... with adding the origin on your command :
+
+```{bash, eval = F}
+git pull origin my_branch
+git branch # to check the current branch
+```
+
+When your branch is good enough to be added to the main branch, you merge it into the master branch. To do so, you need to save your work : 
+```{bash, eval = F}
+git add .
+git commit -m "mon commit message"
+```
+Then, you need to go to the master branch : 
+```{bash, eval = F}
+git checkout master
+git branch # to check the current branch == master
+```
+
+Finally, with the command : 
+
+```{bash, eval = F}
+git merge my_branch
+```
+
+
 
