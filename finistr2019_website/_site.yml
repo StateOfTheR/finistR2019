@@ -16,7 +16,18 @@ navbar:
         - text: "Web"
         - text: "Distill website"
           href: distill_presentation.html
-    
+  - text: "Développement de package"
+    icon: fas fa-box-open
+    menu:
+        - text: "Versionning"
+          href: git_presentation.html          
+        - text: "Intégration continue"
+          href: travis_presentation.html
+        - text: "---"
+        - text: "Mise en place de la structure"
+          href: struct_package.html
+        - text: "Intégration de code C++"
+          href: src_package.html
 output:
   html_document:
     theme: flatly
