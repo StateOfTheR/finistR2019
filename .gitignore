@@ -3,16 +3,13 @@
 .Rhistory
 .Rapp.history
 .RData
-<<<<<<< HEAD
 atelier2/R_and_python/.ipynb_checkpoints/
 atelier2/R_and_python/ranger.ipynb
 atelier2/R_and_python/RandomForest.ipynb
-=======
 spark/*_cache/
 spark/logs/
 spark/*_files/
-<<<<<<< HEAD
 spark/derby.log
-=======
->>>>>>> master
->>>>>>> R_python
+atelier2/sdeEuler
+
+
