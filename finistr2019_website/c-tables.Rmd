@@ -58,7 +58,7 @@ https://davidgohel.github.io/flextable/articles/overview.html
 
 Allow to export as html, pdf or office. 
 
-![](img/flextable_functions.svg)
+![](img/c-flextable_functions.svg)
 
 ```{r}
 library(flextable)
@@ -145,9 +145,9 @@ flex_gtcars %>%
 
 https://github.com/rstudio/gt
 
-![](img/gt_parts_of_a_table.svg)
+![](img/c-gt_parts_of_a_table.svg)
 
-![](img/gt_functions.svg)
+![](img/c-gt_functions.svg)
 
 `gt()` create a `gt_tbl` object.
 
