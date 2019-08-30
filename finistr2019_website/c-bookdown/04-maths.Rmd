@@ -1,0 +1,107 @@
+# Maths
+
+## Équations
+
+On peut écrire des équations ou des environnements LaTeX dans le texte $x = 3$ en les entourant par un `$`, ou $$x = 3$$ en les entourant de `$$`.
+
+Pour référencer et numéroter, on utilise un marqueur commençant par `\#eq:` et ne contenant que des caractères alphanumériques, `:`, `-` ou `/` :
+
+```
+\begin{equation}
+x = 3 (\#eq:x3)
+\end{equation}
+```
+
+
+\begin{equation}
+x = 3 (\#eq:x3)
+\end{equation}
+
+
+Et on fait référence à \@ref(eq:x3) via `\@ref(eq:x3)`. Les équations sans labels ne sont pas numérotées.
+
+
+
+On peut numéroter ligne par ligne ...
+
+```
+\begin{align}
+x & = 2 + 3*6 (\#eq:x236) \\
+  & = 2 + 18 \\
+  & = 20 (\#eq:x20)
+\end{align}
+```
+
+\begin{align}
+x & = 2 + 3*6 (\#eq:x236) \\
+  & = 2 + 18 \\
+  & = 20 (\#eq:x20)
+\end{align}
+
+
+... ou le calcul entier.
+
+```
+\begin{align}
+\begin{split}
+x & = 2+ 3 * 6 \\
+  & = 20
+\end{split}
+(\#eq:x2lignes)
+\end{align}
+```
+
+\begin{align}
+\begin{split}
+x & = 2+ 3 * 6 \\
+  & = 20
+\end{split}
+(\#eq:x2lignes)
+\end{align}
+
+
+## Environnements mathématiques
+
+Il existe plusieurs environements mathématiques par défaut : 
+
+```{r theorem-envs, echo=FALSE}
+knitr::kable(data.frame(
+  Environment = names(bookdown:::theorem_abbr),
+  `Printed Name` = unname(unlist(bookdown:::label_names_math)),
+  `Label Prefix` = unname(bookdown:::theorem_abbr),
+  stringsAsFactors = FALSE, check.names = FALSE
+), caption = '(ref:theorem-envs)', booktabs = TRUE)
+```
+
+Ceux-ci sont numérotés par défaut.
+
+```{r, comment=NA, echo=FALSE}
+cat("```{definition}\nUn triangle rectangle est un triangle qui possède un angle droit.\n```")
+```
+
+```{definition}
+Un triangle rectangle est un triangle qui possède un angle droit.
+```
+
+On peut nommer et labeller un environnement ...
+
+```{r, comment=NA, echo=FALSE}
+cat('````{theorem, name="Pythagore", label = "pyth"}\nDans un triangle rectangle, $a^2+b^2=c^2$.\n```')
+```
+
+```{theorem, name="Pythagore", label = "pyth"}
+Dans un triangle rectangle, $a^2+b^2=c^2$.
+```
+
+et y faire réference via `\@ref(thm:pyth)` : \@ref(thm:pyth). Il faut remplacer `thm` par le préfixe correspondant à l'environnement concerné.
+
+Il existe aussi des environnements non numérotés : `proof`, `remark` et `solution`, qui peuvent être nommé mais auxquels on ne peut pas faire référence.
+
+```{remark, name = "Al-Kashi"}
+Il existe une généralisation du théorème \@ref(thm:pyth) lorsque le triangle n'est pas rectangle.
+```
+
+
+
+
+

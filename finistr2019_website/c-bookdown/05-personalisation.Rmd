@@ -1,0 +1,32 @@
+# Personalisation
+
+## Thème 
+
+
+On peut rajouter un en-tête et un pied de sommaire dans le `_output.yml` comme ceci :
+
+```
+bookdown::gitbook:
+  css: style.css
+  config:
+    toc:
+      before: |
+        <li><a href="./">Introduction à bookdown</a></li>
+      after: |
+        <li><a href="https://stateofther.github.io/finistR2019/" target="blank">Fait pendant Finist'R 2019</a></li>
+```
+
+
+## Packages LaTeX
+
+Il est possible d'utiliser des packages LaTeX dans la compilation au format PDF, par exemple pour écrire des symboles spéciaux : $\scorpio$. 
+
+Il suffit de rajouter `\usepackage{wasysym}` dans le fichier `preamble.tex` et le spréciser dans le `_bookdown.yml` :
+
+```
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex
+```
+
+Cependant, ceci ne permet pas d'utiliser les packages pour une sortie au format HTML. 

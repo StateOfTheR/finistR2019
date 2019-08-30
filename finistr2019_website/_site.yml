@@ -14,11 +14,15 @@ navbar:
     icon: fa-microphone
     menu:
         - text: "Distill"
-          href: distill_presentation.html
-        - text: "Bookdown"
-          href: bookdown_presentation.html          
+          href: c-distill_presentation.html
+        - text: "---"
+        - text: "Bookdown en HTML"
+          href: ../finistr2019_website/c-bookdown/_book/
+        - text: "Bookdown en PDF"
+          href: ../finistr2019_website/c-bookdown/_book/bookdown.pdf
+        - text: "---"
         - text: "Tables"
-          href: tables_presentation.html
+          href: c-tables.html
   - text: "Développement"
     icon: fas fa-box-open
     menu:
@@ -39,20 +43,20 @@ navbar:
         - text: "Reproductibilité"
           href: renv_presentation.html
   - text: "Statistiques"
-    icon: fas fa-box-open
+    icon: fas fa-chart-bar
     menu:
         - text: "Matrices"
           href: matrices_presentation.html     
         - text: "---"
         - text: "Modèles mixtes avec lme4"
-          href: lme4-exemples-dragons.html
+          href: s-lme4-exemples-dragons.html
         - text: "---"
         - text: "Tidy Model"
           href: tidy_model_presentation.html
         - text: "Intégration dans Parsnip"
           href: tidy_model_presentation.html
   - text: "Manipulation des données"
-    icon: fas fa-box-open
+    icon: fas fa-wrench
     menu:
         - text: "Tidyverse"
           href: tidyverse_presentation.html          

@@ -55,3 +55,17 @@ Ici, on spécifie la légend directement via un argument de `knitr::kable()`. On
 Si on définit une référence textuelle via `(ref:bact) Faecalibacterium prausnitzii`, on peut écrire (ref:bact) avec `(ref:bact)` et même plusieurs fois (ref:bact) (ref:bact) (ref:bact) pour éviter de dupliquer le texte.
 
 
+## Bibliographie
+
+La bibliographie se spécifie dans le YAML du fichier `index.Rmd` via `bibliography: [book.bib, packages.bib]`.
+
+* `@R-base` va produire @R-base,
+* `[@R-base]` va produire [@R-base].
+
+Par défaut, références sont affichées en fin de chapitre pour le HTML et en fin de livre pour du PDF.
+
+Pour rajouter une bibliographie en fin de livre pour le format HTML, on peut utiliser `if (knitr::is_html_output()) '# References {-}'`.
+
+
+
+

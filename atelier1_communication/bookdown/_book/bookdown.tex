@@ -155,10 +155,14 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
+\hypertarget{hello}{%
+\chapter*{Hello}\label{hello}}
+\addcontentsline{toc}{chapter}{Hello}
+
 \hypertarget{intro}{%
 \chapter{Introduction}\label{intro}}
 
-\textbf{bookdown} est un package R développé par Yihui Xe qui permet d'écrire des livres en format Rmarkdown pour les publier en PDF ou HTML. Le principe de base consiste à utiliser un fichier Rmarkdown par chapitre.
+\textbf{bookdown} \citep{R-bookdown} est un package R développé par Yihui Xe qui permet d'écrire des livres en format Rmarkdown \citep{R-rmarkdown} pour les publier en PDF ou HTML. Le principe de base consiste à utiliser un fichier Rmarkdown par chapitre.
 
 \textbf{bookdown} peut être installé depuis le CRAN
 
@@ -200,6 +204,8 @@ On peut également rajouter des en-têtes de niveau 1 spécifiques à \textbf{bo
 \item
   \texttt{\#(APPENDIX)\ Appendix\ \{-\}}
 \end{itemize}
+
+On peut ne pas numéroter un chapitre en mettant \texttt{\{-\}} à la fin du titre.
 
 \hypertarget{mise-en-forme}{%
 \chapter{Mise en forme}\label{mise-en-forme}}
@@ -294,6 +300,23 @@ Ici, on spécifie la légend directement via un argument de \texttt{knitr::kable
 
 
 Si on définit une référence textuelle via \texttt{(ref:bact)\ Faecalibacterium\ prausnitzii}, on peut écrire Faecalibacterium prausnitzii avec \texttt{(ref:bact)} et même plusieurs fois Faecalibacterium prausnitzii Faecalibacterium prausnitzii Faecalibacterium prausnitzii pour éviter de dupliquer le texte.
+
+\hypertarget{bibliographie}{%
+\section{Bibliographie}\label{bibliographie}}
+
+La bibliographie se spécifie dans le YAML du fichier \texttt{index.Rmd} via \texttt{bibliography:\ {[}book.bib,\ packages.bib{]}}.
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{@R-base} va produire \citet{R-base},
+\item
+  \texttt{{[}@R-base{]}} va produire \citep{R-base}.
+\end{itemize}
+
+Par défaut, références sont affichées en fin de chapitre pour le HTML et en fin de livre pour du PDF.
+
+Pour rajouter une bibliographie en fin de livre pour le format HTML, on peut utiliser \texttt{if\ (knitr::is\_html\_output())\ \textquotesingle{}\#\ References\ \{-\}\textquotesingle{}}.
 
 \hypertarget{maths}{%
 \chapter{Maths}\label{maths}}
@@ -476,7 +499,7 @@ Cependant, ceci ne permet pas d'utiliser les packages pour une sortie au format 
 
 \href{https://github.com/ismayc/thesisdown}{Thesisdown}
 
-\bibliography{book.bib,packages.bib}
+\bibliography{packages.bib}
 
 
 \end{document}

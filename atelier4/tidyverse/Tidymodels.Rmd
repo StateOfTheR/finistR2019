@@ -1,0 +1,24 @@
+---
+title: "Tidymodels"
+author: "Marie Morvan"
+date: "29/08/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tidymodels
+![Introduction à tidymodels](tidymodels.png)
+
+Le package tidymodels permet d'installer et de charger les packages tidyverse permettant de faciliter la modélisation de données. Les packages de tidymodels ne permettent pas de construire les modèles statistiques, mais de faciliter toutes les étapes de prétraitement et de visualisation des données.
+
+Ces étapes se divisent en plusieurs sous-étapes :
+- le prétraitement des données peut être effectué grâce aux packages rsample (ré-échantillonnage des données) et recipes (création et traitement de matrice de design)
+- l'apprentissage peut être effectué grâce à parsnip (fournit une interface commune de modélisation)
+- la validation peut être effectuée grâce à yardstick (évaluation des performances de différents types de modèles)
+
+![Etapes de modélisation](tidymodels2.png)
+
+Pour plus d'infos : <https://rviews.rstudio.com/2019/06/19/a-gentle-intro-to-tidymodels/>.
