@@ -43,7 +43,7 @@ navbar:
         - text: "Reproductibilité"
           href: renv_presentation.html
   - text: "Statistiques"
-    icon: fas fa-box-open
+    icon: fas fa-chart-bar
     menu:
         - text: "Matrices"
           href: matrices_presentation.html     
@@ -56,7 +56,7 @@ navbar:
         - text: "Intégration dans Parsnip"
           href: tidy_model_presentation.html
   - text: "Manipulation des données"
-    icon: fas fa-box-open
+    icon: fas fa-wrench
     menu:
         - text: "Tidyverse"
           href: tidyverse_presentation.html          
