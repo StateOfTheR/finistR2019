@@ -1,7 +1,7 @@
 ---
 title: "Quelques rappels à propos de Rcpp"
 author: "S. Donnet"
-date: "FinistR 2019"
+date: "FinistR 2019."
 output: html_document
 ---
 
