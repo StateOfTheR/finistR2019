@@ -14,15 +14,15 @@ navbar:
     icon: fa-microphone
     menu:
         - text: "Distill"
-          href: distill_presentation.html
+          href: c-distill_presentation.html
         - text: "---"
         - text: "Bookdown en HTML"
-          href: ../finistr2019_website/c_bookdown/_book/
+          href: ../finistr2019_website/c-bookdown/_book/
         - text: "Bookdown en PDF"
-          href: ../finistr2019_website/c_bookdown/_book/bookdown.pdf
+          href: ../finistr2019_website/c-bookdown/_book/bookdown.pdf
         - text: "---"
         - text: "Tables"
-          href: tables_presentation.html
+          href: c-tables.html
   - text: "Développement"
     icon: fas fa-box-open
     menu:
