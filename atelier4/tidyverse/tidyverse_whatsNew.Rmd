@@ -9,11 +9,16 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Tidyverse {.tabset .tabset-fade .tabset-pills} 
+# Tidyverse <!--{.tabset .tabset-fade .tabset-pills} -->
+# Tidyverse {.tabset .tabset-fade .tabset-pills}
+
+## Titel 2level
+
+## TITLZ 2level2
 
 <!-- {.tabset .tabset-fade .tabset-pills} use this code to make tabs, but does not work with the anchors (internal liks) --> 
 
-## Tidyverse: Global overview 
+### Tidyverse: Global overview 
 
 Tidyverse permet de faciliter le modélisation des données en les pretraitant et visulisant.
 
@@ -31,7 +36,7 @@ Si vous voulez voir les dernières mises à jour du packages <https://github.com
 
 
 
-## Tidymodels {#tidymodels-link}
+### Tidymodels {#tidymodels-link}
 
 ![Introduction à tidymodels](tidymodels.png)
 
@@ -48,7 +53,7 @@ Ces étapes se divisent en plusieurs sous-étapes :
 Pour plus d'infos : <https://rviews.rstudio.com/2019/06/19/a-gentle-intro-to-tidymodels/>.
 
 
-## Readr {#readr-link}
+### Readr {#readr-link}
 
 
 
