@@ -491,7 +491,7 @@ $(document).ready(function () {
 <div id="ecrire-une-fonction-en-cpp-avec-rcpp" class="section level1">
 <h1>Ecrire une fonction en cpp avec Rcpp</h1>
 <p>Le language C++ nécéssite de déclarer le format de toutes les variables (en entrée, en sortie et dans la fonction). Nous proposons ci-dessous un code écrit en <code>R</code> et son équivalent écrit en <code>Rcpp</code>. L’algorithme suivant simule une chaîne de Markov (Gibbs).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">gibbs_R &lt;-<span class="st"> </span><span class="cf">function</span>(N, thin) {</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">gibbs_r &lt;-<span class="st"> </span><span class="cf">function</span>(N, thin) {</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">  mat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">nrow =</span> N)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">  x &lt;-<span class="st"> </span><span class="dv">0</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">  y &lt;-<span class="st"> </span><span class="dv">0</span></a>
@@ -507,10 +507,10 @@ $(document).ready(function () {
 <div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">// [[Rcpp::export]]  // nécéssaire pour exporter la fonction ensuite sous R</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">NumericMatrix gibbs_cpp(<span class="dt">int</span> N, <span class="dt">int</span> thin) {</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">  </a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">  NumericMatrix res (N,<span class="dv">2</span>); <span class="co">// définir une matrice de 0 de taille (N,2) (résultats)</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">  NumericMatrix res (N,<span class="dv">2</span>); <span class="co">// définit une matrice de 0 de taille (N,2) (résultats)</span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5">  <span class="dt">double</span> x = <span class="dv">0</span>;  <span class="co">// définit un numérique (double précision) initialisé à 0. </span></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6">  <span class="dt">double</span> y = <span class="dv">0</span>; </a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">  <span class="dt">int</span> indexline = <span class="dv">0</span>;  <span class="co">// définit un entier qui va nous permettre de ermplir la matrice</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">  <span class="dt">int</span> indexline = <span class="dv">0</span>;  <span class="co">// définit un entier qui va nous permettre de remplir la matrice</span></a>
 <a class="sourceLine" id="cb3-8" data-line-number="8">  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span> ; i &lt; N ; i++){</a>
 <a class="sourceLine" id="cb3-9" data-line-number="9">    indexline = i; </a>
 <a class="sourceLine" id="cb3-10" data-line-number="10">    <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; thin; ++j){</a>
@@ -522,7 +522,7 @@ $(document).ready(function () {
 <a class="sourceLine" id="cb3-16" data-line-number="16">  } </a>
 <a class="sourceLine" id="cb3-17" data-line-number="17">  <span class="cf">return</span> res;</a>
 <a class="sourceLine" id="cb3-18" data-line-number="18">}</a></code></pre></div>
-<p>La fonction <code>gibbs_cpp</code>est écrite dans un fichier <code>my_function_cpp.cpp</code>. Ce fichier peut contenir plusieurs fonctions <code>cpp</code>, il faut spécifier de l’exporter avant chaque fonction par l’instruction <code>// [[Rcpp::export]]</code>.</p>
+<p>La fonction <code>gibbs_cpp</code>est écrite dans un fichier <code>my_functions_cpp.cpp</code>. Ce fichier peut contenir plusieurs fonctions <code>cpp</code>, il faut spécifier de l’exporter avant chaque fonction par l’instruction <code>// [[Rcpp::export]]</code>.</p>
 <p><em>Quelques remarques utiles sur le code Rcpp</em> :</p>
 <ul>
 <li>toutes les instructions doivent être terminées par <code>;</code>,</li>
@@ -535,12 +535,13 @@ $(document).ready(function () {
 <h1>Utilisation d’une fonction cpp en R</h1>
 <p>La commande suivante permet de transformer notre fonction <code>cpp</code> en fonction <code>R</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(Rcpp)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">sourceCpp</span>(<span class="st">&quot;my_function_cpp.cpp&quot;</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">sourceCpp</span>(<span class="st">&quot;my_functions_cpp.cpp&quot;</span>)</a></code></pre></div>
 <p>On a alors dans l’environnement une fonction <code>R</code> appelée <code>gibbs_cpp</code>. On peut maintenant comparer les temps de calculs.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">library</span>(microbenchmark)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">N &lt;-<span class="st"> </span><span class="dv">10000</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">res_compar &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="kw">gibbs_cpp</span>(N, <span class="dv">10</span>), <span class="kw">Rgibbs</span>(N, <span class="dv">10</span>), <span class="dt">times =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">ggplot2<span class="op">::</span><span class="kw">autoplot</span>(res_compar)</a></code></pre></div>
+<a class="sourceLine" id="cb5-3" data-line-number="3">thin &lt;-<span class="st"> </span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">res_compar &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="kw">gibbs_cpp</span>(N, thin), <span class="kw">gibbs_r</span>(N, thin), <span class="dt">times =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">ggplot2<span class="op">::</span><span class="kw">autoplot</span>(res_compar)</a></code></pre></div>
 <div class="figure">
 <img src="img/d-comput_microbenchmark.png" alt="Comparaison des temps de calculs entre R et C++" />
 <p class="caption">Comparaison des temps de calculs entre R et C++</p>

@@ -50,8 +50,8 @@ Le language C++ nécéssite de déclarer le format de toutes les variables (en e
 Nous proposons ci-dessous un code écrit en `R` et son équivalent écrit en `Rcpp`. 
 L'algorithme suivant simule une chaîne de Markov (Gibbs). 
 
-```{R gibbs_R, echo=TRUE, eval = FALSE }
-gibbs_R <- function(N, thin) {
+```{R gibbs_r, echo=TRUE, eval = FALSE }
+gibbs_r <- function(N, thin) {
   mat <- matrix(0, ncol = 2, nrow = N)
   x <- 0
   y <- 0
@@ -70,10 +70,10 @@ gibbs_R <- function(N, thin) {
 // [[Rcpp::export]]  // nécéssaire pour exporter la fonction ensuite sous R
 NumericMatrix gibbs_cpp(int N, int thin) {
   
-  NumericMatrix res (N,2); // définir une matrice de 0 de taille (N,2) (résultats)
+  NumericMatrix res (N,2); // définit une matrice de 0 de taille (N,2) (résultats)
   double x = 0;  // définit un numérique (double précision) initialisé à 0. 
   double y = 0; 
-  int indexline = 0;  // définit un entier qui va nous permettre de ermplir la matrice
+  int indexline = 0;  // définit un entier qui va nous permettre de remplir la matrice
   for (int i = 0 ; i < N ; i++){
     indexline = i; 
     for (int j = 0; j < thin; ++j){
@@ -88,7 +88,7 @@ NumericMatrix gibbs_cpp(int N, int thin) {
 
 ```
 
-La fonction `gibbs_cpp`est écrite dans un fichier `my_function_cpp.cpp`. Ce fichier peut contenir plusieurs fonctions `cpp`, il faut spécifier de l'exporter avant chaque fonction par l'instruction  `// [[Rcpp::export]]`.  
+La fonction `gibbs_cpp`est écrite dans un fichier `my_functions_cpp.cpp`. Ce fichier peut contenir plusieurs fonctions `cpp`, il faut spécifier de l'exporter avant chaque fonction par l'instruction  `// [[Rcpp::export]]`.  
 
 *Quelques remarques utiles sur le code Rcpp* : 
 
@@ -103,7 +103,7 @@ La commande suivante permet de transformer notre fonction `cpp` en fonction `R`.
 
 ```{R exportation, echo=TRUE, eval = FALSE }
 library(Rcpp)
-sourceCpp("my_function_cpp.cpp")
+sourceCpp("my_functions_cpp.cpp")
 ``` 
 On a alors dans l'environnement une fonction `R` appelée `gibbs_cpp`. 
 On peut maintenant comparer les temps de calculs. 
@@ -112,7 +112,8 @@ On peut maintenant comparer les temps de calculs.
 ```{R compart temps, echo = TRUE, eval =  FALSE}
 library(microbenchmark)
 N <- 10000
-res_compar <- microbenchmark(gibbs_cpp(N, 10), Rgibbs(N, 10), times = 10)
+thin <- 10
+res_compar <- microbenchmark(gibbs_cpp(N, thin), gibbs_r(N, thin), times = 10)
 ggplot2::autoplot(res_compar)
 ```
 
