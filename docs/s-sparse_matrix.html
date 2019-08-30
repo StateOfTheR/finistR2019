@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Utilisation des matrices creuses</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">FinistR 2019</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    accueil
+  </a>
+</li>
+<li>
+  <a href="https://github.com/StateOfTheR/finistR2019">
+    <span class="fa fa-github"></span>
+     
+    dépôt github
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-microphone"></span>
+     
+    Communication Web
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="c-distill_presentation.html">Distill</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../finistr2019_website/c-bookdown/_book/">Bookdown en HTML</a>
+    </li>
+    <li>
+      <a href="../finistr2019_website/c-bookdown/_book/bookdown.pdf">Bookdown en PDF</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="c-tables.html">Tables</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-box-open"></span>
+     
+    Développement
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="git_presentation.html">Versionning</a>
+    </li>
+    <li>
+      <a href="travis_presentation.html">Intégration continue</a>
+    </li>
+    <li>
+      <a href="roxygen_presentation.html">Documentation</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="struct_package.html">Structure d'un package</a>
+    </li>
+    <li>
+      <a href="src_package.html">Intégration de code C++</a>
+    </li>
+    <li>
+      <a href="web_package.html">Site Web</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="renv_presentation.html">Reproductibilité</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-chart-bar"></span>
+     
+    Statistiques
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="s-sparse_matrix.html">Matrices creuses</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="s-lme4-exemples-dragons.html">Modèles mixtes avec lme4</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="tidy_model_presentation.html">Tidy Model</a>
+    </li>
+    <li>
+      <a href="tidy_model_presentation.html">Intégration dans Parsnip</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-wrench"></span>
+     
+    Manipulation des données
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="tidyverse_presentation.html">Tidyverse</a>
+    </li>
+    <li>
+      <a href="spark_presentation.html">Spark</a>
+    </li>
+    <li>
+      <a href="bigstat_presentation.html">BigStatR</a>
+    </li>
+    <li>
+      <a href="rlang_presentation.html">Rlang</a>
+    </li>
+    <li>
+      <a href="reticulate_presentation.html">Reticulate</a>
+    </li>
+    <li>
+      <a href="future_presentation.html">future</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Utilisation des matrices creuses</h1>
+
+</div>
+
+
+<div id="quest-ce-que-cest" class="section level1">
+<h1>1. Qu’est ce que c’est ?</h1>
+<p>Les matrices creuses ou <em>sparse matrix</em> sont des matrices qui contiennent beaucoup de zéros (ex: matrice d’adjacence, matrice diagonale, etc…). Ces matrices peuvent prendre beaucoup de places et il est donc judicieux d’utiliser des fonctions spéciales pour ce genre de matrice afin de les rendre plus <em>légères</em> : les valeurs nulles vont être remplacées par un point <code>.</code>.</p>
+</div>
+<div id="utilisation-des-matrices-creuses" class="section level1">
+<h1>2. Utilisation des matrices creuses</h1>
+<div id="avec-le-package-matrix" class="section level2">
+<h2>2.1 Avec le package <code>Matrix</code></h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(Matrix)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">m1 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> <span class="dv">1000</span>, <span class="dt">ncol =</span> <span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">m2 &lt;-<span class="st"> </span><span class="kw">Matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> <span class="dv">1000</span>, <span class="dt">ncol =</span> <span class="dv">1000</span>, <span class="dt">sparse =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">m1[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    0    0    0    0    0
+## [2,]    0    0    0    0    0
+## [3,]    0    0    0    0    0
+## [4,]    0    0    0    0    0
+## [5,]    0    0    0    0    0</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">object.size</span>(m1)</a></code></pre></div>
+<pre><code>## 8000216 bytes</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">m2[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
+<pre><code>## 5 x 5 sparse Matrix of class &quot;dsCMatrix&quot;
+##               
+## [1,] . . . . .
+## [2,] . . . . .
+## [3,] . . . . .
+## [4,] . . . . .
+## [5,] . . . . .</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">object.size</span>(m2)</a></code></pre></div>
+<pre><code>## 5728 bytes</code></pre>
+<p>Selon le type de données que l’on possède plusieurs stratégies de création de matrice creuse sont possibles :</p>
+<div id="transformer-a-laide-des-fonctions-as-ou-matrix" class="section level3">
+<h3>2.1.1- Transformer à l’aide des fonctions <code>as</code> ou <code>Matrix</code></h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">mat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rbinom</span>(<span class="dv">10000</span>, <span class="dv">1</span>, <span class="fl">0.1</span>), <span class="dt">ncol =</span> <span class="dv">100</span>, <span class="dt">nrow =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">object.size</span>(mat)</a></code></pre></div>
+<pre><code>## 40216 bytes</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">mat_sparse &lt;-<span class="st"> </span><span class="kw">as</span>(mat, <span class="st">&quot;sparseMatrix&quot;</span>)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">object.size</span>(mat_sparse)</a></code></pre></div>
+<pre><code>## 13512 bytes</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">mat_sparse2 &lt;-<span class="st"> </span><span class="kw">Matrix</span>(mat, <span class="dt">sparse =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">object.size</span>(mat_sparse2)</a></code></pre></div>
+<pre><code>## 13512 bytes</code></pre>
+<p>Par défaut, lorsque l’on renseigne la classe <code>sparseMatrix</code> la compression se fera automatiquement par COLONNE, mais il est possible de choisir entre une compression par ligne ou par colonne avec les arguments suivant :</p>
+<ul>
+<li>par colonne avec <code>as(dt, &quot;dgCMatrix&quot;)</code></li>
+<li>par ligne avec <code>as(dt, &quot;dgRMatrix&quot;)</code></li>
+</ul>
+<p>Ce choix de compression peut s’avérer utile selon si on veut travailler par ligne ou par colonne.</p>
+<p>Autre choix de compression :</p>
+<table>
+<thead>
+<tr class="header">
+<th>Class</th>
+<th>Compression</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ngeMatrix</td>
+<td>none</td>
+<td>logicals</td>
+</tr>
+<tr class="even">
+<td>dgeMatrix</td>
+<td>none</td>
+<td>real numbers</td>
+</tr>
+<tr class="odd">
+<td>dgCMatrix</td>
+<td>compressed sparse column</td>
+<td>real numbers</td>
+</tr>
+<tr class="even">
+<td>dgRMatrix</td>
+<td>compressed sparse row</td>
+<td>real numbers</td>
+</tr>
+<tr class="odd">
+<td>ngCMatrix</td>
+<td>compressed sparse column</td>
+<td>logicals</td>
+</tr>
+<tr class="even">
+<td>ngRMatrix</td>
+<td>compressed sparse row</td>
+<td>real numbers</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="transformation-avec-un-stockage-en-triplet-avec-sparsematrix" class="section level3">
+<h3>2.1.2- Transformation avec un stockage en triplet avec <code>sparseMatrix</code>:</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># Génération de la matrice sous forme de triplet</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">    <span class="co"># Avec :  </span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">    <span class="co"># - i : indices des lignes  </span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">    <span class="co"># - j : indices des colonnes  </span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">    <span class="co"># - k : valeurs non-nulles </span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">k &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">6</span>)</a>
+<a class="sourceLine" id="cb16-8" data-line-number="8">i &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb16-9" data-line-number="9">j &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb16-11" data-line-number="11">i &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">100</span>,<span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb16-12" data-line-number="12">j &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">100</span>,<span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb16-13" data-line-number="13">k &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">100</span>,<span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb16-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb16-15" data-line-number="15">my.matrix &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dt">ncol=</span><span class="dv">100</span>, <span class="dt">nrow =</span> <span class="dv">100</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb16-16" data-line-number="16">s &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="cf">function</span>(ii){</a>
+<a class="sourceLine" id="cb16-17" data-line-number="17"> my.matrix[i[ii], j[ii]] &lt;&lt;-<span class="st"> </span>k[ii]</a>
+<a class="sourceLine" id="cb16-18" data-line-number="18"> })</a>
+<a class="sourceLine" id="cb16-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb16-20" data-line-number="20"><span class="kw">object.size</span>(my.matrix)</a></code></pre></div>
+<pre><code>## 80216 bytes</code></pre>
+<p>Pour transformer notre matrice en <em>sparseMatrix</em>, on utilise sa décomposition en triplet :</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">mat_sparse_triplet &lt;-<span class="st"> </span><span class="kw">sparseMatrix</span>(<span class="dt">i =</span> i, <span class="dt">j =</span> j, <span class="dt">x =</span> k)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="kw">object.size</span>(mat_sparse_triplet)</a></code></pre></div>
+<pre><code>## 2504 bytes</code></pre>
+<p>ou comme expliqué auparavent avec :</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">mat_sparse4 &lt;-<span class="st"> </span><span class="kw">as</span>(my.matrix, <span class="st">&quot;sparseMatrix&quot;</span>)</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw">object.size</span>(mat_sparse4)</a></code></pre></div>
+<pre><code>## 2504 bytes</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">mat_sparse5 &lt;-<span class="st"> </span><span class="kw">Matrix</span>(my.matrix, <span class="dt">sparse =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="kw">object.size</span>(mat_sparse5)</a></code></pre></div>
+<pre><code>## 2504 bytes</code></pre>
+</div>
+<div id="enregistrercharger-une-sparsematrix" class="section level3">
+<h3>2.1.3 Enregistrer/charger une sparseMatrix</h3>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">writeMM</span>(<span class="dt">obj =</span> mat_spars_triplet, <span class="dt">file =</span> <span class="st">&quot;sparse_matrix.mtx&quot;</span>)</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3">sp_matrix_read &lt;-<span class="st"> </span><span class="kw">readMM</span>(<span class="st">&quot;sparse_matrix.mtx&quot;</span>)</a></code></pre></div>
+</div>
+</div>
+<div id="avec-le-package-slam" class="section level2">
+<h2>2.2 Avec le package <code>slam</code></h2>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">library</span>(slam)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">slam.matrix &lt;-<span class="st"> </span><span class="kw">simple_triplet_matrix</span>(<span class="dt">i =</span> i, <span class="dt">j =</span> j, <span class="dt">v =</span> k)</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="co"># ou</span></a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">slam.matrix &lt;-<span class="st"> </span><span class="kw">as.simple_triplet_matrix</span>(my.matrix)</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="kw">object.size</span>(slam.matrix)</a></code></pre></div>
+<pre><code>## 1952 bytes</code></pre>
+<p>Attention :</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">slam.matrix</a></code></pre></div>
+<pre><code>## A 100x100 simple triplet matrix.</code></pre>
+<p><code>slam</code> ne permet pas de visualiser <em>la forme de la matrice</em> comme on a pu le voir avec <code>Matrix</code>, mais l’ensemble du triplet est renseigné dans les arguments de la fonction :</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">slam.matrix<span class="op">$</span>i</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">slam.matrix<span class="op">$</span>j</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3">slam.matrix<span class="op">$</span>v</a></code></pre></div>
+</div>
+</div>
+<div id="quelques-infos-utiles" class="section level1">
+<h1>3. Quelques infos utiles</h1>
+<p>La taille des matrice obtenue précédemment à l’aide de <code>slam</code>et <code>Matrix</code> ne sont pas de taille similaire mais sela peut s’expliquer par la simulation d’une petite matrice. Il est important de savoir que transformer une matrice pleine en matrice creuse n’est intéressant que si on travaille sur de très grosses matrices et au moins 50% de présence de valeurs nulles.<br />
+Les matrices creuses prennent donc moins de place et se stockent dans l’environnement R plus facilement ce qui peut entrainer une réduction considérable du temps de calcul.</p>
+</div>
+<div id="liens-utiles" class="section level1">
+<h1>Liens utiles</h1>
+<p><a href="https://www.gormanalysis.com/blog/sparse-matrix-construction-and-use-in-r/" class="uri">https://www.gormanalysis.com/blog/sparse-matrix-construction-and-use-in-r/</a><br />
+<a href="https://r2014-mtp.sciencesconf.org/file/92662" class="uri">https://r2014-mtp.sciencesconf.org/file/92662</a></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

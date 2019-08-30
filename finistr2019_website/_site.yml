@@ -45,8 +45,8 @@ navbar:
   - text: "Statistiques"
     icon: fas fa-chart-bar
     menu:
-        - text: "Matrices"
-          href: matrices_presentation.html     
+        - text: "Matrices creuses"
+          href: s-sparse_matrix.html     
         - text: "---"
         - text: "Modèles mixtes avec lme4"
           href: s-lme4-exemples-dragons.html
