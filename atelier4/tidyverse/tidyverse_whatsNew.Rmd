@@ -1,6 +1,6 @@
 ---
 title: "TidyVerse_WhatsNew_MartinaS"
-author: "Martina Sundqvist"
+author:
 date: "29/08/2019"
 output: html_document
 ---
@@ -9,9 +9,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Tidyverse <!-- {.tabset .tabset-fade .tabset-pills} use this code to make tabs, but does not work with the anchors (internal liks) --> 
+# Tidyverse {.tabset .tabset-fade .tabset-pills} 
+
+<!-- {.tabset .tabset-fade .tabset-pills} use this code to make tabs, but does not work with the anchors (internal liks) --> 
 
 ## Tidyverse: Global overview 
+
+Tidyverse permet de faciliter le modélisation des données en les pretraitant et visulisant.
+
+Pour une vision global voici le site web: <https://www.tidyverse.org/>, vous pouvez également regarder la présentation de StateoftheR d'Antoine Bichat <https://abichat.github.io/Slides/Modeling/Modeling.html#1>.
+
+Si vous voulez voir les dernières mises à jour du packages <https://github.com/tidyverse/dplyr/releases>
 
 [![Image Title](logo_tidymodels.png){width=15%}](#tidymodels-link)
 
@@ -41,3 +49,6 @@ Pour plus d'infos : <https://rviews.rstudio.com/2019/06/19/a-gentle-intro-to-tid
 
 
 ## Readr {#readr-link}
+
+
+
