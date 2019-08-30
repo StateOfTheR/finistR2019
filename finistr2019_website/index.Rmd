@@ -42,7 +42,9 @@ L'atelier Finist'R 2019 se tient à la Station Biologique de Roscoff du 26 au 30
 datatable(participants, options = list(pageLength = 17, dom = "t"))
 ```
 
+![](img/photo.jpeg)
 
+## Programme 
 
 Le programme proposé est le suivant
 
@@ -83,7 +85,6 @@ prog %>%
 Les séquences en vert correspondent à des séances d'atelier en sous groupes. Les séquences en orange correspondent à un panorama du sujet indiqué, tandis que les séquences en bleu correspondent à des temps de réflexion et rédaction sur le rendu final.
 
 
-## Programme 
 
 ### Atelier 1 : Distill, communication et diffusion avec R
 
