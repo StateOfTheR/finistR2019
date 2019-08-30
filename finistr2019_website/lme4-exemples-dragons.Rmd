@@ -1,0 +1,257 @@
+---
+title: "Intelligence des dragons"
+description: |
+  Un tutoriel pour utiliser les modèles linéaires à effets aléatoires.
+author:
+  - name: Antoine Bichat
+    url: https://abichat.github.io
+date: "`r Sys.Date()`"
+output: 
+  distill::distill_article:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+```{r packages, message=FALSE}
+library(tidyverse)
+library(car)
+library(broom)
+library(flextable)
+
+theme_set(theme_bw())
+```
+
+```{r importdata, echo=FALSE}
+load("data/dragons.RData")
+dragons <- 
+  dragons %>% 
+  as_tibble()
+```
+
+Extrait des données
+
+```{r data, echo=FALSE}
+dragons %>% 
+  sample_n(10) %>% 
+  arrange(mountainRange, site) %>% 
+  flextable() %>% 
+  theme_zebra()
+```
+
+Statistiques univariées
+
+```{r EDAplots, echo=FALSE}
+ggplot(dragons) +
+  aes(bodyLength) +
+  geom_histogram(fill = "grey60", color = "black")
+
+ggplot(dragons) +
+  aes(testScore) +
+  geom_histogram(fill = "grey60", color = "black")
+
+ggplot(dragons) +
+  aes(mountainRange, fill = site) +
+  geom_bar(color = "black") +
+  coord_flip() +
+  # scale_fill_viridis_d(option = "C") +
+  theme(legend.position = "bottom")
+
+ggplot(dragons) +
+  aes(bodyLength, testScore, color = mountainRange) +
+  geom_point() +
+  scale_color_viridis_d()
+```
+
+# Analyse statistique
+
+## Modèle linéaire simple
+
+```{r model_simple}
+model_simple <- lm(testScore ~ bodyLength, data = dragons)
+```
+
+```{r tidy_simple, echo=FALSE}
+model_simple %>% 
+  tidy() %>% 
+  flextable()
+```
+
+La longueur du dragon explique son intelligence.
+
+## ANCOVA
+
+```{r model_ancova}
+model_ancova <- lm(testScore ~ bodyLength + mountainRange, data = dragons)
+```
+
+On regarde les coefficients de chaque variable via `broom::tidy()`.
+
+```{r tidy_ancova, echo=FALSE}
+model_ancova %>% 
+  tidy() %>% 
+  flextable()
+```
+
+On fait une analyse de la variance de type II via `car::Ancova()`.
+
+```{r tidy_Anova_ancova, echo=FALSE}
+model_ancova %>% 
+  Anova() %>% 
+  tidy() %>% 
+  flextable()
+```
+
+La longueur du dragon n'est plus significative pour expliquer son intelligence si on prend en compte la région d'où il vient.
+
+
+## Modèle mixte
+
+On utilise le package **lme4** pour faire du modèle mixte et **broom.mixed** pour mettre en forme les résultats.
+
+```{r pack_mm, message=FALSE}
+library(lme4)
+library(broom.mixed)
+```
+
+
+```{r mm}
+model_mixed <- lmer(testScore ~ bodyLength + (1|mountainRange), 
+                    data = dragons, REML = TRUE)
+```
+
+On regade `tidy(model_mixed)` et `glance(model_mixed)`.
+
+```{r tidyglance_mm, echo=FALSE}
+model_mixed %>% 
+  tidy() %>% 
+  flextable()
+model_mixed %>% 
+  glance() %>% 
+  flextable()
+```
+
+On va comparer ce modèle avec le modèle qui ne contient pas `bodyLength`.
+
+```{r mixed_null}
+model_mixed_null <- lmer(testScore ~ 1 + (1|mountainRange), 
+                         data = dragons, REML = TRUE)
+```
+ 
+Puis on fait une anova de type I via `anova()`.
+
+```{r mixed_null_anova, echo=FALSE}
+anova(model_mixed_null, model_mixed) %>% 
+  tidy() %>% 
+  flextable()
+```
+
+La variable n'est pas `bodyLength` n'est pas signifiactive.
+
+## Modèle mixte à effets imbriqués
+
+```{r mi}
+model_nested <- lmer(testScore ~ bodyLength + (1|mountainRange) + (1|mountainRange:site), 
+                     data = dragons)
+```
+
+```{r tidyglance_mi, echo=FALSE}
+model_nested %>% 
+  tidy() %>% 
+  flextable()
+model_nested %>% 
+  glance() %>% 
+  flextable()
+```
+
+
+```{r m_null}
+model_nested_null <- lmer(testScore ~ 1 + (1|mountainRange) + (1|mountainRange:site), 
+                          data = dragons)
+```
+
+On fait une anova de type un entre `model_nested` et `model_null`.
+
+```{r mnullanova, echo=FALSE}
+anova(model_nested_null, model_nested) %>%
+  tidy() %>% 
+  flextable()
+```
+
+
+La modèle qui contient `bodyLength` n'est pas significativement différent du modèle qui ne le contient pas. 
+
+# Notes
+
+## ML / REML
+
+Par défaut, `lmer()` va optimiser `REML` et non pas `ML`.
+Cependant, lorsqu'on fait `anova()` entre deux modèles, ceux-ci sont recalculés pour être optimisés selon `ML`.
+
+## Prédiction
+
+```{r augment}
+augment(model_nested, dragons)
+```
+
+On a accès aux coefficients via les fonctions `coefficients()` pour les effets fixes et `ranef()` poyr les effets aléatoires.
+
+```{r coefranef}
+coefficients(summary(model_nested))
+ranef(model_nested)
+```
+
+La prédiction de fait en décomposant additionnant les différentes composantes. 
+
+```{r compute_pred}
+# Ordonné à l'origine
+coefficients(summary(model_nested))[1, 1] + 
+  # Taille des 6 premiers dragons * coefficient de cette variable
+  dragons$bodyLength[1:6] * coefficients(summary(model_nested))[2, 1] +
+  # Coefficient dû à la montagne (Bavarian pour les 6 premiers)
+  ranef(model_nested)$mountainRange["Bavarian", ] +
+  # Coefficient dû au site dans la montagne (Bavarian:a pour les 6 premiers)
+  ranef(model_nested)$`mountainRange:site`["Bavarian:a", ]
+```
+
+Et on retouve le même résultat
+
+```{r augmentbis}
+augment(model_nested, dragons)$.fitted[1:6]
+```
+
+
+
+## Probabilités cririques
+
+Si veut les probabilités critiques pour chaque variable, on besoin de charger le package **lmerTest**.
+
+```{r pack_pvalue}
+library(lmerTest)
+```
+
+
+```{r mmpv}
+model_mixed <- lmer(testScore ~ bodyLength + (1|mountainRange), 
+                    data = dragons)
+```
+
+```{r tidyglance_mmpv, echo=FALSE}
+model_mixed %>% 
+  tidy() %>% 
+  flextable()
+model_mixed %>% 
+  glance() %>% 
+  flextable()
+```
+
+La variable `bodyLength` n'est pas significative.
+
+# Conclusion
+
+On a un joli paradoxe de Simpson :)
+
