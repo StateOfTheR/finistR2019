@@ -28,11 +28,14 @@ navbar:
     menu:
         - text: "Versionning"
         - text: "Intégration continue"
-        - text: "Documentation"
         - text: "---"
         - text: "Structure d'un package"
-        - text: "Intégration de code C++"
+        - text: "Documentation"
         - text: "Site Web"
+        - text: "---"
+        - text: "Rappels de Rcpp"
+          href: d-rcpp_rappels.html 
+        - text: "Intégration de code C++"
         - text: "---"
         - text: "Reproductibilité"
   - text: "Statistiques"
