@@ -1,0 +1,505 @@
+\documentclass[]{book}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Introduction à bookdown},
+            pdfauthor={Julie Aubert et Antoine Bichat},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{natbib}
+\bibliographystyle{apalike}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\usepackage[normalem]{ulem}
+% avoid problems with \sout in headers with hyperref:
+\pdfstringdefDisableCommands{\renewcommand{\sout}{}}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Introduction à bookdown}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Julie Aubert et Antoine Bichat}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{Finist'R, 26 août 2019}
+
+\usepackage{booktabs}
+\usepackage{wasysym}
+
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{conjecture}{Conjecture}[chapter]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\theoremstyle{definition}
+\newtheorem{example}{Example}[chapter]
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}[chapter]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{solution}{Solution}
+\let\BeginKnitrBlock\begin \let\EndKnitrBlock\end
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{1}
+\tableofcontents
+}
+\hypertarget{hello}{%
+\chapter*{Hello}\label{hello}}
+\addcontentsline{toc}{chapter}{Hello}
+
+\hypertarget{intro}{%
+\chapter{Introduction}\label{intro}}
+
+\textbf{bookdown} \citep{R-bookdown} est un package R développé par Yihui Xe qui permet d'écrire des livres en format Rmarkdown \citep{R-rmarkdown} pour les publier en PDF ou HTML. Le principe de base consiste à utiliser un fichier Rmarkdown par chapitre.
+
+\textbf{bookdown} peut être installé depuis le CRAN
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"bookdown"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+ou depuis le repo GitHub
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# install.packages("remotes")}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"rstudio/bookdown"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Une fois ceci fait, on peut créer un fichoer via \texttt{File\ \textgreater{}\ New\ project\ \textgreater{}\ New\ directory\ \textgreater{}\ Book\ Project\ using\ bookdown} et choisir l'emplacement et le nom du futur livre.
+
+Un exemple minimal de livre est ainsi crée à cet emplacement et peut être compilé en cliquant sur \texttt{Build\ \textgreater{}\ Build\ Book}
+
+On peut alors s'inspirer des fichiers déjà créés.
+
+\hypertarget{structure}{%
+\chapter{Structure}\label{structure}}
+
+Un livre est composé de plusieurs fichiers \texttt{.Rmd}, un par chapitre.
+
+Par défaut, les fichiers sont compilés dans l'ordre alphabétique (sauf si présence d'un \texttt{index.Rmd}, qui passe en premier). Les fihciers commençant par un \texttt{\_} sont ignorés.
+
+Chaque fichier doit commencer un titre de niveau 1 (\texttt{\#}) suivi du nom du chapitre.
+
+On peut également rajouter des en-têtes de niveau 1 spécifiques à \textbf{bookdown} :
+
+\begin{itemize}
+\item
+  \texttt{\#(PART)\ Part\ I/II/...\ \{-\}}
+\item
+  \texttt{\#(APPENDIX)\ Appendix\ \{-\}}
+\end{itemize}
+
+On peut ne pas numéroter un chapitre en mettant \texttt{\{-\}} à la fin du titre.
+
+\hypertarget{mise-en-forme}{%
+\chapter{Mise en forme}\label{mise-en-forme}}
+
+\hypertarget{police}{%
+\section{Police}\label{police}}
+
+\textbf{bookdown} suit la mise en forme de \textbf{rmarkdown}
+
+\texttt{On\ peut\ écrire\ en\ *italique*,\ **gras**,}espacement régulier\texttt{ou\ \textasciitilde{}\textasciitilde{}barré\textasciitilde{}\textasciitilde{}.}
+
+On peut écrire en \emph{italique}, \textbf{gras}, \texttt{espacement\ régulier} ou \sout{barré}.
+
+Les titres de niveau un (chapitres) sont délimités par \texttt{\#} et ceux de niveau suivant par \texttt{\#\#} ou \texttt{\#\#\#}.
+
+\hypertarget{refint}{%
+\section{Références internes}\label{refint}}
+
+\hypertarget{sections}{%
+\subsection{Sections}\label{sections}}
+
+On donne un label à ce sous-chapitre comme suit \texttt{\#\#\ Références\ internes\ \{\#refint\}}, et on y fait référence avec
+
+\begin{itemize}
+\item
+  \texttt{\textbackslash{}@ref(refint)} pour produire \ref{refint},
+\item
+  \texttt{{[}Références\ internes{]}} pour produire \protect\hyperlink{refint}{Références internes},
+\item
+  \texttt{{[}section\ sur\ les\ références\ internes{]}(\#refint)} pour produire \protect\hyperlink{refint}{section sur les références internes}.
+\end{itemize}
+
+\hypertarget{figures}{%
+\subsection{Figures}\label{figures}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\KeywordTok{ggplot}\NormalTok{(iris) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Sepal.Length, }\DataTypeTok{y =}\NormalTok{ Petal.Length) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{bookdown_files/figure-latex/iris-scatter-1.pdf}
+\caption{\label{fig:iris-scatter}Nuage de points}
+\end{figure}
+
+Le nom du chunck qui a produit la Figure \ref{fig:iris-scatter} chunck est \texttt{iris-scatter} et possède l'option \texttt{fig.cap="Nuage\ de\ points"}. On y fait référence via \texttt{\textbackslash{}@ref(fig:iris-scatter)}.
+
+\hypertarget{tables}{%
+\subsection{Tables}\label{tables}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{iris }\OperatorTok{%>%}\StringTok{  }\CommentTok{# Ce chunk s'appelle iris-head}
+\StringTok{  }\KeywordTok{head}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"iris-table"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[t]
+
+\caption{\label{tab:iris-head}iris-table}
+\centering
+\begin{tabular}{r|r|r|r|l}
+\hline
+Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
+\hline
+5.1 & 3.5 & 1.4 & 0.2 & setosa\\
+\hline
+4.9 & 3.0 & 1.4 & 0.2 & setosa\\
+\hline
+4.7 & 3.2 & 1.3 & 0.2 & setosa\\
+\hline
+4.6 & 3.1 & 1.5 & 0.2 & setosa\\
+\hline
+5.0 & 3.6 & 1.4 & 0.2 & setosa\\
+\hline
+5.4 & 3.9 & 1.7 & 0.4 & setosa\\
+\hline
+\end{tabular}
+\end{table}
+
+Ici, on spécifie la légend directement via un argument de \texttt{knitr::kable()}. On fait précéder le label de \texttt{tab} pour produire la référénce : \texttt{\textbackslash{}@ref(tab:iris-head)} pour \ref{tab:iris-head}.
+
+\hypertarget{texte}{%
+\subsection{Texte}\label{texte}}
+
+
+
+Si on définit une référence textuelle via \texttt{(ref:bact)\ Faecalibacterium\ prausnitzii}, on peut écrire Faecalibacterium prausnitzii avec \texttt{(ref:bact)} et même plusieurs fois Faecalibacterium prausnitzii Faecalibacterium prausnitzii Faecalibacterium prausnitzii pour éviter de dupliquer le texte.
+
+\hypertarget{bibliographie}{%
+\section{Bibliographie}\label{bibliographie}}
+
+La bibliographie se spécifie dans le YAML du fichier \texttt{index.Rmd} via \texttt{bibliography:\ packages.bib} (en mettant entre crochets séparés par une virgule si plusieurs fichiers).
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{@R-base} va produire \citet{R-base},
+\item
+  \texttt{{[}@R-base{]}} va produire \citep{R-base}.
+\end{itemize}
+
+Par défaut, références sont affichées en fin de chapitre pour le HTML et en fin de livre pour du PDF.
+
+Pour rajouter une bibliographie en fin de livre pour le format HTML, on peut utiliser \texttt{if\ (knitr::is\_html\_output())\ \textquotesingle{}\#\ References\ \{-\}\textquotesingle{}}.
+
+\hypertarget{maths}{%
+\chapter{Maths}\label{maths}}
+
+\hypertarget{equations}{%
+\section{Équations}\label{equations}}
+
+On peut écrire des équations ou des environnements LaTeX dans le texte \(x = 3\) en les entourant par un \texttt{\$}, ou \[x = 3\] en les entourant de \texttt{\$\$}.
+
+Pour référencer et numéroter, on utilise un marqueur commençant par \texttt{\textbackslash{}\#eq:} et ne contenant que des caractères alphanumériques, \texttt{:}, \texttt{-} ou \texttt{/} :
+
+\begin{verbatim}
+\begin{equation}
+x = 3 \label{eq:x3}
+\end{equation}
+\end{verbatim}
+
+\begin{equation}
+x = 3 \label{eq:x3}
+\end{equation}
+
+Et on fait référence à \eqref{eq:x3} via \texttt{\textbackslash{}@ref(eq:x3)}. Les équations sans labels ne sont pas numérotées.
+
+On peut numéroter ligne par ligne \ldots{}
+
+\begin{verbatim}
+\begin{align}
+x & = 2 + 3*6 \label{eq:x236} \\
+  & = 2 + 18 \\
+  & = 20 \label{eq:x20}
+\end{align}
+\end{verbatim}
+
+\begin{align}
+x & = 2 + 3*6 \label{eq:x236} \\
+  & = 2 + 18 \\
+  & = 20 \label{eq:x20}
+\end{align}
+
+\ldots{} ou le calcul entier.
+
+\begin{verbatim}
+\begin{align}
+\begin{split}
+x & = 2+ 3 * 6 \\
+  & = 20
+\end{split}
+\label{eq:x2lignes}
+\end{align}
+\end{verbatim}
+
+\begin{align}
+\begin{split}
+x & = 2+ 3 * 6 \\
+  & = 20
+\end{split}
+\label{eq:x2lignes}
+\end{align}
+
+\hypertarget{environnements-mathematiques}{%
+\section{Environnements mathématiques}\label{environnements-mathematiques}}
+
+Il existe plusieurs environements mathématiques par défaut :
+
+\begin{table}[t]
+
+\caption{\label{tab:theorem-envs}(ref:theorem-envs)}
+\centering
+\begin{tabular}{lll}
+\toprule
+Environment & Printed Name & Label Prefix\\
+\midrule
+theorem & Theorem & thm\\
+lemma & Lemma & lem\\
+corollary & Corollary & cor\\
+proposition & Proposition & prp\\
+conjecture & Conjecture & cnj\\
+\addlinespace
+definition & Definition & def\\
+example & Example & exm\\
+exercise & Exercise & exr\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Ceux-ci sont numérotés par défaut.
+
+\begin{verbatim}
+```{definition}
+Un triangle rectangle est un triangle qui possède un angle droit.
+```
+\end{verbatim}
+
+\BeginKnitrBlock{definition}
+\protect\hypertarget{def:unnamed-chunk-2}{}{\label{def:unnamed-chunk-2} }Un triangle rectangle est un triangle qui possède un angle droit.
+\EndKnitrBlock{definition}
+
+On peut nommer et labeller un environnement \ldots{}
+
+\begin{verbatim}
+````{theorem, name="Pythagore", label = "pyth"}
+Dans un triangle rectangle, $a^2+b^2=c^2$.
+```
+\end{verbatim}
+
+\BeginKnitrBlock{theorem}[Pythagore]
+\protect\hypertarget{thm:pyth}{}{\label{thm:pyth} \iffalse (Pythagore) \fi{} }Dans un triangle rectangle, \(a^2+b^2=c^2\).
+\EndKnitrBlock{theorem}
+
+et y faire réference via \texttt{\textbackslash{}@ref(thm:pyth)} : \ref{thm:pyth}. Il faut remplacer \texttt{thm} par le préfixe correspondant à l'environnement concerné.
+
+Il existe aussi des environnements non numérotés : \texttt{proof}, \texttt{remark} et \texttt{solution}, qui peuvent être nommé mais auxquels on ne peut pas faire référence.
+
+\BeginKnitrBlock{remark}[Al-Kashi]
+\iffalse{} {Remark (Al-Kashi). } \fi{}Il existe une généralisation du théorème \ref{thm:pyth} lorsque le triangle n'est pas rectangle.
+\EndKnitrBlock{remark}
+
+\hypertarget{personalisation}{%
+\chapter{Personalisation}\label{personalisation}}
+
+\hypertarget{theme}{%
+\section{Thème}\label{theme}}
+
+On peut rajouter un en-tête et un pied de sommaire dans le \texttt{\_output.yml} comme ceci :
+
+\begin{verbatim}
+bookdown::gitbook:
+  css: style.css
+  config:
+    toc:
+      before: |
+        <li><a href="./">Introduction à bookdown</a></li>
+      after: |
+        <li><a href="https://stateofther.github.io/finistR2019/" target="blank">Fait pendant Finist'R 2019</a></li>
+\end{verbatim}
+
+\hypertarget{packages-latex}{%
+\section{Packages LaTeX}\label{packages-latex}}
+
+Il est possible d'utiliser des packages LaTeX dans la compilation au format PDF, par exemple pour écrire des symboles spéciaux : \(\scorpio\).
+
+Il suffit de rajouter \texttt{\textbackslash{}usepackage\{wasysym\}} dans le fichier \texttt{preamble.tex} et le spréciser dans le \texttt{\_bookdown.yml} :
+
+\begin{verbatim}
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex
+\end{verbatim}
+
+Cependant, ceci ne permet pas d'utiliser les packages pour une sortie au format HTML.
+
+\hypertarget{appendix-appendices}{%
+\appendix}
+
+
+\hypertarget{triangle-rectangle}{%
+\chapter{Triangle rectangle}\label{triangle-rectangle}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df <-}\StringTok{ }\KeywordTok{tibble}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DataTypeTok{y =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\KeywordTok{ggplot}\NormalTok{(df) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{aes}\NormalTok{(x, y) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_polygon}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_equal}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_void}\NormalTok{() }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\hypertarget{ressources}{%
+\chapter{Ressources}\label{ressources}}
+
+\href{https://bookdown.org/yihui/bookdown/}{Bookdown}
+
+\href{https://bookdown.org/yihui/bookdown-demo/}{Bookdown minimal example}
+
+\href{https://eddjberry.netlify.com/post/writing-your-thesis-with-bookdown/}{Writing your thesis with bookdown}
+
+\href{https://github.com/ismayc/thesisdown}{Thesisdown}
+
+\bibliography{packages.bib}
+
+
+\end{document}

@@ -127,6 +127,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Introduction à bookdown</a></li>
 
 <li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Hello</a></li>
 <li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="structure.html"><a href="structure.html"><i class="fa fa-check"></i><b>2</b> Structure</a></li>
 <li class="chapter" data-level="3" data-path="mise-en-forme.html"><a href="mise-en-forme.html"><i class="fa fa-check"></i><b>3</b> Mise en forme</a><ul>
@@ -137,6 +138,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2.3" data-path="mise-en-forme.html"><a href="mise-en-forme.html#tables"><i class="fa fa-check"></i><b>3.2.3</b> Tables</a></li>
 <li class="chapter" data-level="3.2.4" data-path="mise-en-forme.html"><a href="mise-en-forme.html#texte"><i class="fa fa-check"></i><b>3.2.4</b> Texte</a></li>
 </ul></li>
+<li class="chapter" data-level="3.3" data-path="mise-en-forme.html"><a href="mise-en-forme.html#bibliographie"><i class="fa fa-check"></i><b>3.3</b> Bibliographie</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="maths.html"><a href="maths.html"><i class="fa fa-check"></i><b>4</b> Maths</a><ul>
 <li class="chapter" data-level="4.1" data-path="maths.html"><a href="maths.html#equations"><i class="fa fa-check"></i><b>4.1</b> Équations</a></li>
@@ -149,6 +151,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="appendix"><span><b>Appendices</b></span></li>
 <li class="chapter" data-level="A" data-path="triangle-rectangle.html"><a href="triangle-rectangle.html"><i class="fa fa-check"></i><b>A</b> Triangle rectangle</a></li>
 <li class="chapter" data-level="B" data-path="ressources.html"><a href="ressources.html"><i class="fa fa-check"></i><b>B</b> Ressources</a></li>
+<li class="chapter" data-level="C" data-path="bibliographie-1.html"><a href="bibliographie-1.html"><i class="fa fa-check"></i><b>C</b> Bibliographie</a></li>
 <li class="divider"></li>
 <li><a href="https://stateofther.github.io/finistR2019/" target="blank">Fait pendant Finist'R 2019</a></li>
 
@@ -192,12 +195,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="figures" class="section level3">
 <h3><span class="header-section-number">3.2.2</span> Figures</h3>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
-<pre><code>## ── Attaching packages ──────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────── tidyverse 1.2.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
 ## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
 ## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
 ## ✔ readr   1.3.1     ✔ forcats 0.4.0</code></pre>
-<pre><code>## ── Conflicts ─────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">ggplot</span>(iris) <span class="op">+</span></a>
@@ -278,8 +281,24 @@ Figure 3.1: Nuage de points
 <h3><span class="header-section-number">3.2.4</span> Texte</h3>
 
 <p>Si on définit une référence textuelle via <code>(ref:bact) Faecalibacterium prausnitzii</code>, on peut écrire Faecalibacterium prausnitzii avec <code>(ref:bact)</code> et même plusieurs fois Faecalibacterium prausnitzii Faecalibacterium prausnitzii Faecalibacterium prausnitzii pour éviter de dupliquer le texte.</p>
+</div>
+</div>
+<div id="bibliographie" class="section level2">
+<h2><span class="header-section-number">3.3</span> Bibliographie</h2>
+<p>La bibliographie se spécifie dans le YAML du fichier <code>index.Rmd</code> via <code>bibliography: [book.bib, packages.bib]</code>.</p>
+<ul>
+<li><code>@R-base</code> va produire <span class="citation">R Core Team (<a href="#ref-R-base">2019</a>)</span>,</li>
+<li><code>[@R-base]</code> va produire <span class="citation">(R Core Team <a href="#ref-R-base">2019</a>)</span>.</li>
+</ul>
+<p>Par défaut, références sont affichées en fin de chapitre pour le HTML et en fin de livre pour du PDF.</p>
+<p>Pour rajouter une bibliographie en fin de livre pour le format HTML, on peut utiliser <code>if (knitr::is_html_output()) '# References {-}'</code>.</p>
 
 </div>
+</div>
+<h3><span class="header-section-number">C</span> Bibliographie</h3>
+<div id="refs" class="references">
+<div id="ref-R-base">
+<p>R Core Team. 2019. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.</p>
 </div>
 </div>
             </section>
