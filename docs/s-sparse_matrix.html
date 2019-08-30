@@ -461,7 +461,7 @@ $(document).ready(function () {
 
 <div id="quest-ce-que-cest" class="section level1">
 <h1>1. Qu’est ce que c’est ?</h1>
-<p>Les matrices creuses ou <em>sparse matrix</em> sont des matrices qui contiennent beaucoup de zéros (ex: matrice d’adjacence, matrice diagonale, etc…). Ces matrices peuvent prendre beaucoup de places et il est donc judicieux d’utiliser des fonctions spéciales pour ce genre de matrice afin de les rendre plus <em>légères</em> : les valeurs nulles vont être remplacées par un point <code>.</code>.</p>
+<p>Les matrices creuses ou <em>sparse matrix</em> sont des matrices qui contiennent beaucoup de zéros (ex : matrice d’adjacence, matrice diagonale…). Ces matrices peuvent prendre beaucoup de place et il est donc judicieux d’utiliser des fonctions spéciales pour ce genre de matrice afin de les rendre plus <em>légères</em> : les valeurs nulles vont être remplacées par un point <code>.</code>.</p>
 </div>
 <div id="utilisation-des-matrices-creuses" class="section level1">
 <h1>2. Utilisation des matrices creuses</h1>
@@ -490,7 +490,7 @@ $(document).ready(function () {
 ## [5,] . . . . .</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">object.size</span>(m2)</a></code></pre></div>
 <pre><code>## 5728 bytes</code></pre>
-<p>Selon le type de données que l’on possède plusieurs stratégies de création de matrice creuse sont possibles :</p>
+<p>Selon le type de données que l’on possède plusieurs stratégies de création de matrice creuse sont possibles.</p>
 <div id="transformer-a-laide-des-fonctions-as-ou-matrix" class="section level3">
 <h3>2.1.1- Transformer à l’aide des fonctions <code>as</code> ou <code>Matrix</code></h3>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">mat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rbinom</span>(<span class="dv">10000</span>, <span class="dv">1</span>, <span class="fl">0.1</span>), <span class="dt">ncol =</span> <span class="dv">100</span>, <span class="dt">nrow =</span> <span class="dv">100</span>)</a>
@@ -502,12 +502,12 @@ $(document).ready(function () {
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">mat_sparse2 &lt;-<span class="st"> </span><span class="kw">Matrix</span>(mat, <span class="dt">sparse =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">object.size</span>(mat_sparse2)</a></code></pre></div>
 <pre><code>## 13512 bytes</code></pre>
-<p>Par défaut, lorsque l’on renseigne la classe <code>sparseMatrix</code> la compression se fera automatiquement par COLONNE, mais il est possible de choisir entre une compression par ligne ou par colonne avec les arguments suivant :</p>
+<p>Par défaut, lorsque l’on renseigne la classe <code>sparseMatrix</code> la compression se fera automatiquement par colonne, mais il est possible de choisir entre une compression par ligne ou par colonne avec les arguments suivant :</p>
 <ul>
 <li>par colonne avec <code>as(dt, &quot;dgCMatrix&quot;)</code></li>
 <li>par ligne avec <code>as(dt, &quot;dgRMatrix&quot;)</code></li>
 </ul>
-<p>Ce choix de compression peut s’avérer utile selon si on veut travailler par ligne ou par colonne.</p>
+<p>Ce choix de compression peut s’avérer utile si l’on veut travailler par ligne ou par colonne.</p>
 <p>Autre choix de compression :</p>
 <table>
 <thead>
@@ -559,26 +559,27 @@ $(document).ready(function () {
 <a class="sourceLine" id="cb16-4" data-line-number="4">    <span class="co"># - j : indices des colonnes  </span></a>
 <a class="sourceLine" id="cb16-5" data-line-number="5">    <span class="co"># - k : valeurs non-nulles </span></a>
 <a class="sourceLine" id="cb16-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb16-7" data-line-number="7">k &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb16-8" data-line-number="8">i &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb16-9" data-line-number="9">j &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">i &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb16-8" data-line-number="8">j &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb16-9" data-line-number="9">k &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">6</span>)</a>
 <a class="sourceLine" id="cb16-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb16-11" data-line-number="11">i &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">100</span>,<span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb16-12" data-line-number="12">j &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">100</span>,<span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb16-13" data-line-number="13">k &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">100</span>,<span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb16-11" data-line-number="11">i &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">100</span>, <span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb16-12" data-line-number="12">j &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">100</span>, <span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb16-13" data-line-number="13">k &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">100</span>, <span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb16-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb16-15" data-line-number="15">my.matrix &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dt">ncol=</span><span class="dv">100</span>, <span class="dt">nrow =</span> <span class="dv">100</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb16-16" data-line-number="16">s &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="cf">function</span>(ii){</a>
-<a class="sourceLine" id="cb16-17" data-line-number="17"> my.matrix[i[ii], j[ii]] &lt;&lt;-<span class="st"> </span>k[ii]</a>
-<a class="sourceLine" id="cb16-18" data-line-number="18"> })</a>
-<a class="sourceLine" id="cb16-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb16-20" data-line-number="20"><span class="kw">object.size</span>(my.matrix)</a></code></pre></div>
+<a class="sourceLine" id="cb16-15" data-line-number="15">my.matrix &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dt">ncol =</span> <span class="dv">100</span>, <span class="dt">nrow =</span> <span class="dv">100</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb16-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb16-17" data-line-number="17">s &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="cf">function</span>(ii) {</a>
+<a class="sourceLine" id="cb16-18" data-line-number="18">    my.matrix[i[ii], j[ii]] &lt;&lt;-<span class="st"> </span>k[ii]</a>
+<a class="sourceLine" id="cb16-19" data-line-number="19">})</a>
+<a class="sourceLine" id="cb16-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb16-21" data-line-number="21"><span class="kw">object.size</span>(my.matrix)</a></code></pre></div>
 <pre><code>## 80216 bytes</code></pre>
 <p>Pour transformer notre matrice en <em>sparseMatrix</em>, on utilise sa décomposition en triplet :</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">mat_sparse_triplet &lt;-<span class="st"> </span><span class="kw">sparseMatrix</span>(<span class="dt">i =</span> i, <span class="dt">j =</span> j, <span class="dt">x =</span> k)</a>
 <a class="sourceLine" id="cb18-2" data-line-number="2"><span class="kw">object.size</span>(mat_sparse_triplet)</a></code></pre></div>
 <pre><code>## 2504 bytes</code></pre>
-<p>ou comme expliqué auparavent avec :</p>
+<p>ou comme expliqué auparavant avec :</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">mat_sparse4 &lt;-<span class="st"> </span><span class="kw">as</span>(my.matrix, <span class="st">&quot;sparseMatrix&quot;</span>)</a>
 <a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw">object.size</span>(mat_sparse4)</a></code></pre></div>
 <pre><code>## 2504 bytes</code></pre>
