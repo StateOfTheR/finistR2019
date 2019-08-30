@@ -27,21 +27,14 @@ navbar:
     icon: fas fa-box-open
     menu:
         - text: "Versionning"
-          href: git_presentation.html          
         - text: "Intégration continue"
-          href: travis_presentation.html
         - text: "Documentation"
-          href: roxygen_presentation.html
         - text: "---"
         - text: "Structure d'un package"
-          href: struct_package.html
         - text: "Intégration de code C++"
-          href: src_package.html
         - text: "Site Web"
-          href: web_package.html
         - text: "---"
         - text: "Reproductibilité"
-          href: renv_presentation.html
   - text: "Statistiques"
     icon: fas fa-chart-bar
     menu:
@@ -52,24 +45,16 @@ navbar:
           href: s-lme4-exemples-dragons.html
         - text: "---"
         - text: "Tidy Model"
-          href: tidy_model_presentation.html
         - text: "Intégration dans Parsnip"
-          href: tidy_model_presentation.html
   - text: "Manipulation des données"
     icon: fas fa-wrench
     menu:
         - text: "Tidyverse"
-          href: tidyverse_presentation.html          
         - text: "Spark"
-          href: spark_presentation.html          
         - text: "BigStatR"
-          href: bigstat_presentation.html          
         - text: "Rlang"
-          href: rlang_presentation.html          
         - text: "Reticulate"
-          href: reticulate_presentation.html            
         - text: "future"
-          href: future_presentation.html          
 output:
   html_document:
     theme: flatly
