@@ -1,0 +1,72 @@
+---
+jupyter:
+  jupytext:
+    formats: ipynb,Rmd
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.1
+  kernelspec:
+    display_name: Python3.7
+    language: python
+    name: python3
+---
+
+Test de classification avec la méthode des Forêts aléatoires et
+[scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html).
+
+L'exemple provient de
+[A minimal benchmark for scalability, speed and accuracy of commonly used open source implementations (R packages, Python scikit-learn, H2O, xgboost, Spark MLlib etc.) of the top machine learning algorithms for binary classification (random forests, gradient boosted trees, deep neural networks etc.)](https://github.com/szilard/benchm-ml)
+
+```{python}
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import metrics
+
+d_train = pd.read_csv("https://s3.amazonaws.com/benchm-ml--main/train-0.1m.csv")
+d_test = pd.read_csv("https://s3.amazonaws.com/benchm-ml--main/test.csv")
+d_train_test = d_train.append(d_test)
+
+vars_categ = ["Month","DayofMonth","DayOfWeek","UniqueCarrier", "Origin", "Dest"]
+vars_num = ["DepTime","Distance"]
+
+def get_dummies(d, col):
+    dd = pd.get_dummies(d.loc[:, col])
+    dd.columns = [col + "_%s" % c for c in dd.columns]
+    return(dd)
+```
+
+```{python}
+d_train.head()
+```
+
+```{python}
+# %time X_train_test_categ = pd.concat([get_dummies(d_train_test, col) for col in vars_categ], axis = 1)
+```
+
+```{python}
+print(RandomForestClassifier.__doc__)
+```
+
+```{python}
+X_train_test = pd.concat([X_train_test_categ, d_train_test.loc[:,vars_num]], axis = 1)
+y_train_test = np.where(d_train_test["dep_delayed_15min"]=="Y", 1, 0)
+
+n_obs = d_train.shape[0]
+
+X_train = X_train_test[0:n_obs]
+y_train = y_train_test[0:n_obs]
+X_test = X_train_test[n_obs:]
+y_test = y_train_test[n_obs:]
+
+md = RandomForestClassifier(n_estimators = 100, 
+                            n_jobs = 4)
+# %time md.fit(X_train, y_train)
+```
+
+```{python}
+# %time phat = md.predict_proba(X_test)[:,1]
+metrics.roc_auc_score(y_test, phat)
+```

@@ -11,8 +11,4 @@ atelier2/R_and_python/RandomForest.ipynb
 spark/*_cache/
 spark/logs/
 spark/*_files/
-<<<<<<< HEAD
-spark/derby.log
-=======
 >>>>>>> master
->>>>>>> R_python
