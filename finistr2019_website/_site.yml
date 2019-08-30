@@ -15,8 +15,12 @@ navbar:
     menu:
         - text: "Distill"
           href: distill_presentation.html
-        - text: "Bookdown"
-          href: bookdown_presentation.html          
+        - text: "---"
+        - text: "Bookdown en HTML"
+          href: ../finistr2019_website/c_bookdown/_book/
+        - text: "Bookdown en PDF"
+          href: ../finistr2019_website/c_bookdown/_book/bookdown.pdf
+        - text: "---"
         - text: "Tables"
           href: tables_presentation.html
   - text: "Développement"
@@ -45,7 +49,7 @@ navbar:
           href: matrices_presentation.html     
         - text: "---"
         - text: "Modèles mixtes avec lme4"
-          href: lme4-exemples-dragons.html
+          href: s-lme4-exemples-dragons.html
         - text: "---"
         - text: "Tidy Model"
           href: tidy_model_presentation.html
