@@ -42,9 +42,11 @@ navbar:
     icon: fas fa-box-open
     menu:
         - text: "Matrices"
-          href: matrices_presentation.html          
-        - text: "Modèle mixte"
-          href: tables_presentation.html
+          href: matrices_presentation.html     
+        - text: "---"
+        - text: "Modèles mixtes avec lme4"
+          href: lme4-exemples-dragons.html
+        - text: "---"
         - text: "Tidy Model"
           href: tidy_model_presentation.html
         - text: "Intégration dans Parsnip"
