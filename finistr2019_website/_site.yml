@@ -3,14 +3,14 @@ output_dir: "../docs"
 navbar:
  title: "FinistR 2019"
  left:
-  - text: "accueil"
+  - text: "Accueil"
     icon: fa-home
     href: index.html
-  - text: "dépôt github"
+  - text: "Dépôt GitHub"
     icon: fa-github
     href: https://github.com/StateOfTheR/finistR2019
  right:
-  - text: "Communication Web"
+  - text: "Communication"
     icon: fa-microphone
     menu:
         - text: "Distill"
@@ -46,6 +46,8 @@ navbar:
         - text: "---"
         - text: "Modèles mixtes avec lme4"
           href: s-lme4-exemples-dragons.html
+        - text: "Modèles mixtes avec Julia depuis R"
+          href: s-julia_mixed_models.html
         - text: "---"
         - text: "Tidy Model"
         - text: "Intégration dans Parsnip"
