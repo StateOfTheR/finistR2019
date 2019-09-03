@@ -49,7 +49,8 @@ navbar:
         - text: "Modèles mixtes avec Julia depuis R"
           href: s-julia_mixed_models.html
         - text: "---"
-        - text: "Tidy Model"
+        - text: "Tidymodels"
+          href: s-tidymodels.html
         - text: "Intégration dans Parsnip"
   - text: "Manipulation des données"
     icon: fas fa-wrench
