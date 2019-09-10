@@ -44,7 +44,8 @@ summary(model)
 
 ## Démarrer la session julia
 
-Cette étape nécessite d'avoir installé Julia sur son système et d'avoir spécifié `JULIA_HOME` dans le `.Renviron`.
+Cette étape nécessite d'avoir installé Julia sur son système et d'avoir spécifié `JULIA_HOME` dans le `.Renviron`. Il faut également installer les packages `Rcall` et `MixedModels` dans Julia (comme indiqué sur la cette [page](https://rpubs.com/dmbates/377897)). Parfois il faut également exécuter la commande `Pkg.build("Arpack")` dans Julia.
+
 
 ```{r calljulia}
 library(JuliaCall)

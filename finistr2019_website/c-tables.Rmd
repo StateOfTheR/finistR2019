@@ -11,7 +11,7 @@ editor_options:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, 
                       message = FALSE, 
-                      cache = TRUE)
+                      cache = FALSE)
 ```
 
 ```{r}
@@ -21,7 +21,7 @@ gtcars <- gtcars[1:20, ]
 ```
 
 
-Comparison of function to display a `data.frame` in markdown outputs. 
+Comparison of function to display a `data.frame` in markdown outputs.
 
 Outputs covered:
 
@@ -56,7 +56,7 @@ kableExtra::kable(gtcars) %>%
 
 https://davidgohel.github.io/flextable/articles/overview.html
 
-Allow to export as html, pdf or office. 
+Allow to export as html, pdf or office.
 
 ![](img/c-flextable_functions.svg)
 
@@ -73,7 +73,7 @@ flex_gtcars
 Select only some columns with `col_keys`
 
 ```{r}
-flextable(gtcars, 
+flextable(gtcars,
           col_keys = c("bdy_style", "hp", "hp_rpm"))
 ```
 
@@ -94,7 +94,7 @@ theme_zebra(flex_gtcars)
 Merge adjacent cells with equal values, either vertically (`merge_v`) or horizontally (`merge_h`)
 
 ```{r}
-merge_v(flex_gtcars, 
+merge_v(flex_gtcars,
         j = ~ mfr)
 ```
 
@@ -129,13 +129,13 @@ flextable::bg(flex_gtcars, i = ~ year > 2016, bg = "red")
 
 ### Bars in table
 
-Adds barplots or linerange 
+Adds barplots or linerange
 
 ```{r}
-flex_gtcars %>% 
-  compose(j = "hp", 
-          value = as_paragraph(minibar(value = hp))) %>% 
-  compose(j = "trq", 
+flex_gtcars %>%
+  compose(j = "hp",
+          value = as_paragraph(minibar(value = hp))) %>%
+  compose(j = "trq",
           value = as_paragraph(linerange(value = trq)))
 ```
 
@@ -153,7 +153,7 @@ https://github.com/rstudio/gt
 
 ```{r}
 library(gt)
-gtcars %>% 
+gtcars %>%
   gt()
 ```
 
@@ -165,7 +165,7 @@ gtcars %>%
   tab_header(
     title = "gtcars",
     subtitle = glue::glue("subtitle")
-  ) %>% 
+  ) %>%
   tab_footnote(footnote = "some notes on mfr", locations = cells_column_labels("mfr"))
 ```
 
@@ -175,9 +175,9 @@ gtcars %>%
 Group rows according to groups in dataframe
 
 ```{r}
-tab <- gtcars %>% 
-  group_by(ctry_origin) %>% 
-  unite(col = car, mfr, model) %>% 
+tab <- gtcars %>%
+  group_by(ctry_origin) %>%
+  unite(col = car, mfr, model) %>%
   gt(rowname_col = "car")
 tab
 ```
@@ -188,13 +188,13 @@ tab
 Group columns with `tab_spanner`
 
 ```{r}
-tab %>% 
+tab %>%
   tab_spanner(label = "Performance",
     columns = vars(mpg_c, mpg_h, hp, hp_rpm, trq, trq_rpm)
-  ) %>% 
-  tab_spanner(label = "Type", 
+  ) %>%
+  tab_spanner(label = "Type",
               columns = vars(trim, bdy_style))
-  
+
 
 ```
 
@@ -203,8 +203,8 @@ tab %>%
 `fmt_` functions to change values formatting (such as scientific, currency, date...)
 
 ```{r}
-tab %>% 
-  fmt_currency(columns = vars(msrp), currency = "EUR") %>% 
+tab %>%
+  fmt_currency(columns = vars(msrp), currency = "EUR") %>%
   fmt_scientific(columns = vars(hp_rpm))
 ```
 
@@ -232,8 +232,8 @@ tab %>%
 Adds summaries of rows
 
 ```{r}
-tab %>% 
-  summary_rows(groups = TRUE, 
+tab %>%
+  summary_rows(groups = TRUE,
                columns = vars(hp, hp_rpm),
                fns = list(
                  average = "mean",

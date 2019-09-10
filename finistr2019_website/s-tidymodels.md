@@ -1,7 +1,7 @@
 ---
 title: "tidymodels"
 author: "Pierre Gestraud"
-date: "2019-09-03"
+date: "2019-09-10"
 output: 
   html_document:
     df_print: kable
@@ -113,8 +113,8 @@ metrics(bind_cols(forest_test, pred_logit_test), truth = Cover_Type, estimate = 
 
 .metric    .estimator    .estimate
 ---------  -----------  ----------
-accuracy   binary        0.7715301
-kap        binary        0.5296504
+accuracy   binary        0.7771853
+kap        binary        0.5401555
 
 </div>
 
@@ -130,14 +130,14 @@ multimetric(bind_cols(forest_test, pred_logit_test), truth = Cover_Type, estimat
 
 .metric        .estimator    .estimate
 -------------  -----------  ----------
-accuracy       binary        0.7715301
-bal_accuracy   binary        0.7633367
-sens           binary        0.7093333
-spec           binary        0.8173401
-precision      binary        0.7409471
-recall         binary        0.7093333
-ppv            binary        0.7409471
-npv            binary        0.7924374
+accuracy       binary        0.7771853
+bal_accuracy   binary        0.7678956
+sens           binary        0.7066667
+spec           binary        0.8291246
+precision      binary        0.7528409
+recall         binary        0.7066667
+ppv            binary        0.7528409
+npv            binary        0.7932886
 
 </div>
 
@@ -152,7 +152,7 @@ roc_auc(bind_cols(forest_test, prob_logit_test), truth = Cover_Type, .pred_1)
 
 .metric   .estimator    .estimate
 --------  -----------  ----------
-roc_auc   binary        0.8445211
+roc_auc   binary        0.8519712
 
 </div>
 
@@ -233,6 +233,20 @@ res_cv_train %>%
   aes(x = id, y = .estimate) +
   geom_point() + 
   facet_wrap(~ .metric, scales = "free_y")
+```
+
+```
+## Warning: Unquoting language objects with `!!!` is deprecated as of rlang 0.4.0.
+## Please use `!!` instead.
+## 
+##   # Bad:
+##   dplyr::select(data, !!!enquo(x))
+## 
+##   # Good:
+##   dplyr::select(data, !!enquo(x))    # Unquote single quosure
+##   dplyr::select(data, !!!enquos(x))  # Splice list of quosures
+## 
+## This warning is displayed once per session.
 ```
 
 ![Model performance on each fold](s-tidymodels_files/figure-html/performance_fold-1.png)

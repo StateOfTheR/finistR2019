@@ -159,6 +159,7 @@ code {
 }
 img {
   max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -507,10 +508,10 @@ $(document).ready(function () {
 <pre><code>## 40216 bytes</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">mat_sparse &lt;-<span class="st"> </span><span class="kw">as</span>(mat, <span class="st">&quot;sparseMatrix&quot;</span>)</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">object.size</span>(mat_sparse)</a></code></pre></div>
-<pre><code>## 13512 bytes</code></pre>
+<pre><code>## 13728 bytes</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">mat_sparse2 &lt;-<span class="st"> </span><span class="kw">Matrix</span>(mat, <span class="dt">sparse =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">object.size</span>(mat_sparse2)</a></code></pre></div>
-<pre><code>## 13512 bytes</code></pre>
+<pre><code>## 13728 bytes</code></pre>
 <p>Par défaut, lorsque l’on renseigne la classe <code>sparseMatrix</code> la compression se fera automatiquement par colonne, mais il est possible de choisir entre une compression par ligne ou par colonne avec les arguments suivant :</p>
 <ul>
 <li>par colonne avec <code>as(dt, &quot;dgCMatrix&quot;)</code></li>
