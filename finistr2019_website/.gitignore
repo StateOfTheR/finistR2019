@@ -1,4 +1,6 @@
 .DS_Store
 s-lme4-exemples-dragons_cache/
 s-tidymodels_cache/
+d-rcpp_rappels_cache/
+index_cache/
 

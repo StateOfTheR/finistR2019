@@ -6,7 +6,8 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, 
+                      cache = TRUE)
 ```
 Nous rappelons ici quelques principes de bases pour inclure du code C++ dans un code R. Ces notes se basent sur la présentation faite dans le cadre du groupe de travail StateOfTheR, à retrouver [ici](https://stateofther.github.io/post/bases-rcpp/). 
 
