@@ -1,17 +1,22 @@
 ---
-jupyter:
-  jupytext:
-    formats: ipynb,Rmd
-    text_representation:
-      extension: .Rmd
-      format_name: rmarkdown
-      format_version: '1.1'
-      jupytext_version: 1.2.1
-  kernelspec:
-    display_name: Python3.7
-    language: python
-    name: python3
+title: "Random Forests"
+author: "Pierre Gestraud"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    df_print: kable
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE, 
+                      cache = TRUE, 
+                      warning = TRUE)
+#knitr::opts_chunk$set('python', engine.path = '/home/metienne/miniconda3/bin/python3')
+```
+
+
+
 
 Test de classification avec la méthode des Forêts aléatoires et
 [scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html).
@@ -20,13 +25,15 @@ L'exemple provient de
 [A minimal benchmark for scalability, speed and accuracy of commonly used open source implementations (R packages, Python scikit-learn, H2O, xgboost, Spark MLlib etc.) of the top machine learning algorithms for binary classification (random forests, gradient boosted trees, deep neural networks etc.)](https://github.com/szilard/benchm-ml)
 
 ```{python}
+import sys
+print(sys.version)
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 
-d_train = pd.read_csv("https://s3.amazonaws.com/benchm-ml--main/train-0.1m.csv")
-d_test = pd.read_csv("https://s3.amazonaws.com/benchm-ml--main/test.csv")
+d_train = pd.read_csv("http://s3.amazonaws.com/benchm-ml--main/train-0.1m.csv")
+d_test = pd.read_csv("http://s3.amazonaws.com/benchm-ml--main/test.csv")
 d_train_test = d_train.append(d_test)
 
 vars_categ = ["Month","DayofMonth","DayOfWeek","UniqueCarrier", "Origin", "Dest"]
@@ -43,7 +50,7 @@ d_train.head()
 ```
 
 ```{python}
-# %time X_train_test_categ = pd.concat([get_dummies(d_train_test, col) for col in vars_categ], axis = 1)
+ time X_train_test_categ = pd.concat([get_dummies(d_train_test, col) for col in vars_categ], axis = 1)
 ```
 
 ```{python}
