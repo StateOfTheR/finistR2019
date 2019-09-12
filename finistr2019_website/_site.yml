@@ -13,11 +13,14 @@ navbar:
   - text: "Communication"
     icon: fa-microphone
     menu:
+        - text: "Ecosystème R"
+          href: i-Recosystem.html
+        - text: "---"
         - text: "Distill"
           href: c-distill_presentation.html
         - text: "---"
         - text: "Bookdown en HTML"
-          href: ../finistr2019_website/c-bookdown/_book/
+          href: ../finistr2019_website/c-bookdown/_book/index.html
         - text: "Bookdown en PDF"
           href: ../finistr2019_website/c-bookdown/_book/bookdown.pdf
         - text: "---"
@@ -27,17 +30,22 @@ navbar:
     icon: fas fa-box-open
     menu:
         - text: "Versionning"
-        - text: "Intégration continue"
-        - text: "---"
-        - text: "Structure d'un package"
-        - text: "Documentation"
-        - text: "Site Web"
+          href: d-utilisation_GitHub.html
+        - text: "Création de Package"
+          href: d-mypkg.html
         - text: "---"
         - text: "Rappels de Rcpp"
           href: d-rcpp_rappels.html 
-        - text: "Intégration de code C++"
+        - text: "Rcpp Modules"
+          href: d-RcppModules.html 
         - text: "---"
         - text: "Reproductibilité"
+          href: ../finistr2019_website/d-slides-repro/R_repro.html
+        - text: "Docker"
+          href: d-docker.html 
+        - text: "Renv"
+          href: d-renv.html
+        
   - text: "Statistiques"
     icon: fas fa-chart-bar
     menu:
@@ -56,7 +64,10 @@ navbar:
     icon: fas fa-wrench
     menu:
         - text: "Tidyverse"
+        - text: "Rlang"
+          href: m-rlang.html
         - text: "Spark"
+          href: m-spark.html
         - text: "BigStatR"
         - text: "Rlang"
         - text: "Reticulate"

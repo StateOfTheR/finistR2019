@@ -52,7 +52,7 @@ La station biologique de Roscoff a accueilli  la troisième édition du R Bootca
 - [Pierre Navaro](https://irmar.univ-rennes1.fr/interlocuteurs/pierre-navaro) (IRMAR - CNRS)
 
 
-## Quoi ?
+## Quoi
 
 Cette semaine a été consacrée à l'approfondissement de diverses thématiques (méthodologiques, techniques) autour du logiciel `R`: ce site proposera un compte rendu des différents thèmes abordés. Les participants collaborent tous au contenu de ce site lors d'ateliers organisés en petits groupes.
 
@@ -73,7 +73,6 @@ Le compte rendu des éditions précédentes sont disponibles
 <!-- ```{r} -->
 <!-- datatable(participants, options = list(pageLength = 17, dom = "t")) -->
 <!-- ``` -->
-
 
 ## Programme 
 

@@ -3,6 +3,11 @@ title: "Utilisation du package Julia MixedModels depuis R"
 output: html_document
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      cache = TRUE)
+```
+
 Antoine Jardin, dans un [post](http://osc.cnrs.fr/RT20/2015/local/documents/S4_Jardin.html) 
 de 2015, compare les performances du package R `lme4` et 
 [MixedModels](https://github.com/dmbates/MixedModels) écrit en Julia.
