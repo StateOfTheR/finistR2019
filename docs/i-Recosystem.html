@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Julie Aubert" />
+
+<meta name="date" content="2019-09-12" />
+
+<title>Présentation de l’écosystème R</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">FinistR 2019</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Accueil
+  </a>
+</li>
+<li>
+  <a href="https://github.com/StateOfTheR/finistR2019">
+    <span class="fa fa-github"></span>
+     
+    Dépôt GitHub
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-microphone"></span>
+     
+    Communication
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="i-Recosystem.html">Ecosystème R</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="c-distill_presentation.html">Distill</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../finistr2019_website/c-bookdown/_book/index.html">Bookdown en HTML</a>
+    </li>
+    <li>
+      <a href="../finistr2019_website/c-bookdown/_book/bookdown.pdf">Bookdown en PDF</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="c-tables.html">Tables</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-box-open"></span>
+     
+    Développement
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="d-utilisation_GitHub.html">Versionning</a>
+    </li>
+    <li>
+      <a href="d-mypkg.html">Création de Package</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="d-rcpp_rappels.html">Rappels de Rcpp</a>
+    </li>
+    <li>
+      <a href="d-RcppModules.html">Rcpp Modules</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../finistr2019_website/d-slides-repro/R_repro.html">Reproductibilité</a>
+    </li>
+    <li>
+      <a href="d-docker.html">Docker</a>
+    </li>
+    <li>
+      <a href="d-renv.html">Renv</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-chart-bar"></span>
+     
+    Statistiques
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="s-sparse_matrix.html">Matrices creuses</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="s-lme4-exemples-dragons.html">Modèles mixtes avec lme4</a>
+    </li>
+    <li>
+      <a href="s-julia_mixed_models.html">Modèles mixtes avec Julia depuis R</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="s-tidymodels.html">Tidymodels</a>
+    </li>
+    <li class="dropdown-header">Intégration dans Parsnip</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-wrench"></span>
+     
+    Manipulation des données
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Tidyverse</li>
+    <li>
+      <a href="m-rlang.html">Rlang</a>
+    </li>
+    <li>
+      <a href="m-spark.html">Spark</a>
+    </li>
+    <li class="dropdown-header">BigStatR</li>
+    <li class="dropdown-header">Rlang</li>
+    <li class="dropdown-header">Reticulate</li>
+    <li class="dropdown-header">future</li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Présentation de l’écosystème R</h1>
+<h4 class="author">Julie Aubert</h4>
+<h4 class="date">2019-09-12</h4>
+
+</div>
+
+
+<div id="software-ecosystem" class="section level2">
+<h2>Software Ecosystem</h2>
+<p>L’écosystème (d’un) logiciel est un nouveau concept pour le développement collaboratif de logiciel.</p>
+<p>Il s’agit de l’étape la plus récente du processus qui a fait passer les logiciels de logiciel monobloc, produit intégré, à des logiciels plus ouverts, plus modulaires et plus collaboratifs. Dans un écosystème logiciel, une communité de développeurs collabore de façon asynchrone et souvent sans direction central à travers d’une plateforme ou un marché logiciel commun.</p>
+<div id="r-software-ecosystem" class="section level3">
+<h3>R Software Ecosystem</h3>
+<p>L’écosystème R a grandi d’un outil de niche pour les statisticiens du domaine académique à une solution populaire pour une communité plus large dans la fouille et l’analyse de données. Il est ainsi devenu un langage parmi les plus populaires dans le monde. Il est passé de la 9eme à la 5eme place entre 2014 et 2016 et est aujourd’hui à la 7eme place. (source : [IEE Spetrum] <a href="https://spectrum.ieee.org/at-work/innovation/the-2018-top-programming-languages" class="uri">https://spectrum.ieee.org/at-work/innovation/the-2018-top-programming-languages</a> )</p>
+</div>
+<div id="r" class="section level3">
+<h3>R ?</h3>
+<p><a href="https://rss.onlinelibrary.wiley.com/doi/epdf/10.1111/j.1740-9713.2018.01169.x">Les 25 ans de R</a></p>
+<p>R est un langage de programmation et environnement libre et open-source sous licence GNU dérivé du langage S. Naissance en 1993 (Gentleman and Ihaka), code public en 1995. Le coeur de R a commencé son existence en 1997 (11 personnes) avec la création du CRAN et est maintenu depuis par la fondation R et la <em>‘R Core Team’</em> (Hornik, 2015)</p>
+<p>Application principale : calculs statistiques et graphiques</p>
+<p>En plus du code R, du code en Fortran, C et C++ est utilisé de façon intensive. R est disponible à la fois sur Windows, MacOS et les plateformes dérivées d’UNIX.</p>
+<p>Le dépôt principal pour les produits logiciels développés par la communité R, appelés <em>packages</em>, est le <em>CRAN</em> (the Comprehensive R Archive Network, or CRAN (The Comprehensive R Archive Network, 2017)).</p>
+<p>Il existe d’autres projets en lien avec R (<a href="https://www.r-project.org/other-projects.html" class="uri">https://www.r-project.org/other-projects.html</a>) dont les principaux sont <em>Bioconductor</em> pour le domaine de la bioinformatique, la <em>R-forge</em> ou <em>Omegahat</em> autour du calcul distribué.</p>
+<p>Et un certain nombre de packages existe indépendamment notamment dans des dépöts de code comme <em>GitHub</em>.</p>
+<p>R peut être exécuté en ligne de commande ou via des GUIs ou IDEs dont le principal est <em>RStudio</em> (2017) développé sous la direction d’<a href="https://fr.wikipedia.org/wiki/Hadley_Wickham,%20http://hadley.nz">Hadley Wikham</a>.</p>
+</div>
+</div>
+<div id="lecosysteme-r" class="section level2">
+<h2>L’écosystème R</h2>
+<div class="figure">
+<img src="img/i-Recosystem.jpg" alt="Représentation simplifiée de l’écosystème R" />
+<p class="caption">Représentation simplifiée de l’écosystème R</p>
+</div>
+<p>3 domaines principaux : la <em>plateforme R</em>, le <em>marché logiciel</em> et la <em>communauté</em>, ainsi que les interactions associées. Les flèches en pointillées représentent l’impact de la communauté sur l’offre logicielle, les flèches en trait plein représentent les dépendances entre les packages. La plateforme R comprend les packages installés par défaut : des packages inclus dans R base et proposés par la ‘R core team’ et quelques packages recommandés produits par la communauté (installé par défaut comme parti du noyau mais hébergés indépendamment sur le CRAN). Il existe des vendeurs autres tels que <em>Microsoft</em> qui offre des plateformes de base parfois plus élargies.</p>
+</div>
+<div id="la-communaute-r" class="section level2">
+<h2>La communauté R</h2>
+<p>Elargissement facilité par le <em>tidyverse</em> : des utilisateurs contributeurs, des utilisateurs ‘purs’ issus des sciences du vivant, la démographie, la sociologie.</p>
+<p><a href="https://rladies.org">R-ladies</a> (depuis 2012 sous impulsion initiale de Gabriela de Queiroz, [article businessinsider] (<a href="http://www.businessinsider.fr/us/gabriela-de-queiroz-ibm-manager-r-ladies-meetup-2019-8?utm_medium=referral&amp;utm_content=topbar&amp;utm_term=mobile&amp;referrer=twitter" class="uri">http://www.businessinsider.fr/us/gabriela-de-queiroz-ibm-manager-r-ladies-meetup-2019-8?utm_medium=referral&amp;utm_content=topbar&amp;utm_term=mobile&amp;referrer=twitter</a>))</p>
+<p>Constat initial : communauté dominée par les hommes et femmes participant parfois mais n’intéragissant que peu. 1 octobre 2012 : pemière rencontre ‘R_ladies’ à San Francisco.</p>
+<p>En 2018 : des meet-up dans 122 villes avec plus 28000 membres. Auj (aout 2019) : 47 pays, 167 groupes, 48416 membres.</p>
+<p>Mission : The R-Ladies mission is <em>‘to achieve proportionate representation by encouraging, inspiring, and empowering people of genders currently underrepresented in the R community’</em>.</p>
+<p>Quelques chiffres : - en 2016 entre 11 et 15<span class="math inline">\(%\)</span> des développeurs de package étaient des femmes. - nombre d’exposés invités donné par des femmes aux conférences <em>useR!</em> passé de zero en 2004 à 34% in 2016.</p>
+</div>
+<div id="analyse-de-lecosysteme-r" class="section level2">
+<h2>Analyse de l’écosystème R</h2>
+<p>Etudier l’écosystème et détecter caractéristiques et des tendances</p>
+<div id="article-de-german2013evolution" class="section level3">
+<h3>Article de <span class="citation">German, Adams, and Hassan (2013)</span></h3>
+<p>A partir de 52 utilisateurs et les packages qu’ils utilisent (données de 2011) : étude des caractéristiques du code et relations de dépendance entre la plateforme R et les packages proposés par la communauté. Ils montrent que les ‘contributed’ packages sont moins documentés, ont moins de versions, sont plus récents, moins téléchargés et moins réutilisés que ceux de la plateforme R. Et à partir des listes de diffusion de R, ils ont montré que la communauté d’utilisateurs finaux avait grandi de façon super-linéaire tandis que la communauté de développeurs étaient restée stable.</p>
+</div>
+<div id="articles-de-claes2014-et-claes2014maintainability" class="section level3">
+<h3>Articles de <span class="citation">(<span class="citeproc-not-found" data-reference-id="claes2014"><strong>???</strong></span>)</span> et <span class="citation">Claes, Mens, and Grosjean (2014)</span></h3>
+<p>Etude dans un objectif de maintenance des packages à partir des erreurs de code et des dépendances. <!-- Ex : à partir des occurences d'erreur dans les packages sur une période de 3 mois, ils ont montré que les erreurs provenaient principalement de mise à jour dans les dépendances du package et on  --></p>
+<p>Topologie des réseaux de dépendance entre packages</p>
+<p>Etude des liens de dépendance entre les dépôts principaux de code (CRAN, GitHub, R-forge)</p>
+</div>
+<div id="le-travail-de-plakidas2017evolution" class="section level3">
+<h3>Le travail de <span class="citation">Plakidas, Schall, and Zdun (2017)</span></h3>
+<p>Etude de l’écosystème R ; et de son évolution dans l’idée de détecter des tendances au niveau de l’écosystème ou au niveau individuel.</p>
+<p>Etude du point de vue des dépôts de code (interaction entre les packages) ou étude des interactions entre la communauté et le marché.</p>
+<p>Quelques caractéristiques : les packages les plus importants pour la communauté sont dus à un group noyau de peu d’utilisateurs.</p>
+<p>Questions : 1. Comment le marché R s’est construit ? Etude de la structure de dépendance en terme de composition, profondeur et d’interconnexion (recherche de communautés)</p>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Comment les membres de la communauté contribuent à R ?</p></li>
+<li><p>Quel est l’état courant de l’écosystème R?</p></li>
+</ol>
+<p>Données : Packages issus de Bioconductor et CRAN (doc, code, archives)</p>
+<div class="figure">
+<img src="Recosysteme_graph.jpg" alt="Vue d’ensemble des relations de dépendance (arêtes) entre les dépôts CRAN (en bleu) et de BioConductor (en jaune)" />
+<p class="caption">Vue d’ensemble des relations de dépendance (arêtes) entre les dépôts CRAN (en bleu) et de BioConductor (en jaune)</p>
+</div>
+<p>Si vous êtes intéressés par les résultats, allez lire le papier de <span class="citation">(Plakidas, Schall, and Zdun 2017)</span> !</p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>Références</h2>
+<div id="refs" class="references">
+<div id="ref-claes2014maintainability">
+<p>Claes, Maëlick, Tom Mens, and Philippe Grosjean. 2014. “On the Maintainability of Cran Packages.” In <em>2014 Software Evolution Week-Ieee Conference on Software Maintenance, Reengineering, and Reverse Engineering (Csmr-Wcre)</em>, 308–12. IEEE.</p>
+</div>
+<div id="ref-german2013evolution">
+<p>German, Daniel M, Bram Adams, and Ahmed E Hassan. 2013. “The Evolution of the R Software Ecosystem.” In <em>2013 17th European Conference on Software Maintenance and Reengineering</em>, 243–52. IEEE.</p>
+</div>
+<div id="ref-plakidas2017evolution">
+<p>Plakidas, Konstantinos, Daniel Schall, and Uwe Zdun. 2017. “Evolution of the R Software Ecosystem: Metrics, Relationships, and Their Impact on Qualities.” <em>Journal of Systems and Software</em> 132. Elsevier: 119–46.</p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

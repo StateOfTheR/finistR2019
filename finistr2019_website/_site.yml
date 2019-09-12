@@ -66,6 +66,7 @@ navbar:
         - text: "Tidyverse"
         - text: "Rlang"
           href: m-rlang.html
+          
         - text: "Spark"
           href: m-spark.html
         - text: "BigStatR"

@@ -10,10 +10,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="S. Donnet" />
 
 
-<title>Quelques rappels à propos de Rcpp</title>
+<title>d-docker.utf8.md</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -484,94 +483,62 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Quelques rappels à propos de Rcpp</h1>
-<h4 class="author">S. Donnet</h4>
-<h4 class="date">FinistR 2019.</h4>
 
 </div>
 
 
-<p>Nous rappelons ici quelques principes de bases pour inclure du code C++ dans un code R. Ces notes se basent sur la présentation faite dans le cadre du groupe de travail StateOfTheR, à retrouver <a href="https://stateofther.github.io/post/bases-rcpp/">ici</a>.</p>
-<div id="differences-darchitectures-entre-r-et-c" class="section level1">
-<h1>Différences d’architectures entre R et C++</h1>
-<p>Un statisticien écrit un code dit source. Ce code peut être lu facilement par un humain (on parle de language <em>high level</em>). Cependant, pour pouvoir être lu et éxécuté par un CPU (microprocesseur) le language <em>high level</em> doit être transformé en language <em>bas niveau</em> (i.e. 0 1 0 0 0 1 ).</p>
-<p>Pour passer du code source au code binaire, on a besoin d’un traducteur. Ce traducteur sera soit un <strong>compileur</strong> (tel que C++) ou un <strong>interpréteur</strong> (tel que R).</p>
-<blockquote>
-<p>Un <strong>compileur</strong> traduit le code avant son interprétation (on parle de <em>compilation</em>), une fois pour toutes.</p>
-</blockquote>
-<blockquote>
-<p>Un <strong>interpréteur</strong> traduit le code à la volée, au moment de son exécution.</p>
-</blockquote>
-<p>Par conséquent, un <strong>compileur</strong> prend le code en entier et le traduit en une fois. On ne fera la tâche qu’une fois (économie de temps). Cependant les éventuelles erreurs ne sont listées qu’après la complète traduction (code difficile à débugguer). Par ailleurs, la version compilée est plus difficile à partager (selon les os, un utilisateur peut avoir besoin de recompiler le code).</p>
-<p>Alternativement, un <strong>interpréteur</strong> traduit le code commande par commande. Donc le débugguage est plus facile. Mais ceci est refait à chaque exécution (perte de temps). On ne partage que le code source.</p>
-<p>Les languages du type compileur nécéssite de spécifier la nature des objets utilisés dans la fonction. Au moment de la compilation, le compileur doit connaitre la nature des objets.</p>
-<p>Rcpp permet de transformer un code C++ en une fonction lisible en R (<code>my_function</code>). Donc on commence par un code C++, le compileur de Rcpp (i.e. le compileur de C++ i.e. gcc) transforme cette instruction en un code avec extension <code>my_function.o</code>. Si ma fonction fait appel à d’autres fonctions C++ présentes dans d’autres libraries C++, je dois les lier. Pour cela Rcpp dispose d’un <em>linker</em>. Ma fonction est ensuite exportée pour devenir une fonction interprétable par R.</p>
-<p>A noter qu’il existe une librairie <em>RcppArmadillo</em> qui contient des fonctions d’algèbre linéaire écrites en C++. Pour l’utiliser, il faudra inclure en début du fichier <code>.cpp</code> les intructions suivantes:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="pp">#include </span><span class="im">&quot;RcppArmadillo.h&quot;</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">// [[Rcpp::depends(RcppArmadillo)]]</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">using</span> <span class="kw">namespace</span> Rcpp;</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">using</span> <span class="kw">namespace</span> arma;  <span class="co">// Evite d&#39;écrire arma::fonctionArmadillo</span></a></code></pre></div>
-<p>Une fois cette librairie chargée, il est possible d’écrire un code C++ très semblable à ce qu’on écrirait en R (hormis la définition des objets). Typiquement, <em>RcppArmadillo</em> permet d’utiliser des matrices, d’en calculer la taille, d’utiliser des fonctions du type <code>dnorm</code>, <code>rgamma</code>…</p>
+<div id="repo2docker" class="section level1">
+<h1>repo2docker</h1>
+<div id="description" class="section level2">
+<h2>Description</h2>
+<p>repo2docker est un utilitaire écrit en python qui permet de transformer un dépôt git en image docker. Au lieu d’utiliser un fichier Dockerfile pour construire l’image, on utilise des fichiers de configuration spécifiques en fonction du langage. <code>repo2docker</code>permet de créer des images pour des applications Python, R ou Julia.</p>
 </div>
-<div id="ecrire-une-fonction-en-cpp-avec-rcpp" class="section level1">
-<h1>Ecrire une fonction en cpp avec Rcpp</h1>
-<p>Le language C++ nécéssite de déclarer le format de toutes les variables (en entrée, en sortie et dans la fonction). Nous proposons ci-dessous un code écrit en <code>R</code> et son équivalent écrit en <code>Rcpp</code>. L’algorithme suivant simule une chaîne de Markov (Gibbs).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">gibbs_r &lt;-<span class="st"> </span><span class="cf">function</span>(N, thin) {</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">  mat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">nrow =</span> N)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">  x &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">  y &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>N) {</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>thin) {</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">      x &lt;-<span class="st"> </span><span class="kw">rgamma</span>(<span class="dv">1</span>, <span class="dv">3</span>, y <span class="op">*</span><span class="st"> </span>y <span class="op">+</span><span class="st"> </span><span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">      y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1</span>, <span class="dv">1</span> <span class="op">/</span><span class="st"> </span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)))</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">    }</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">    mat[i, ] &lt;-<span class="st"> </span><span class="kw">c</span>(x, y)</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">  }</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">  <span class="kw">return</span>(mat)</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">}</a></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">// [[Rcpp::export]]  // nécéssaire pour exporter la fonction ensuite sous R</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">NumericMatrix gibbs_cpp(<span class="dt">int</span> N, <span class="dt">int</span> thin) {</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">  </a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">  NumericMatrix res (N,<span class="dv">2</span>); <span class="co">// définit une matrice de 0 de taille (N,2) (résultats)</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">  <span class="dt">double</span> x = <span class="dv">0</span>;  <span class="co">// définit un numérique (double précision) initialisé à 0. </span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">  <span class="dt">double</span> y = <span class="dv">0</span>; </a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">  <span class="dt">int</span> indexline = <span class="dv">0</span>;  <span class="co">// définit un entier qui va nous permettre de remplir la matrice</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span> ; i &lt; N ; i++){</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">    indexline = i; </a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">    <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; thin; ++j){</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">      x = rgamma(<span class="dv">1</span>, <span class="dv">3</span>, y * y + <span class="dv">4</span>)[<span class="dv">0</span>];</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">      y = rnorm(<span class="dv">1</span>, <span class="dv">1</span> / (x + <span class="dv">1</span>), <span class="dv">1</span> / sqrt(<span class="dv">2</span> * ( x + <span class="dv">1</span>)))[<span class="dv">0</span>];</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">    }</a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">    res(indexline,<span class="dv">0</span>) = x; </a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">    res(indexline,<span class="dv">1</span>) = y; </a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">  } </a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">  <span class="cf">return</span> res;</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18">}</a></code></pre></div>
-<p>La fonction <code>gibbs_cpp</code>est écrite dans un fichier <code>my_functions_cpp.cpp</code>. Ce fichier peut contenir plusieurs fonctions <code>cpp</code>, il faut spécifier de l’exporter avant chaque fonction par l’instruction <code>// [[Rcpp::export]]</code>.</p>
-<p><em>Quelques remarques utiles sur le code Rcpp</em> :</p>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
 <ul>
-<li>toutes les instructions doivent être terminées par <code>;</code>,</li>
-<li>l’indexation commence à <span class="math inline">\(0\)</span>,</li>
-<li>on accède à un élément d’un vecteur par des crochets <code>[.]</code>,</li>
-<li>on accède à un élément d’une matrice par des parenthèses <code>(.,.)</code>.</li>
+<li>En premier lieu il faut installer <a href="https://docs.docker.com/install/">Docker</a></li>
+<li>Installer <code>repo2docker</code> avec pip</li>
 </ul>
+<pre><code>python3 -m pip install jupyter-repo2docker</code></pre>
+<p>Attention <code>repo2docker</code> est encore au stade expérimental pour Windows.</p>
 </div>
-<div id="utilisation-dune-fonction-cpp-en-r" class="section level1">
-<h1>Utilisation d’une fonction cpp en R</h1>
-<p>La commande suivante permet de transformer notre fonction <code>cpp</code> en fonction <code>R</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(Rcpp)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">sourceCpp</span>(<span class="st">&quot;my_functions_cpp.cpp&quot;</span>)</a></code></pre></div>
-<p>On a alors dans l’environnement une fonction <code>R</code> appelée <code>gibbs_cpp</code>. On peut maintenant comparer les temps de calculs.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">library</span>(microbenchmark)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">N &lt;-<span class="st"> </span><span class="dv">10000</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">thin &lt;-<span class="st"> </span><span class="dv">10</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">res_compar &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="kw">gibbs_cpp</span>(N, thin), <span class="kw">gibbs_r</span>(N, thin), <span class="dt">times =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">ggplot2<span class="op">::</span><span class="kw">autoplot</span>(res_compar)</a></code></pre></div>
-<div class="figure">
-<img src="img/d-comput_microbenchmark.png" alt="Comparaison des temps de calculs entre R et C++" />
-<p class="caption">Comparaison des temps de calculs entre R et C++</p>
+<div id="creation-du-depot" class="section level2">
+<h2>Création du dépôt</h2>
+<p>Nous nous intéressons uniquement à la création d’une image docker pour une application R. Le dépôt devra contenir des fichiers de configuration suivants:</p>
+<p>Si votre application est un package R, <code>repo2docker</code> lira le fichier DESCRIPTION et utilisera la commande <code>devtools::install_git(&quot;.&quot;)</code>. Vous devrez également fournir un fichier supplémentaire <code>runtime.txt</code> contenant la ligne</p>
+<pre><code>r-&lt;YYYY&gt;-&lt;MM&gt;-&lt;DD&gt;</code></pre>
+<p>ou YYYY-MM-DD sera la date du snapshot MRAN où chaque jour l’ensemble des packages du CRAN est sauvegardée depuis le 17 septembre 2014.</p>
+<p>Si vous souhaitez installer quelques packages supplémentaires, il faudra créer un fichier <code>install.R</code> qui peut contenir par exemple les lignes suivantes</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="st">&quot;rmarkdown&quot;</span>)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">install.packages</span>(<span class="st">&quot;httr&quot;</span>)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw">install.packages</span>(<span class="st">&quot;shinydashboard&quot;</span>)</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw">install.packages</span>(<span class="st">&#39;leaflet&#39;</span>)</a></code></pre></div>
+<p>On peut également y ajouter des commandes R pour télécharger des données.</p>
+<p>Si certains de ces packages nécessite l’installation de packages linux spécifiques ceux-ci pourrant être mentionnés dans un fichier <code>apt.txt</code></p>
+<p>Exemple pour LaTeX</p>
+<pre><code>texlive-latex-base
+texlive-latex-recommended
+texlive-science
+texlive-latex-extra
+texlive-fonts-recommended
+dvipng
+ghostscript</code></pre>
 </div>
-<p>On gagne globalement un facteur <span class="math inline">\(10\)</span> sur cette simple fonction. L’utilisation de code C++ est recommandée lorsque le code repose sur une boucle <code>for</code> qui ne peut être remplacée par un calcul matriciel.</p>
+<div id="utilisation" class="section level2">
+<h2>Utilisation</h2>
+<pre><code>jupyter-repo2docker --image-name r-example --user-id 1000 https://github.com/binder-examples/r</code></pre>
+<p>l’appication fournie une adresse de la forme <a href="http://127.0.0.1:XXXX/tree" class="uri">http://127.0.0.1:XXXX/tree</a> qui permet d’accéder au serveur jupyter. Vous pouvez accéder au serveur rstudio à l’adresse <a href="http://127.0.0.1:XXXX/rstudio" class="uri">http://127.0.0.1:XXXX/rstudio</a> et l’application shiny à l’adresse <a href="http://127.0.0.1:XXXX/shiny" class="uri">http://127.0.0.1:XXXX/shiny</a></p>
+</div>
+</div>
+<div id="binder" class="section level1">
+<h1>Binder</h1>
+<p>Vous pouvez également lancer ces applications sur binder en suivant les liens suivants:</p>
+<ul>
+<li>Jupyter+R: <a href="http://mybinder.org/v2/gh/binder-examples/r/master?filepath=index.ipynb" class="uri">http://mybinder.org/v2/gh/binder-examples/r/master?filepath=index.ipynb</a></li>
+<li>RStudio: <a href="http://mybinder.org/v2/gh/binder-examples/r/master?urlpath=rstudio" class="uri">http://mybinder.org/v2/gh/binder-examples/r/master?urlpath=rstudio</a></li>
+<li>RShiny: <a href="http://mybinder.org/v2/gh/binder-examples/r/master?urlpath=shiny/bus-dashboard/" class="uri">http://mybinder.org/v2/gh/binder-examples/r/master?urlpath=shiny/bus-dashboard/</a></li>
+</ul>
 </div>
 
 

@@ -373,11 +373,15 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="i-Recosystem.html">Ecosystème R</a>
+    </li>
+    <li class="divider"></li>
+    <li>
       <a href="c-distill_presentation.html">Distill</a>
     </li>
     <li class="divider"></li>
     <li>
-      <a href="../finistr2019_website/c-bookdown/_book/">Bookdown en HTML</a>
+      <a href="../finistr2019_website/c-bookdown/_book/index.html">Bookdown en HTML</a>
     </li>
     <li>
       <a href="../finistr2019_website/c-bookdown/_book/bookdown.pdf">Bookdown en PDF</a>
@@ -397,19 +401,29 @@ $(document).ready(function () {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Versionning</li>
-    <li class="dropdown-header">Intégration continue</li>
-    <li class="divider"></li>
-    <li class="dropdown-header">Structure d'un package</li>
-    <li class="dropdown-header">Documentation</li>
-    <li class="dropdown-header">Site Web</li>
+    <li>
+      <a href="d-utilisation_GitHub.html">Versionning</a>
+    </li>
+    <li>
+      <a href="d-mypkg.html">Création de Package</a>
+    </li>
     <li class="divider"></li>
     <li>
       <a href="d-rcpp_rappels.html">Rappels de Rcpp</a>
     </li>
-    <li class="dropdown-header">Intégration de code C++</li>
+    <li>
+      <a href="d-RcppModules.html">Rcpp Modules</a>
+    </li>
     <li class="divider"></li>
-    <li class="dropdown-header">Reproductibilité</li>
+    <li>
+      <a href="../finistr2019_website/d-slides-repro/R_repro.html">Reproductibilité</a>
+    </li>
+    <li>
+      <a href="d-docker.html">Docker</a>
+    </li>
+    <li>
+      <a href="d-renv.html">Renv</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -448,7 +462,12 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Tidyverse</li>
-    <li class="dropdown-header">Spark</li>
+    <li>
+      <a href="m-rlang.html">Rlang</a>
+    </li>
+    <li>
+      <a href="m-spark.html">Spark</a>
+    </li>
     <li class="dropdown-header">BigStatR</li>
     <li class="dropdown-header">Rlang</li>
     <li class="dropdown-header">Reticulate</li>
@@ -494,7 +513,7 @@ package Julia MixedModels montre dans ce <a href="https://rpubs.com/dmbates/3778
 <a class="sourceLine" id="cb5-6" data-line-number="6">don<span class="op">$</span>mereF &lt;-<span class="st"> </span><span class="kw">as.factor</span>(don<span class="op">$</span>mere)</a></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">system.time</span>(model &lt;-<span class="st"> </span><span class="kw">lmer</span>(gdp <span class="op">~</span><span class="st"> </span>tpsF <span class="op">*</span><span class="st"> </span>gest <span class="op">*</span><span class="st"> </span>ps <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>bbF), <span class="dt">data =</span> don))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##  14.268   0.016  14.288</code></pre>
+##  13.712   0.014  13.729</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">summary</span>(model)</a></code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: gdp ~ tpsF * gest * ps + (1 | bbF)
@@ -1003,7 +1022,7 @@ package Julia MixedModels montre dans ce <a href="https://rpubs.com/dmbates/3778
 <div id="executer-la-fonction-julia" class="section level2">
 <h2>Exécuter la fonction julia</h2>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">jl<span class="op">$</span><span class="kw">eval</span>(<span class="st">&quot;@elapsed fm = fit(LinearMixedModel, form, don)&quot;</span>)</a></code></pre></div>
-<pre><code>## [1] 13.06439</code></pre>
+<pre><code>## [1] 12.79208</code></pre>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">jl<span class="op">$</span><span class="kw">eval</span>(<span class="st">&quot;fm&quot;</span>)</a></code></pre></div>
 <pre><code>## Julia Object of type LinearMixedModel{Float64}.
 ## Linear mixed model fit by maximum likelihood

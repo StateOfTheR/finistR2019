@@ -1,0 +1,284 @@
+---
+title: "Reproducibility with R"
+author: "Pierre Gestraud"
+date: "27-08-2019"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    self_contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumberFormat: '%current% / %total%'
+      highlightSpans: true
+    css: ["sotr.css", "default-fonts"]
+---
+
+
+# Reproducibility
+
+How to ensure analysis reproducibility?
+
+* scripts versionning
+* **environment management**
+  - R version
+  - packages versions
+  - external tools
+  
+Reminders:
+
+* One major R version every year (+3 minor versions)
+* Dozens of new packages or updates every day
+* Bioconductor, 2 versions each year, linked to R version
+* Automatic dependencies installations, no control on side effects
+
+
+---
+
+## Your practice? 
+
+* Installations
+  + R installation: from binary, manual compilation, OS package?
+  + packages: from R, OS packages, `install.packages`, `pak`, CRAN vs github, local CRAN?
+  + multiple machines? local/cluster/cloud? 
+* Updates
+  + when?
+  + for a running project?
+
+---
+
+## renv (packrat)
+
+* `rstudio`'s solution to packages version management
+* creates **r**eproducible **env**ironments for R projects
+* **isolated**:  each project has its own private library
+* **portable**: easy to install on several machines
+* **reproducible**: records the exact version of all the packages and provides a mecanism to restore the same environment
+* https://rstudio.github.io/renv/
+
+---
+
+## renv workflow
+
+* initialise the project
+    - private library is created
+* work as usual
+    - install needed packages
+* snapshot
+    - save the current state of packages
+* restore
+    - from the snapshot, install the same environment
+
+---
+
+## renv demo
+
+
+---
+
+## Docker
+
+*Wikipedia*: Docker is a set of coupled software-as-a-service and platform-as-a-service products that use operating-system-level virtualization to develop and deliver software in packages called containers.
+
+
+General idea: build an environment with everything needed to run an application (including OS files). 
+
+Vocabulary:
+
+* **image**: definition of the os
+* **container**: running instance of an image
+* **dockerfile**: recipe to build an image
+* https://hub.docker.com: repository of images 
+
+<center>![](docker.png)
+
+---
+
+## docker commands (need sudo...)
+
+* list images
+  - `docker image list`
+* build container (in directory with dockerfile)
+  - `docker build .`
+* execute default command in container
+  - `docker run <image>`
+* lauch shell in container
+  - `docker run -ti <image> bash`
+* use -v to bind directories
+
+---
+
+## Dockerfile example
+
+```{bash, eval = FALSE}
+FROM debian:testing
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+	r-base
+	
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+
+EXPOSE 3838
+
+ADD ./ex_file.txt
+
+CMD ["R"]
+```
+
+
+---
+
+## Dockerfile example
+
+Base image, here just a debian image but can be another container
+
+```{bash, eval = FALSE}
+*FROM debian:testing
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+	r-base
+	
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+
+EXPOSE 3838
+
+ADD ./ex_file.txt
+
+CMD ["R"]
+```
+
+
+---
+
+## Dockerfile example
+
+Execute command
+
+```{bash, eval = FALSE}
+FROM debian:testing
+
+*RUN apt-get update \
+*	&& apt-get install -y --no-install-recommends \
+*	r-base
+	
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+
+EXPOSE 3838
+
+ADD ./ex_file.txt
+
+CMD ["R"]
+```
+
+
+
+---
+
+## Dockerfile example
+
+Define environment variables
+
+```{bash, eval = FALSE}
+FROM debian:testing
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+	r-base
+	
+*ENV LC_ALL en_US.UTF-8
+*ENV LANG en_US.UTF-8
+
+EXPOSE 3838
+
+ADD ./ex_file.txt
+
+CMD ["R"]
+```
+
+
+---
+
+## Dockerfile example
+
+Open port in the container
+
+```{bash, eval = FALSE}
+FROM debian:testing
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+	r-base
+	
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+
+*EXPOSE 3838
+
+ADD ./ex_file.txt
+
+CMD ["R"]
+```
+
+
+---
+
+## Dockerfile example
+
+Add local file to container
+
+```{bash, eval = FALSE}
+FROM debian:testing
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+	r-base
+	
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+
+EXPOSE 3838
+
+*ADD ./ex_file.txt
+
+CMD ["R"]
+```
+
+
+---
+
+## Dockerfile example
+
+Default command in the container
+
+```{bash, eval = FALSE}
+FROM debian:testing
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+	r-base
+	
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+
+EXPOSE 3838
+
+ADD ./ex_file.txt
+
+*CMD ["R"]
+```
+
+
+---
+
+## docker and R
+
+* R + docker = `rocker`
+* repository of R focused dockerfiles
+* https://hub.docker.com/r/rocker/r-ver
+
