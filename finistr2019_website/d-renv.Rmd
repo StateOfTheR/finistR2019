@@ -1,0 +1,53 @@
+---
+title: "renv"
+author: "Pierre Gestraud"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+`renv` is a package to manage locally packages library by projet. `renv` is:
+
+- **Isolated**: Installing a new or updated package for one project won't break your other projects, and vice versa. That's because renv gives each project its own private package library.
+
+- **Portable**: Easily transport your projects from one computer to another, even across different platforms. renv makes it easy to install the packages your project depends on.
+
+- **Reproducible**: renv records the exact package versions you depend on, and ensures those exact versions are the ones that get installed wherever you go.
+
+https://rstudio.github.io/renv/index.html
+
+# Workflow
+
+The general workflow for renv is:
+
+1. Initialise the project with `renv::init`. It creates a new *renv* directory inside the project and a *.Rprofile* to activate renv when is launched. A the begining this library contains only base packages.
+
+2. Work as usual, installing and removing packages as needed.
+
+3. Call `renv::restore()` to save the state of the current library environment. This populate the *renv.lock* file with the version and source of each package. 
+
+# Reproduce the environment
+
+To reproduce the environment (re-installing the same packages) we only need to keep the *renv.lock* file. The function `renv::restore()` will restore the state from this lockfile.
+
+# Cache
+
+By default, renv installs package in a cache (location varies according to OS) and then only create links from this cache to the project library. 
+
+Cache location:
+
+Platform  | Location
+--------- | ---------
+Linux     | `~/.local/share/renv`
+macOS     | `~/Library/Application Support/renv`
+Windows   | `%LOCALAPPDATA%/renv`
+
+The cache can be shared accross users.
+
+# Python support
+
+python is supported through `reticulate` and the creation of a virtual env. 
+
