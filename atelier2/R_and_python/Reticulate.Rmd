@@ -15,7 +15,7 @@ Nous allons vous présenter brièvement comment utiliser la bibliothèque Reticu
 Le package reticulate permet de lier R et Python en utilisant des appels Python dans R.
 ```{r}
 library(reticulate)
-use_python("/home/claire/Applications/python/conda/bin/python")
+use_python("/home/metienne/conda/bin/python3")
 # on prend un jeu de donnée jouet : 
 data(cars)
 ```
@@ -46,7 +46,7 @@ Le problème est que ça ne marche pas dans un markedown.
 
 La dernière façon est de charger un script .py dans le script : les fonctions sont alors directement appelée comme dans 1.1
 ```{r}
-use_python("/home/claire/Applications/python/conda/bin/python")
+use_python("/home/metienne/conda/bin/python3")
 source_python('test.py')
 my_mean(cars)
 ```
