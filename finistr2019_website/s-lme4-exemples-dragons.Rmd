@@ -124,7 +124,7 @@ model_mixed <- lmer(testScore ~ bodyLength + (1|mountainRange),
                     data = dragons, REML = TRUE)
 ```
 
-On regade `tidy(model_mixed)` et `glance(model_mixed)`.
+On regarde `tidy(model_mixed)` et `glance(model_mixed)`.
 
 ```{r tidyglance_mm, echo=FALSE}
 model_mixed %>% 
@@ -150,7 +150,7 @@ anova(model_mixed_null, model_mixed) %>%
   flextable()
 ```
 
-La variable n'est pas `bodyLength` n'est pas signifiactive.
+La variable n'est pas `bodyLength` n'est pas significative.
 
 ## Modèle mixte à effets imbriqués
 
@@ -198,14 +198,14 @@ Cependant, lorsqu'on fait `anova()` entre deux modèles, ceux-ci sont recalculé
 augment(model_nested, dragons)
 ```
 
-On a accès aux coefficients via les fonctions `coefficients()` pour les effets fixes et `ranef()` poyr les effets aléatoires.
+On a accès aux coefficients via les fonctions `coefficients()` pour les effets fixes et `ranef()` pour les effets aléatoires.
 
 ```{r coefranef}
 coefficients(summary(model_nested))
 ranef(model_nested)
 ```
 
-La prédiction de fait en décomposant additionnant les différentes composantes. 
+La prédiction se fait en additionnant les différentes composantes. 
 
 ```{r compute_pred}
 # Ordonné à l'origine
@@ -218,7 +218,7 @@ coefficients(summary(model_nested))[1, 1] +
   ranef(model_nested)$`mountainRange:site`["Bavarian:a", ]
 ```
 
-Et on retouve le même résultat
+Et on retrouve le même résultat
 
 ```{r augmentbis}
 augment(model_nested, dragons)$.fitted[1:6]
@@ -226,9 +226,9 @@ augment(model_nested, dragons)$.fitted[1:6]
 
 
 
-## Probabilités cririques
+## Probabilités critiques
 
-Si veut les probabilités critiques pour chaque variable, on besoin de charger le package **lmerTest**.
+Si veut les probabilités critiques pour chaque variable, on a besoin de charger le package **lmerTest**.
 
 ```{r pack_pvalue}
 library(lmerTest)
