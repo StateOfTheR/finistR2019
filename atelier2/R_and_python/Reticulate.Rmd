@@ -1,18 +1,22 @@
 ---
 title: "Intégration de codes python dans R avec le package reticulate"
-author: "Marie Morvan, Marine Marjou, Pierre Navaro, Claire Gayral"
+author: "Marie Morvan, Marine Marjou, Claire Gayral"
 date: "27/08/2019"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(flextable)
 ```
-Nous allons vous présenter brièvement comment utiliser la bibliothèque Reticulate, pour lancer un code python dans un environnement R, puis nous donnerons deux exemple d'utilisation : l'ouverture de fichiers et la comparaison de méthodes de RandomForest. 
+Nous allons vous présenter brièvement comment utiliser la bibliothèque Reticulate, pour lancer un code python dans un environnement R, puis nous donnerons deux exemple d'utilisation. ```: l'ouverture de fichiers et la comparaison de méthodes de RandomForest. ```
 
 # 1. Comment ça marche ? 
 
-Le package reticulate permet de lier R et Python en utilisant des appels Python dans R.
+Le package "reticulate" permet de lier R et Python en utilisant des appels Python dans R.
+Commençons par faire appel à la bibliothèque et donner à le "path" de python (c'est à dire le chemin où est installé la version de python)
 ```{r}
 library(reticulate)
 use_python("/home/claire/Applications/python/conda/bin/python")
@@ -20,57 +24,94 @@ use_python("/home/claire/Applications/python/conda/bin/python")
 data(cars)
 ```
 
+On peut également choisir l'environnement python où l'on va travailler : 
+```{r}
+use_virtualenv("myenv")
+```
+
 ## 1.1 Appel de librairies python dans l'environnement R
 Une première façon d'intégrer du code python dans R est d'utiliser ses bibliothèques/ modules de travail (qui contiennent les fonctions utilisées) avec la fonction reticulate::import("my_py_library")
-
+Par exemple si on veut importer la bibliothèque python "numpy" : 
 ```{r}
 np  = import("numpy")
 ```
 
-Ensuite, on lance directement les fonctions pythons en précisant quelle librairie utiliser. Par exemple, si on veut faire la moyenne par variable de notre jeu de données cars :
+Ensuite, on lance directement les fonctions pythons en appelant la bibliothèque utilisée avec "$". Par exemple, si on veut faire la moyenne par variable, en faisant appel à la fonction "mean" de numpy (qui existe sous l'alias np), de notre jeu de données cars :
 ```{r}
 np$mean(cars)
 ```
 
-## 1.2 Fenêtre interactive
+Ainsi, on peut directement appeler les fonctions des différents packets. Cependant attention, les types de variable python et R sont traduits par "reticulate" selon une table de conversion bien précise. Ca va être le gros soucis du passage d'un langage à l'autre. 
+
+## 1.2 Fenêtre interactive 
+
 Un deuxième moyen d'utiliser du python dans un script R est d'ouvrir une fenêtre intéractive avec repl_python : 
-```r
+
+```{r, eval=FALSE}
 repl_python()
 from sklearn.ensemble import RandomForestClassifier
 clf = RandomForestClassifier(n_estimators=20)
 exit
 ```
-Le problème est que ça ne marche pas dans un markedown.
+
+Le problème est que ça ne marche pas dans un markedown. Cette approche a l'air conçue pour une utilisation dans un terminal. 
 
 ## 1.3 Appel d'un script python
 
-La dernière façon est de charger un script .py dans le script : les fonctions sont alors directement appelée comme dans 1.1
+La dernière façon est de charger un script '.py' dans le script R/Rmd : les fonctions sont alors directement appelée comme dans 1.1, et on n'a le problème de typage que sur les variables d'entrées et de sortie (on reste dans le langage python. 
+Pour lancer par exemple le script "test.py", la commande est la suivante :
 ```{r}
 use_python("/home/claire/Applications/python/conda/bin/python")
 source_python('test.py')
 my_mean(cars)
 ```
 
+Le script "test.py" contient les fonctions (python) suivantes : 
+```{r, eval=FALSE}
+import numpy as np
+def my_mean(table):
+    return(np.mean(table))
+
+def return_input_type(my_object) : 
+    return(type(my_object))
+    
+def return_input(my_object):
+    return(my_object)
+
+```
 
 ## 1.4 Problème de typage :
-Le gros problème de la bibliothèque est la conversion entre les types python et les types R. 
-Par exemple, * utiliser le script test pour montrer des conversion un peu bizarre (type int par ex)* 
+Comme évoqué précédemment, le gros problème de la bibliothèque est la conversion entre les types python et les types R. La table de conversion est la suivante : 
 
-Par ailleurs, l'appel de modules python dans un script R nécessite souvent des transformations de type : un array n'est pas un vector, etc. 
+```{r,echo=FALSE,message=FALSE}
+conv_table <- tibble::as_tibble(cbind(R = c("Single-element vector ","Multi-element vector ","List of multiple types ","Named list ","Matrix/Array ","Data Frame ","Function ","Raw ","NULL, TRUE, FALSE "), 
+                                      python = c(" Scalar"," List"," Tuple"," Dict"," NumPy ndarray"," Pandas DataFrame"," Python function"," Python bytearray"," None, True, False")))
 
-# 2. Un premier cas d'étude : ouverture de fichiers exotiques
-
-Nous allons présenter comment utiliser la bibliothèque "reticulate", et mettre en évidence ses limites, au travers de l'ouverture de fichier via la librairie pandas.
-
-## 2.1 Ouverture de csv "classiques"
-
-## 2.2 Ouverture de gros csv
-
-## 2.3 Ouverture de json emboités
+library(kableExtra)
+kableExtra::kable(conv_table) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
 
 
-# 3. Comparaison des résultats de Random Forest entre R et python via R :
-## 3.1 Comparaison des résultats de RandomForest issus de plusieurs fonctions R
+Par exemple, en utilisant le script "test.py", on peut voir quelques conversion un peu bizarre (type int par ex)* 
+```{r}
+source_python('test.py')
+print("le type vector est converti en list R:")
+return_input_type(c(1,2,3,4))
+return_input(c(1,2,3,4))
+
+print("le type  est converti en list R:")
+return_input_type(cars)
+head(return_input(cars))
+
+```
+
+
+
+Ainsi, l'appel de modules python dans un script R nécessite souvent des transformations de type : un array n'est pas un vector, etc
+
+# 2. Comparaison des résultats de Random Forest entre R et python via R :
+## 2.1 Comparaison des résultats de RandomForest issus de plusieurs fonctions R
 ```{r,  result = "hide", message = FALSE}
 library(parsnip)
 library(mlbench) 
@@ -85,10 +126,10 @@ train = sample(1:nrow(DNA), size = nrow(DNA)/2)
 test  = setdiff(1:nrow(DNA), train)
 ```
 
-### 3.1.1 Méthode classique 
+### 2.1.1 Méthode classique 
 On utilise directement les différentes fonctions permettant de faire des forêts aléatoires.
 
-```{r}
+```{r, message =FALSE}
 t0rF = Sys.time() 
 RFrF = randomForest(Class ~ ., data = DNA[train, ])
 t1rF = Sys.time() 
@@ -107,7 +148,7 @@ RFr
 
 ```
 
-### 3.1.2 Avec parsnip 
+### 2.1.2 Avec parsnip 
 Le package permet d'homogeneiser l'utilisation de différentes fonctions permettant de faire de la classification par forêts aléatoires, et de faciliter la comparaison des résultats obtenus.
 
 ```{r }
@@ -126,17 +167,29 @@ rf_ranger <-
   fit(Class ~ ., data = DNA[train, ])
 
 pred_r = predict(rf_ranger, DNA[test, ])
-
-library(mclust)
-adjustedRandIndex(DNA$Class[test], pred_rF$.pred_class)
-adjustedRandIndex(DNA$Class[test], pred_r$.pred_class)
-sum(DNA$Class[test] != pred_rF$.pred_class)/length(test)*100
-sum(DNA$Class[test] != pred_r$.pred_class)/length(test)*100
 ```
 
-## 3.2 Avec Python
+```{r,echo=FALSE,message=FALSE}
+library(mclust)
+```
 
-## 3.2.1 En utilisant directement les modules python pour modéliser les données
+Regardons quelques indices de qualité de la prédiction :
+```{r}
+print(paste("Pour random_Forest, l'ARI entre la prédiction et la réalité est", adjustedRandIndex(DNA$Class[test], pred_rF$.pred_class)  ))
+print(paste("Pour ranger, l'ARI entre la prédiction et la réalité est", adjustedRandIndex(DNA$Class[test], pred_r$.pred_class)  ))
+
+print(paste("Pour random_Forest, le pourcentage d'erreur de classification est", sum(DNA$Class[test] != pred_rF$.pred_class)/length(test)*100,"%"))
+print(paste("Pour ranger, le pourcentage d'erreur de classification est", sum(DNA$Class[test] != pred_r$.pred_class)/length(test)*100,"%"))
+```
+L'ARI est une indice pondérée du nombre de fois où deux modèles coincident à permutation près. En comparant l'ARI et le taux d'erreur de classification, on voit que la classification est meilleure pour la fonction "random_Forest" que la fonction de "ranger".
+<!-- Comparons également le temps de calcul : -->
+<!-- ```{r} -->
+<!-- microbenchmark() -->
+
+<!-- ``` -->
+## 2.2 Avec Python
+
+### 2.2.1 En utilisant directement les modules python pour modéliser les données
 Importer les modules de travail (qui contiennent les fonctions utilisées)
 
 ```{r}
@@ -161,7 +214,7 @@ pred_py   = RFpy$predict(Xnew)
 adjustedRandIndex(pred_py, Ynew)
 ```
 
-### 3.2.2 Utiliser une fenêtre interactive Python dans la session R
+### 2.2.2 Utiliser une fenêtre interactive Python dans la session R
 ```r
 repl_python()
 import sklearn.ensemble
@@ -169,7 +222,7 @@ from sklearn.ensemble import RandomForestClassifier
 clf = RandomForestClassifier(n_estimators=2000)
 ```
 
-### 3.2.3 Importation de script Python
+### 2.2.3 Importation de script Python
 Remarque : il est possible d'intégrer du code Python en Rmarkdown.
 
 ```python

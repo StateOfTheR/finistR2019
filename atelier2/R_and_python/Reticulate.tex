@@ -1,0 +1,568 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Intégration de codes python dans R avec le package reticulate},
+            pdfauthor={Marie Morvan, Marine Marjou, Claire Gayral},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Intégration de codes python dans R avec le package reticulate}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Marie Morvan, Marine Marjou, Claire Gayral}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{27/08/2019}
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+
+\begin{document}
+\maketitle
+
+Nous allons vous présenter brièvement comment utiliser la bibliothèque
+Reticulate, pour lancer un code python dans un environnement R, puis
+nous donnerons deux exemple d'utilisation.
+\texttt{:\ l\textquotesingle{}ouverture\ de\ fichiers\ et\ la\ comparaison\ de\ méthodes\ de\ RandomForest.}
+
+\hypertarget{comment-ca-marche}{%
+\section{1. Comment ça marche ?}\label{comment-ca-marche}}
+
+Le package ``reticulate'' permet de lier R et Python en utilisant des
+appels Python dans R. Commençons par faire appel à la bibliothèque et
+donner à le ``path'' de python (c'est à dire le chemin où est installé
+la version de python)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(reticulate)}
+\KeywordTok{use\_python}\NormalTok{(}\StringTok{"/home/claire/Applications/python/conda/bin/python"}\NormalTok{)}
+\CommentTok{\# on prend un jeu de donnée jouet : }
+\KeywordTok{data}\NormalTok{(cars)}
+\end{Highlighting}
+\end{Shaded}
+
+On peut également choisir l'environnement python où l'on va travailler :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{use\_virtualenv}\NormalTok{(}\StringTok{"myenv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{appel-de-librairies-python-dans-lenvironnement-r}{%
+\subsection{1.1 Appel de librairies python dans l'environnement
+R}\label{appel-de-librairies-python-dans-lenvironnement-r}}
+
+Une première façon d'intégrer du code python dans R est d'utiliser ses
+bibliothèques/ modules de travail (qui contiennent les fonctions
+utilisées) avec la fonction reticulate::import(``my\_py\_library'') Par
+exemple si on veut importer la bibliothèque python ``numpy'' :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{np  =}\StringTok{ }\KeywordTok{import}\NormalTok{(}\StringTok{"numpy"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Ensuite, on lance directement les fonctions pythons en appelant la
+bibliothèque utilisée avec ``\$''. Par exemple, si on veut faire la
+moyenne par variable, en faisant appel à la fonction ``mean'' de numpy
+(qui existe sous l'alias np), de notre jeu de données cars :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{np}\OperatorTok{$}\KeywordTok{mean}\NormalTok{(cars)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## speed  dist 
+## 15.40 42.98
+\end{verbatim}
+
+Ainsi, on peut directement appeler les fonctions des différents packets.
+Cependant attention, les types de variable python et R sont traduits par
+``reticulate'' selon une table de conversion bien précise. Ca va être le
+gros soucis du passage d'un langage à l'autre.
+
+\hypertarget{fenetre-interactive}{%
+\subsection{1.2 Fenêtre interactive}\label{fenetre-interactive}}
+
+Un deuxième moyen d'utiliser du python dans un script R est d'ouvrir une
+fenêtre intéractive avec repl\_python :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{repl\_python}\NormalTok{()}
+\NormalTok{from sklearn.ensemble import RandomForestClassifier}
+\NormalTok{clf =}\StringTok{ }\KeywordTok{RandomForestClassifier}\NormalTok{(}\DataTypeTok{n\_estimators=}\DecValTok{20}\NormalTok{)}
+\NormalTok{exit}
+\end{Highlighting}
+\end{Shaded}
+
+Le problème est que ça ne marche pas dans un markedown. Cette approche a
+l'air conçue pour une utilisation dans un terminal.
+
+\hypertarget{appel-dun-script-python}{%
+\subsection{1.3 Appel d'un script
+python}\label{appel-dun-script-python}}
+
+La dernière façon est de charger un script `.py' dans le script R/Rmd :
+les fonctions sont alors directement appelée comme dans 1.1, et on n'a
+le problème de typage que sur les variables d'entrées et de sortie (on
+reste dans le langage python. Pour lancer par exemple le script
+``test.py'', la commande est la suivante :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{use\_python}\NormalTok{(}\StringTok{"/home/claire/Applications/python/conda/bin/python"}\NormalTok{)}
+\KeywordTok{source\_python}\NormalTok{(}\StringTok{\textquotesingle{}test.py\textquotesingle{}}\NormalTok{)}
+\KeywordTok{my\_mean}\NormalTok{(cars)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## speed  dist 
+## 15.40 42.98
+\end{verbatim}
+
+Le script ``test.py'' contient les fonctions (python) suivantes :
+
+\hypertarget{probleme-de-typage}{%
+\subsection{1.4 Problème de typage :}\label{probleme-de-typage}}
+
+Comme évoqué précédemment, le gros problème de la bibliothèque est la
+conversion entre les types python et les types R. La table de conversion
+est la suivante :
+
+\[
+\begin{tabular}{c c}
+\hline X & P(X = i) \T \\\hline
+  1 \T & 1/6 \\\hline
+  2 \T & 1/6 \\\hline
+  3 \T & 1/6 \\\hline
+  4 \T & 1/6 \\\hline
+  5 \T & 1/6 \\\hline
+  6 \T & 1/6 \\\hline
+\end{tabular}\]
+
+Par exemple, * utiliser le script test pour montrer des conversion un
+peu bizarre (type int par ex)*
+
+Par ailleurs, l'appel de modules python dans un script R nécessite
+souvent des transformations de type : un array n'est pas un vector, etc.
+
+\hypertarget{un-premier-cas-detude-ouverture-de-fichiers-exotiques}{%
+\section{2. Un premier cas d'étude : ouverture de fichiers
+exotiques}\label{un-premier-cas-detude-ouverture-de-fichiers-exotiques}}
+
+Nous allons présenter comment utiliser la bibliothèque ``reticulate'',
+et mettre en évidence ses limites, au travers de l'ouverture de fichier
+via la librairie pandas.
+
+\hypertarget{ouverture-de-csv-classiques}{%
+\subsection{2.1 Ouverture de csv
+``classiques''}\label{ouverture-de-csv-classiques}}
+
+\hypertarget{ouverture-de-gros-csv}{%
+\subsection{2.2 Ouverture de gros csv}\label{ouverture-de-gros-csv}}
+
+\hypertarget{ouverture-de-json-emboites}{%
+\subsection{2.3 Ouverture de json
+emboités}\label{ouverture-de-json-emboites}}
+
+\hypertarget{comparaison-des-resultats-de-random-forest-entre-r-et-python-via-r}{%
+\section{3. Comparaison des résultats de Random Forest entre R et python
+via R
+:}\label{comparaison-des-resultats-de-random-forest-entre-r-et-python-via-r}}
+
+\hypertarget{comparaison-des-resultats-de-randomforest-issus-de-plusieurs-fonctions-r}{%
+\subsection{3.1 Comparaison des résultats de RandomForest issus de
+plusieurs fonctions
+R}\label{comparaison-des-resultats-de-randomforest-issus-de-plusieurs-fonctions-r}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(parsnip)}
+\KeywordTok{library}\NormalTok{(mlbench) }
+\KeywordTok{library}\NormalTok{(randomForest)}
+\KeywordTok{library}\NormalTok{(ranger)}
+\end{Highlighting}
+\end{Shaded}
+
+Le package mlbench met a disposition des données de machine learning. On
+utilise les données DNA comprenant 3 186 observations de 180 variables,
+et la variable de classe à prédire.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{(DNA)}
+\NormalTok{train =}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\KeywordTok{nrow}\NormalTok{(DNA), }\DataTypeTok{size =} \KeywordTok{nrow}\NormalTok{(DNA)}\OperatorTok{/}\DecValTok{2}\NormalTok{)}
+\NormalTok{test  =}\StringTok{ }\KeywordTok{setdiff}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\KeywordTok{nrow}\NormalTok{(DNA), train)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{methode-classique}{%
+\subsubsection{3.1.1 Méthode classique}\label{methode-classique}}
+
+On utilise directement les différentes fonctions permettant de faire des
+forêts aléatoires.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t0rF =}\StringTok{ }\KeywordTok{Sys.time}\NormalTok{() }
+\NormalTok{RFrF =}\StringTok{ }\KeywordTok{randomForest}\NormalTok{(Class }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{., }\DataTypeTok{data =}\NormalTok{ DNA[train, ])}
+\NormalTok{t1rF =}\StringTok{ }\KeywordTok{Sys.time}\NormalTok{() }
+\NormalTok{tcalc\_rF =}\StringTok{ }\NormalTok{t1rF }\OperatorTok{{-}}\StringTok{ }\NormalTok{t0rF}
+
+\NormalTok{t0r =}\StringTok{ }\KeywordTok{Sys.time}\NormalTok{() }
+\NormalTok{RFr =}\StringTok{ }\KeywordTok{ranger}\NormalTok{(Class }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{., }\DataTypeTok{data =}\NormalTok{ DNA[train, ])}
+\NormalTok{t1r =}\StringTok{ }\KeywordTok{Sys.time}\NormalTok{() }
+\NormalTok{tcalc\_r =}\StringTok{ }\NormalTok{t1r }\OperatorTok{{-}}\StringTok{ }\NormalTok{t0r}
+
+\NormalTok{tcalc\_rF}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Time difference of 1.215034 secs
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tcalc\_r}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Time difference of 0.5531094 secs
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{RFrF}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+##  randomForest(formula = Class ~ ., data = DNA[train, ]) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 13
+## 
+##         OOB estimate of  error rate: 4.27%
+## Confusion matrix:
+##     ei  ie   n class.error
+## ei 371  10  15  0.06313131
+## ie  12 329  12  0.06798867
+## n    8  11 825  0.02251185
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{RFr}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Ranger result
+## 
+## Call:
+##  ranger(Class ~ ., data = DNA[train, ]) 
+## 
+## Type:                             Classification 
+## Number of trees:                  500 
+## Sample size:                      1593 
+## Number of independent variables:  180 
+## Mtry:                             13 
+## Target node size:                 1 
+## Variable importance mode:         none 
+## Splitrule:                        gini 
+## OOB prediction error:             4.27 %
+\end{verbatim}
+
+\hypertarget{avec-parsnip}{%
+\subsubsection{3.1.2 Avec parsnip}\label{avec-parsnip}}
+
+Le package permet d'homogeneiser l'utilisation de différentes fonctions
+permettant de faire de la classification par forêts aléatoires, et de
+faciliter la comparaison des résultats obtenus.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model =}\StringTok{ }\KeywordTok{rand\_forest}\NormalTok{(}\DataTypeTok{mode =} \StringTok{"classification"}\NormalTok{, }\DataTypeTok{trees =} \DecValTok{2000}\NormalTok{)}
+
+\NormalTok{rf\_randomForest <{-}}\StringTok{ }
+\StringTok{  }\NormalTok{model }\OperatorTok{\%>\%}
+\StringTok{  }\KeywordTok{set\_engine}\NormalTok{(}\StringTok{"randomForest"}\NormalTok{) }\OperatorTok{\%>\%}
+\StringTok{  }\KeywordTok{fit}\NormalTok{(Class }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{., }\DataTypeTok{data =}\NormalTok{ DNA[train, ]) }
+
+\NormalTok{pred\_rF =}\StringTok{ }\KeywordTok{predict}\NormalTok{(rf\_randomForest, DNA[test, ])}
+
+\NormalTok{rf\_ranger <{-}}
+\StringTok{  }\NormalTok{model }\OperatorTok{\%>\%}
+\StringTok{  }\KeywordTok{set\_engine}\NormalTok{(}\StringTok{"ranger"}\NormalTok{) }\OperatorTok{\%>\%}
+\StringTok{  }\KeywordTok{fit}\NormalTok{(Class }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{., }\DataTypeTok{data =}\NormalTok{ DNA[train, ])}
+
+\NormalTok{pred\_r =}\StringTok{ }\KeywordTok{predict}\NormalTok{(rf\_ranger, DNA[test, ])}
+
+\KeywordTok{library}\NormalTok{(mclust)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Package 'mclust' version 5.4.5
+## Type 'citation("mclust")' for citing this R package in publications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{adjustedRandIndex}\NormalTok{(DNA}\OperatorTok{$}\NormalTok{Class[test], pred\_rF}\OperatorTok{$}\NormalTok{.pred\_class)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.8617965
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{adjustedRandIndex}\NormalTok{(DNA}\OperatorTok{$}\NormalTok{Class[test], pred\_r}\OperatorTok{$}\NormalTok{.pred\_class)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.8614648
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(DNA}\OperatorTok{$}\NormalTok{Class[test] }\OperatorTok{!=}\StringTok{ }\NormalTok{pred\_rF}\OperatorTok{$}\NormalTok{.pred\_class)}\OperatorTok{/}\KeywordTok{length}\NormalTok{(test)}\OperatorTok{*}\DecValTok{100}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.959196
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(DNA}\OperatorTok{$}\NormalTok{Class[test] }\OperatorTok{!=}\StringTok{ }\NormalTok{pred\_r}\OperatorTok{$}\NormalTok{.pred\_class)}\OperatorTok{/}\KeywordTok{length}\NormalTok{(test)}\OperatorTok{*}\DecValTok{100}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5.021971
+\end{verbatim}
+
+\hypertarget{avec-python}{%
+\subsection{3.2 Avec Python}\label{avec-python}}
+
+\hypertarget{en-utilisant-directement-les-modules-python-pour-modeliser-les-donnees}{%
+\subsection{3.2.1 En utilisant directement les modules python pour
+modéliser les
+données}\label{en-utilisant-directement-les-modules-python-pour-modeliser-les-donnees}}
+
+Importer les modules de travail (qui contiennent les fonctions
+utilisées)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{np  =}\StringTok{ }\KeywordTok{import}\NormalTok{(}\StringTok{"numpy"}\NormalTok{)}
+\NormalTok{sk  =}\StringTok{ }\KeywordTok{import}\NormalTok{(}\StringTok{"sklearn.ensemble"}\NormalTok{)}
+\NormalTok{skd =}\StringTok{ }\KeywordTok{import}\NormalTok{(}\StringTok{"sklearn.datasets"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Définir le modèle RandomForest
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{RFpy  =}\StringTok{ }\NormalTok{sk}\OperatorTok{$}\KeywordTok{RandomForestClassifier}\NormalTok{(}\DataTypeTok{n\_estimators=}\NormalTok{2000L)}
+\end{Highlighting}
+\end{Shaded}
+
+Appliquer le modèle aux données DNA
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X         =}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(DNA[train, }\OperatorTok{{-}}\KeywordTok{ncol}\NormalTok{(DNA)])}
+\NormalTok{Y         =}\StringTok{ }\NormalTok{np}\OperatorTok{$}\KeywordTok{array}\NormalTok{(DNA}\OperatorTok{$}\NormalTok{Class[train])}
+\NormalTok{fitpy     =}\StringTok{ }\NormalTok{RFpy}\OperatorTok{$}\KeywordTok{fit}\NormalTok{(X, Y)}
+\NormalTok{Xnew      =}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(DNA[test, }\OperatorTok{{-}}\KeywordTok{ncol}\NormalTok{(DNA)])}
+\NormalTok{Ynew      =}\StringTok{ }\NormalTok{np}\OperatorTok{$}\KeywordTok{array}\NormalTok{(DNA}\OperatorTok{$}\NormalTok{Class[test])}
+\NormalTok{pred\_py   =}\StringTok{ }\NormalTok{RFpy}\OperatorTok{$}\KeywordTok{predict}\NormalTok{(Xnew)}
+\KeywordTok{adjustedRandIndex}\NormalTok{(pred\_py, Ynew)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.8654098
+\end{verbatim}
+
+\hypertarget{utiliser-une-fenetre-interactive-python-dans-la-session-r}{%
+\subsubsection{3.2.2 Utiliser une fenêtre interactive Python dans la
+session
+R}\label{utiliser-une-fenetre-interactive-python-dans-la-session-r}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{repl\_python}\NormalTok{()}
+\NormalTok{import sklearn.ensemble}
+\NormalTok{from sklearn.ensemble import RandomForestClassifier}
+\NormalTok{clf =}\StringTok{ }\KeywordTok{RandomForestClassifier}\NormalTok{(}\DataTypeTok{n\_estimators=}\DecValTok{2000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{importation-de-script-python}{%
+\subsubsection{3.2.3 Importation de script
+Python}\label{importation-de-script-python}}
+
+Remarque : il est possible d'intégrer du code Python en Rmarkdown.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ sklearn.ensemble }\ImportTok{import}\NormalTok{ RandomForestClassifier}
+  \KeywordTok{def}\NormalTok{ RF\_DNA(X, y):}
+\NormalTok{  clf }\OperatorTok{=}\NormalTok{ RandomForestClassifier(n\_estimators}\OperatorTok{=}\DecValTok{100}\NormalTok{)}
+\NormalTok{  RF }\OperatorTok{=}\NormalTok{ clf.fit(X, y)}
+  \ControlFlowTok{return}\NormalTok{ RF}
+\end{Highlighting}
+\end{Shaded}
+
+Dans R, on importe le script écrit en Python :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{source\_python}\NormalTok{(}\StringTok{"RF\_DNA.py"}\NormalTok{)}
+\NormalTok{pred =}\StringTok{ }\KeywordTok{RF\_DNA}\NormalTok{(X, y)}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

@@ -19,7 +19,13 @@ Test de classification avec la méthode des Forêts aléatoires et
 L'exemple provient de
 [A minimal benchmark for scalability, speed and accuracy of commonly used open source implementations (R packages, Python scikit-learn, H2O, xgboost, Spark MLlib etc.) of the top machine learning algorithms for binary classification (random forests, gradient boosted trees, deep neural networks etc.)](https://github.com/szilard/benchm-ml)
 
+```{r}
+library(reticulate)
+use_python("/home/claire/Applications/python/conda/bin/python")
+```
+
 ```{python}
+
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
@@ -43,7 +49,8 @@ d_train.head()
 ```
 
 ```{python}
-# %time X_train_test_categ = pd.concat([get_dummies(d_train_test, col) for col in vars_categ], axis = 1)
+#%time
+X_train_test_categ = pd.concat([get_dummies(d_train_test, col) for col in vars_categ], axis = 1)
 ```
 
 ```{python}
@@ -67,6 +74,7 @@ md = RandomForestClassifier(n_estimators = 100,
 ```
 
 ```{python}
-# %time phat = md.predict_proba(X_test)[:,1]
+# %time 
+phat = md.predict_proba(X_test)[:,1]
 metrics.roc_auc_score(y_test, phat)
 ```
