@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Utilisation du package Julia MixedModels depuis R</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">FinistR 2019</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Accueil
+  </a>
+</li>
+<li>
+  <a href="https://github.com/StateOfTheR/finistR2019">
+    <span class="fa fa-github"></span>
+     
+    Dépôt GitHub
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-microphone"></span>
+     
+    Communication
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="c-distill_presentation.html">Distill</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../finistr2019_website/c-bookdown/_book/">Bookdown en HTML</a>
+    </li>
+    <li>
+      <a href="../finistr2019_website/c-bookdown/_book/bookdown.pdf">Bookdown en PDF</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="c-tables.html">Tables</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-box-open"></span>
+     
+    Développement
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Versionning</li>
+    <li class="dropdown-header">Intégration continue</li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Structure d'un package</li>
+    <li class="dropdown-header">Documentation</li>
+    <li class="dropdown-header">Site Web</li>
+    <li class="divider"></li>
+    <li>
+      <a href="d-rcpp_rappels.html">Rappels de Rcpp</a>
+    </li>
+    <li class="dropdown-header">Intégration de code C++</li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproductibilité</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-chart-bar"></span>
+     
+    Statistiques
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="s-sparse_matrix.html">Matrices creuses</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="s-lme4-exemples-dragons.html">Modèles mixtes avec lme4</a>
+    </li>
+    <li>
+      <a href="s-julia_mixed_models.html">Modèles mixtes avec Julia depuis R</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="s-tidymodels.html">Tidymodels</a>
+    </li>
+    <li class="dropdown-header">Intégration dans Parsnip</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-wrench"></span>
+     
+    Manipulation des données
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Tidyverse</li>
+    <li class="dropdown-header">Spark</li>
+    <li class="dropdown-header">BigStatR</li>
+    <li class="dropdown-header">Rlang</li>
+    <li class="dropdown-header">Reticulate</li>
+    <li class="dropdown-header">future</li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Utilisation du package Julia MixedModels depuis R</h1>
+
+</div>
+
+
+<p>Antoine Jardin, dans un <a href="http://osc.cnrs.fr/RT20/2015/local/documents/S4_Jardin.html">post</a> de 2015, compare les performances du package R <code>lme4</code> et <a href="https://github.com/dmbates/MixedModels">MixedModels</a> écrit en Julia. La version Julia peut être plus beaucoup rapide.</p>
+<p>Douglas Bates, ancien développeur de lme4, et créateur du<br />
+package Julia MixedModels montre dans ce <a href="https://rpubs.com/dmbates/377897">post</a> comment appeler ce package depuis R.</p>
+<p>Pour apprendre à utiliser MixedModels il y a la <a href="https://dmbates.github.io/MixedModels.jl/stable/">documentation</a> et <a href="https://github.com/dmbates/MixedModelsinJulia">une collection de notebooks</a> très détaillés.</p>
+<p>Pour exécuter la suite vous devez installer <a href="https://julialang.org/downloads/">Julia</a>.</p>
+<div id="bibliotheque-lme4-pour-les-modeles-mixtes-en-r" class="section level2">
+<h2>Bibliothèque <code>lme4</code> pour les modèles mixtes en R</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(lme4)</a></code></pre></div>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     expand</code></pre>
+</div>
+<div id="donnees-sur-les-rats-fournies-par-pierre-barbillon" class="section level2">
+<h2>Données sur les rats fournies par Pierre Barbillon</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">don &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/gdpcumjour.csv&quot;</span>, <span class="dt">dec =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">don<span class="op">$</span>tpsF &lt;-<span class="st"> </span><span class="kw">as.factor</span>(don<span class="op">$</span>tps)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">don<span class="op">$</span>bbF &lt;-<span class="st"> </span><span class="kw">as.factor</span>(don<span class="op">$</span>bb)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">don<span class="op">$</span>tpsN &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(don<span class="op">$</span>tpsF)</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">don<span class="op">$</span>mereF &lt;-<span class="st"> </span><span class="kw">as.factor</span>(don<span class="op">$</span>mere)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">system.time</span>(model &lt;-<span class="st"> </span><span class="kw">lmer</span>(gdp <span class="op">~</span><span class="st"> </span>tpsF <span class="op">*</span><span class="st"> </span>gest <span class="op">*</span><span class="st"> </span>ps <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>bbF), <span class="dt">data =</span> don))</a></code></pre></div>
+<pre><code>##    user  system elapsed 
+##  14.268   0.016  14.288</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">summary</span>(model)</a></code></pre></div>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: gdp ~ tpsF * gest * ps + (1 | bbF)
+##    Data: don
+## 
+## REML criterion at convergence: 23617.7
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -4.0114 -0.4950  0.0112  0.4703  3.9049 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  bbF      (Intercept) 210.90   14.522  
+##  Residual              71.64    8.464  
+## Number of obs: 3619, groups:  bbF, 47
+## 
+## Fixed effects:
+##                     Estimate Std. Error t value
+## (Intercept)          3.86042    5.94281   0.650
+## tpsF2                5.80625    4.23200   1.372
+## tpsF3               11.71458    4.23200   2.768
+## tpsF4               17.21458    4.23200   4.068
+## tpsF5               23.32708    4.23200   5.512
+## tpsF6               28.63958    4.23200   6.767
+## tpsF7               33.78958    4.23200   7.984
+## tpsF8               38.46667    4.23200   9.089
+## tpsF9               42.89292    4.23200  10.135
+## tpsF10              47.00208    4.23200  11.106
+## tpsF11              50.53750    4.23200  11.942
+## tpsF12              50.86875    4.23200  12.020
+## tpsF13              55.15208    4.23200  13.032
+## tpsF14              61.28958    4.23200  14.482
+## tpsF15              65.87812    4.23200  15.567
+## tpsF16              70.90083    4.23200  16.754
+## tpsF17              72.87708    4.23200  17.220
+## tpsF18              75.85208    4.23200  17.923
+## tpsF19              81.50208    4.23200  19.259
+## tpsF20              83.91458    4.23200  19.829
+## tpsF21              89.80208    4.23200  21.220
+## tpsF22              93.54375    4.23200  22.104
+## tpsF23              97.79625    4.23200  23.109
+## tpsF24              99.36458    4.23200  23.479
+## tpsF25             101.21458    4.23200  23.916
+## tpsF26             106.08958    4.23200  25.068
+## tpsF27             106.70208    4.23200  25.213
+## tpsF28             111.03958    4.23200  26.238
+## tpsF29             113.41042    4.23200  26.798
+## tpsF30             115.90167    4.23200  27.387
+## tpsF31             119.85208    4.23200  28.320
+## tpsF32             119.78958    4.23200  28.306
+## tpsF33             122.73958    4.23200  29.003
+## tpsF34             123.45208    4.23200  29.171
+## tpsF35             128.93958    4.23200  30.468
+## tpsF36             132.84792    4.23200  31.391
+## tpsF37             135.46667    4.23200  32.010
+## tpsF38             132.62708    4.23200  31.339
+## tpsF39             133.83958    4.23200  31.626
+## tpsF40             136.05208    4.23200  32.148
+## tpsF41             136.12708    4.23200  32.166
+## tpsF42             137.50208    4.23200  32.491
+## tpsF43             142.59583    4.23200  33.695
+## tpsF44             144.06458    4.23200  34.042
+## tpsF45             145.92708    4.23200  34.482
+## tpsF46             144.68958    4.23200  34.189
+## tpsF47             148.25208    4.23200  35.031
+## tpsF48             145.50208    4.23200  34.381
+## tpsF49             149.75208    4.23200  35.386
+## tpsF50             146.96458    4.23200  34.727
+## tpsF51             149.46458    4.23200  35.318
+## tpsF52             153.06458    4.23200  36.168
+## tpsF53             152.26458    4.23200  35.979
+## tpsF54             158.06458    4.23200  37.350
+## tpsF55             156.62708    4.23200  37.010
+## tpsF56             160.22708    4.23200  37.861
+## tpsF57             164.57500    4.23200  38.888
+## tpsF58             164.14375    4.23200  38.786
+## tpsF59             164.18958    4.23200  38.797
+## tpsF60             162.32708    4.23200  38.357
+## tpsF61             163.32708    4.23200  38.593
+## tpsF62             162.86458    4.23200  38.484
+## tpsF63             166.87708    4.23200  39.432
+## tpsF64             167.09792    4.23200  39.484
+## tpsF65             168.13542    4.23200  39.730
+## tpsF66             170.02708    4.23200  40.177
+## tpsF67             168.07708    4.23200  39.716
+## tpsF68             171.32708    4.23200  40.484
+## tpsF69             169.03958    4.23200  39.943
+## tpsF70             172.93958    4.23200  40.865
+## tpsF71             171.63958    4.23200  40.558
+## tpsF72             172.76458    4.23200  40.823
+## tpsF73             175.13958    4.23200  41.385
+## tpsF74             174.82708    4.23200  41.311
+## tpsF75             180.36458    4.23200  42.619
+## tpsF76             177.12708    4.23200  41.854
+## tpsF77             179.71458    4.23200  42.466
+## gestNP               0.47917    8.40440   0.057
+## psC2                 1.82500    8.40440   0.217
+## psNP                 2.78006    8.69938   0.320
+## tpsF2:gestNP        -0.08750    5.98495  -0.015
+## tpsF3:gestNP        -0.10417    5.98495  -0.017
+## tpsF4:gestNP        -0.40417    5.98495  -0.068
+## tpsF5:gestNP        -0.27917    5.98495  -0.047
+## tpsF6:gestNP        -0.72917    5.98495  -0.122
+## tpsF7:gestNP        -0.47917    5.98495  -0.080
+## tpsF8:gestNP        -0.10000    5.98495  -0.017
+## tpsF9:gestNP         0.61375    5.98495   0.103
+## tpsF10:gestNP        0.77083    5.98495   0.129
+## tpsF11:gestNP       -0.43542    5.98495  -0.073
+## tpsF12:gestNP        1.94167    5.98495   0.324
+## tpsF13:gestNP        0.79583    5.98495   0.133
+## tpsF14:gestNP        1.30833    5.98495   0.219
+## tpsF15:gestNP        0.56354    5.98495   0.094
+## tpsF16:gestNP        0.15583    5.98495   0.026
+## tpsF17:gestNP        0.74583    5.98495   0.125
+## tpsF18:gestNP       -0.02917    5.98495  -0.005
+## tpsF19:gestNP        0.25833    5.98495   0.043
+## tpsF20:gestNP        0.44583    5.98495   0.074
+## tpsF21:gestNP        0.80833    5.98495   0.135
+## tpsF22:gestNP        1.16667    5.98495   0.195
+## tpsF23:gestNP        1.50917    5.98495   0.252
+## tpsF24:gestNP        0.59583    5.98495   0.100
+## tpsF25:gestNP        0.05833    5.98495   0.010
+## tpsF26:gestNP        1.65833    5.98495   0.277
+## tpsF27:gestNP        0.97083    5.98495   0.162
+## tpsF28:gestNP        1.50833    5.98495   0.252
+## tpsF29:gestNP        2.06250    5.98495   0.345
+## tpsF30:gestNP        2.83625    5.98495   0.474
+## tpsF31:gestNP        1.45833    5.98495   0.244
+## tpsF32:gestNP        1.65833    5.98495   0.277
+## tpsF33:gestNP        2.98333    5.98495   0.498
+## tpsF34:gestNP        1.65833    5.98495   0.277
+## tpsF35:gestNP        0.95833    5.98495   0.160
+## tpsF36:gestNP       -0.77292    5.98495  -0.129
+## tpsF37:gestNP       -0.91667    5.98495  -0.153
+## tpsF38:gestNP        4.78333    5.98495   0.799
+## tpsF39:gestNP        2.42083    5.98495   0.404
+## tpsF40:gestNP        3.45833    5.98495   0.578
+## tpsF41:gestNP        4.65833    5.98495   0.778
+## tpsF42:gestNP        6.23333    5.98495   1.042
+## tpsF43:gestNP        1.92708    5.98495   0.322
+## tpsF44:gestNP        2.79583    5.98495   0.467
+## tpsF45:gestNP        3.53333    5.98495   0.590
+## tpsF46:gestNP        5.63333    5.98495   0.941
+## tpsF47:gestNP        5.99583    5.98495   1.002
+## tpsF48:gestNP        6.09583    5.98495   1.019
+## tpsF49:gestNP        4.25833    5.98495   0.712
+## tpsF50:gestNP       10.95417    5.98495   1.830
+## tpsF51:gestNP        9.25417    5.98495   1.546
+## tpsF52:gestNP        7.48333    5.98495   1.250
+## tpsF53:gestNP        5.99583    5.98495   1.002
+## tpsF54:gestNP        4.08333    5.98495   0.682
+## tpsF55:gestNP        3.69583    5.98495   0.618
+## tpsF56:gestNP        6.25833    5.98495   1.046
+## tpsF57:gestNP        0.23333    5.98495   0.039
+## tpsF58:gestNP        2.32083    5.98495   0.388
+## tpsF59:gestNP        4.92083    5.98495   0.822
+## tpsF60:gestNP        5.47083    5.98495   0.914
+## tpsF61:gestNP        9.09583    5.98495   1.520
+## tpsF62:gestNP        6.63333    5.98495   1.108
+## tpsF63:gestNP        6.37083    5.98495   1.064
+## tpsF64:gestNP        6.75000    5.98495   1.128
+## tpsF65:gestNP        6.51250    5.98495   1.088
+## tpsF66:gestNP        6.53333    5.98495   1.092
+## tpsF67:gestNP        7.17083    5.98495   1.198
+## tpsF68:gestNP        7.97083    5.98495   1.332
+## tpsF69:gestNP       10.95833    5.98495   1.831
+## tpsF70:gestNP       10.58333    5.98495   1.768
+## tpsF71:gestNP       11.47542    5.98495   1.917
+## tpsF72:gestNP       11.43417    5.98495   1.910
+## tpsF73:gestNP       11.05833    5.98495   1.848
+## tpsF74:gestNP        9.97083    5.98495   1.666
+## tpsF75:gestNP        7.74583    5.98495   1.294
+## tpsF76:gestNP        9.32083    5.98495   1.557
+## tpsF77:gestNP        7.52083    5.98495   1.257
+## tpsF2:psC2          -0.20000    5.98495  -0.033
+## tpsF3:psC2          -0.58750    5.98495  -0.098
+## tpsF4:psC2          -0.22500    5.98495  -0.038
+## tpsF5:psC2          -0.98750    5.98495  -0.165
+## tpsF6:psC2          -1.05000    5.98495  -0.175
+## tpsF7:psC2          -0.15000    5.98495  -0.025
+## tpsF8:psC2           0.67500    5.98495   0.113
+## tpsF9:psC2           1.89000    5.98495   0.316
+## tpsF10:psC2          2.80000    5.98495   0.468
+## tpsF11:psC2         -0.28542    5.98495  -0.048
+## tpsF12:psC2          0.42917    5.98495   0.072
+## tpsF13:psC2          0.57500    5.98495   0.096
+## tpsF14:psC2          2.78750    5.98495   0.466
+## tpsF15:psC2          4.01354    5.98495   0.671
+## tpsF16:psC2          5.42750    5.98495   0.907
+## tpsF17:psC2          2.56250    5.98495   0.428
+## tpsF18:psC2          2.06250    5.98495   0.345
+## tpsF19:psC2          3.00000    5.98495   0.501
+## tpsF20:psC2          1.95000    5.98495   0.326
+## tpsF21:psC2          4.51250    5.98495   0.754
+## tpsF22:psC2          4.48542    5.98495   0.749
+## tpsF23:psC2          5.13292    5.98495   0.858
+## tpsF24:psC2          4.73750    5.98495   0.792
+## tpsF25:psC2          5.01250    5.98495   0.838
+## tpsF26:psC2          5.87500    5.98495   0.982
+## tpsF27:psC2          6.05000    5.98495   1.011
+## tpsF28:psC2          9.36250    5.98495   1.564
+## tpsF29:psC2          9.98542    5.98495   1.668
+## tpsF30:psC2         11.26292    5.98495   1.882
+## tpsF31:psC2         10.57500    5.98495   1.767
+## tpsF32:psC2         10.38750    5.98495   1.736
+## tpsF33:psC2         12.73750    5.98495   2.128
+## tpsF34:psC2         11.66250    5.98495   1.949
+## tpsF35:psC2         12.56250    5.98495   2.099
+## tpsF36:psC2         10.90833    5.98495   1.823
+## tpsF37:psC2         10.00833    5.98495   1.672
+## tpsF38:psC2         15.96250    5.98495   2.667
+## tpsF39:psC2         13.68750    5.98495   2.287
+## tpsF40:psC2         15.28750    5.98495   2.554
+## tpsF41:psC2         15.07500    5.98495   2.519
+## tpsF42:psC2         16.65000    5.98495   2.782
+## tpsF43:psC2         14.16042    5.98495   2.366
+## tpsF44:psC2         15.10417    5.98495   2.524
+## tpsF45:psC2         15.98750    5.98495   2.671
+## tpsF46:psC2         16.55000    5.98495   2.765
+## tpsF47:psC2         17.42500    5.98495   2.911
+## tpsF48:psC2         15.72500    5.98495   2.627
+## tpsF49:psC2         16.03750    5.98495   2.680
+## tpsF50:psC2         20.84583    5.98495   3.483
+## tpsF51:psC2         19.88333    5.98495   3.322
+## tpsF52:psC2         18.50000    5.98495   3.091
+## tpsF53:psC2         18.80000    5.98495   3.141
+## tpsF54:psC2         16.57500    5.98495   2.769
+## tpsF55:psC2         16.83750    5.98495   2.813
+## tpsF56:psC2         18.81250    5.98495   3.143
+## tpsF57:psC2         10.62083    5.98495   1.775
+## tpsF58:psC2         13.89583    5.98495   2.322
+## tpsF59:psC2         17.46250    5.98495   2.918
+## tpsF60:psC2         19.86250    5.98495   3.319
+## tpsF61:psC2         24.01250    5.98495   4.012
+## tpsF62:psC2         21.90000    5.98495   3.659
+## tpsF63:psC2         22.68750    5.98495   3.791
+## tpsF64:psC2         21.61250    5.98495   3.611
+## tpsF65:psC2         22.42500    5.98495   3.747
+## tpsF66:psC2         23.78750    5.98495   3.975
+## tpsF67:psC2         23.33750    5.98495   3.899
+## tpsF68:psC2         26.08750    5.98495   4.359
+## tpsF69:psC2         27.21250    5.98495   4.547
+## tpsF70:psC2         25.78750    5.98495   4.309
+## tpsF71:psC2         29.87125    5.98495   4.991
+## tpsF72:psC2         29.28500    5.98495   4.893
+## tpsF73:psC2         28.01250    5.98495   4.680
+## tpsF74:psC2         26.43750    5.98495   4.417
+## tpsF75:psC2         23.82500    5.98495   3.981
+## tpsF76:psC2         25.23750    5.98495   4.217
+## tpsF77:psC2         22.68750    5.98495   3.791
+## tpsF2:psNP          -0.29911    6.19501  -0.048
+## tpsF3:psNP          -0.54077    6.19501  -0.087
+## tpsF4:psNP          -1.01220    6.19501  -0.163
+## tpsF5:psNP          -1.13899    6.19501  -0.184
+## tpsF6:psNP          -1.66577    6.19501  -0.269
+## tpsF7:psNP          -1.34435    6.19501  -0.217
+## tpsF8:psNP          -0.99524    6.19501  -0.161
+## tpsF9:psNP          -0.28577    6.19501  -0.046
+## tpsF10:psNP         -0.38542    6.19501  -0.062
+## tpsF11:psNP         -0.45417    6.19501  -0.073
+## tpsF12:psNP         -0.98065    6.19501  -0.158
+## tpsF13:psNP         -0.67827    6.19501  -0.109
+## tpsF14:psNP         -0.25863    6.19501  -0.042
+## tpsF15:psNP         -0.08765    6.19501  -0.014
+## tpsF16:psNP          0.17107    6.19501   0.028
+## tpsF17:psNP         -0.04613    6.19501  -0.007
+## tpsF18:psNP          0.30744    6.19501   0.050
+## tpsF19:psNP         -0.05685    6.19501  -0.009
+## tpsF20:psNP          1.03065    6.19501   0.166
+## tpsF21:psNP          0.84315    6.19501   0.136
+## tpsF22:psNP          1.66815    6.19501   0.269
+## tpsF23:psNP          2.21565    6.19501   0.358
+## tpsF24:psNP          2.36637    6.19501   0.382
+## tpsF25:psNP          3.87351    6.19501   0.625
+## tpsF26:psNP          2.88423    6.19501   0.466
+## tpsF27:psNP          2.22887    6.19501   0.360
+## tpsF28:psNP          4.54851    6.19501   0.734
+## tpsF29:psNP          4.69435    6.19501   0.758
+## tpsF30:psNP          5.62881    6.19501   0.909
+## tpsF31:psNP          2.96458    6.19501   0.479
+## tpsF32:psNP          4.31280    6.19501   0.696
+## tpsF33:psNP          7.14851    6.19501   1.154
+## tpsF34:psNP          6.82173    6.19501   1.101
+## tpsF35:psNP          4.44851    6.19501   0.718
+## tpsF36:psNP          3.11875    6.19501   0.503
+## tpsF37:psNP          2.63571    6.19501   0.425
+## tpsF38:psNP          8.60387    6.19501   1.389
+## tpsF39:psNP          6.97708    6.19501   1.126
+## tpsF40:psNP          8.63601    6.19501   1.394
+## tpsF41:psNP          8.67530    6.19501   1.400
+## tpsF42:psNP          9.70030    6.19501   1.566
+## tpsF43:psNP          7.39940    6.19501   1.194
+## tpsF44:psNP          8.45208    6.19501   1.364
+## tpsF45:psNP          9.47530    6.19501   1.530
+## tpsF46:psNP          9.94137    6.19501   1.605
+## tpsF47:psNP          8.00744    6.19501   1.293
+## tpsF48:psNP          9.02887    6.19501   1.457
+## tpsF49:psNP          9.16458    6.19501   1.479
+## tpsF50:psNP         11.76875    6.19501   1.900
+## tpsF51:psNP         11.09018    6.19501   1.790
+## tpsF52:psNP         10.09494    6.19501   1.630
+## tpsF53:psNP         10.36637    6.19501   1.673
+## tpsF54:psNP          8.73780    6.19501   1.410
+## tpsF55:psNP          9.41815    6.19501   1.520
+## tpsF56:psNP          8.21815    6.19501   1.327
+## tpsF57:psNP          5.84643    6.19501   0.944
+## tpsF58:psNP          7.90625    6.19501   1.276
+## tpsF59:psNP         10.24137    6.19501   1.653
+## tpsF60:psNP         11.47530    6.19501   1.852
+## tpsF61:psNP         14.36101    6.19501   2.318
+## tpsF62:psNP         13.26637    6.19501   2.141
+## tpsF63:psNP         13.63958    6.19501   2.202
+## tpsF64:psNP         14.77351    6.19501   2.385
+## tpsF65:psNP         14.92887    6.19501   2.410
+## tpsF66:psNP         14.98958    6.19501   2.420
+## tpsF67:psNP         13.88244    6.19501   2.241
+## tpsF68:psNP         15.00387    6.19501   2.422
+## tpsF69:psNP         16.20565    6.19501   2.616
+## tpsF70:psNP         17.70565    6.19501   2.858
+## tpsF71:psNP         21.89613    6.19501   3.534
+## tpsF72:psNP         21.51399    6.19501   3.473
+## tpsF73:psNP         20.31994    6.19501   3.280
+## tpsF74:psNP         20.06101    6.19501   3.238
+## tpsF75:psNP         16.39494    6.19501   2.646
+## tpsF76:psNP         18.37530    6.19501   2.966
+## tpsF77:psNP         13.84494    6.19501   2.235
+## gestNP:psC2         -1.75208   11.88561  -0.147
+## gestNP:psNP         -2.02173   12.09599  -0.167
+## tpsF2:gestNP:psC2   -0.51875    8.46400  -0.061
+## tpsF3:gestNP:psC2   -0.94792    8.46400  -0.112
+## tpsF4:gestNP:psC2   -1.73542    8.46400  -0.205
+## tpsF5:gestNP:psC2   -1.98542    8.46400  -0.235
+## tpsF6:gestNP:psC2   -1.69792    8.46400  -0.201
+## tpsF7:gestNP:psC2   -2.17292    8.46400  -0.257
+## tpsF8:gestNP:psC2   -2.63542    8.46400  -0.311
+## tpsF9:gestNP:psC2   -3.48292    8.46400  -0.411
+## tpsF10:gestNP:psC2  -5.68542    8.46400  -0.672
+## tpsF11:gestNP:psC2  -2.03958    8.46400  -0.241
+## tpsF12:gestNP:psC2  -4.31319    8.46400  -0.510
+## tpsF13:gestNP:psC2  -4.91042    8.46400  -0.580
+## tpsF14:gestNP:psC2  -6.09792    8.46400  -0.720
+## tpsF15:gestNP:psC2  -7.29583    8.46400  -0.862
+## tpsF16:gestNP:psC2  -8.43056    8.46400  -0.996
+## tpsF17:gestNP:psC2  -6.17292    8.46400  -0.729
+## tpsF18:gestNP:psC2  -6.46042    8.46400  -0.763
+## tpsF19:gestNP:psC2  -6.67292    8.46400  -0.788
+## tpsF20:gestNP:psC2  -7.18542    8.46400  -0.849
+## tpsF21:gestNP:psC2  -8.77292    8.46400  -1.036
+## tpsF22:gestNP:psC2  -9.41458    8.46400  -1.112
+## tpsF23:gestNP:psC2 -10.32708    8.46400  -1.220
+## tpsF24:gestNP:psC2  -7.02292    8.46400  -0.830
+## tpsF25:gestNP:psC2 -10.54792    8.46400  -1.246
+## tpsF26:gestNP:psC2 -12.69792    8.46400  -1.500
+## tpsF27:gestNP:psC2 -14.53542    8.46400  -1.717
+## tpsF28:gestNP:psC2 -16.28542    8.46400  -1.924
+## tpsF29:gestNP:psC2 -18.62917    8.46400  -2.201
+## tpsF30:gestNP:psC2 -21.32042    8.46400  -2.519
+## tpsF31:gestNP:psC2 -16.46042    8.46400  -1.945
+## tpsF32:gestNP:psC2 -17.06042    8.46400  -2.016
+## tpsF33:gestNP:psC2 -17.84792    8.46400  -2.109
+## tpsF34:gestNP:psC2 -16.93542    8.46400  -2.001
+## tpsF35:gestNP:psC2 -16.61042    8.46400  -1.962
+## tpsF36:gestNP:psC2 -12.60417    8.46400  -1.489
+## tpsF37:gestNP:psC2 -11.53542    8.46400  -1.363
+## tpsF38:gestNP:psC2 -19.16042    8.46400  -2.264
+## tpsF39:gestNP:psC2 -17.92292    8.46400  -2.118
+## tpsF40:gestNP:psC2 -18.81042    8.46400  -2.222
+## tpsF41:gestNP:psC2 -20.71042    8.46400  -2.447
+## tpsF42:gestNP:psC2 -21.53542    8.46400  -2.544
+## tpsF43:gestNP:psC2 -19.43750    8.46400  -2.296
+## tpsF44:gestNP:psC2 -19.96875    8.46400  -2.359
+## tpsF45:gestNP:psC2 -20.31042    8.46400  -2.400
+## tpsF46:gestNP:psC2 -21.44792    8.46400  -2.534
+## tpsF47:gestNP:psC2 -22.49792    8.46400  -2.658
+## tpsF48:gestNP:psC2 -22.18542    8.46400  -2.621
+## tpsF49:gestNP:psC2 -20.64792    8.46400  -2.439
+## tpsF50:gestNP:psC2 -25.81875    8.46400  -3.050
+## tpsF51:gestNP:psC2 -24.96875    8.46400  -2.950
+## tpsF52:gestNP:psC2 -23.98542    8.46400  -2.834
+## tpsF53:gestNP:psC2 -23.53542    8.46400  -2.781
+## tpsF54:gestNP:psC2 -22.28542    8.46400  -2.633
+## tpsF55:gestNP:psC2 -22.47292    8.46400  -2.655
+## tpsF56:gestNP:psC2 -26.07292    8.46400  -3.080
+## tpsF57:gestNP:psC2 -15.82708    8.46400  -1.870
+## tpsF58:gestNP:psC2 -19.61458    8.46400  -2.317
+## tpsF59:gestNP:psC2 -23.52292    8.46400  -2.779
+## tpsF60:gestNP:psC2 -26.94792    8.46400  -3.184
+## tpsF61:gestNP:psC2 -31.09792    8.46400  -3.674
+## tpsF62:gestNP:psC2 -27.26042    8.46400  -3.221
+## tpsF63:gestNP:psC2 -28.72292    8.46400  -3.394
+## tpsF64:gestNP:psC2 -30.60208    8.46400  -3.616
+## tpsF65:gestNP:psC2 -30.22708    8.46400  -3.571
+## tpsF66:gestNP:psC2 -30.54792    8.46400  -3.609
+## tpsF67:gestNP:psC2 -30.62292    8.46400  -3.618
+## tpsF68:gestNP:psC2 -32.09792    8.46400  -3.792
+## tpsF69:gestNP:psC2 -35.34792    8.46400  -4.176
+## tpsF70:gestNP:psC2 -31.77292    8.46400  -3.754
+## tpsF71:gestNP:psC2 -39.35333    8.46400  -4.649
+## tpsF72:gestNP:psC2 -38.00958    8.46400  -4.491
+## tpsF73:gestNP:psC2 -36.91042    8.46400  -4.361
+## tpsF74:gestNP:psC2 -33.92292    8.46400  -4.008
+## tpsF75:gestNP:psC2 -30.38542    8.46400  -3.590
+## tpsF76:gestNP:psC2 -33.84792    8.46400  -3.999
+## tpsF77:gestNP:psC2 -31.01042    8.46400  -3.664
+## tpsF2:gestNP:psNP    0.09911    8.61382   0.012
+## tpsF3:gestNP:psNP    0.20744    8.61382   0.024
+## tpsF4:gestNP:psNP    0.27887    8.61382   0.032
+## tpsF5:gestNP:psNP    0.40565    8.61382   0.047
+## tpsF6:gestNP:psNP    0.65744    8.61382   0.076
+## tpsF7:gestNP:psNP    1.23601    8.61382   0.143
+## tpsF8:gestNP:psNP    0.91607    8.61382   0.106
+## tpsF9:gestNP:psNP    0.46661    8.61382   0.054
+## tpsF10:gestNP:psNP  -0.99792    8.61382  -0.116
+## tpsF11:gestNP:psNP   1.50208    8.61382   0.174
+## tpsF12:gestNP:psNP   0.06121    8.61382   0.007
+## tpsF13:gestNP:psNP   0.21994    8.61382   0.026
+## tpsF14:gestNP:psNP  -0.71220    8.61382  -0.083
+## tpsF15:gestNP:psNP  -0.56964    8.61382  -0.066
+## tpsF16:gestNP:psNP  -0.74788    8.61382  -0.087
+## tpsF17:gestNP:psNP   0.10030    8.61382   0.012
+## tpsF18:gestNP:psNP  -0.04077    8.61382  -0.005
+## tpsF19:gestNP:psNP  -0.56399    8.61382  -0.065
+## tpsF20:gestNP:psNP  -1.03899    8.61382  -0.121
+## tpsF21:gestNP:psNP  -1.22649    8.61382  -0.142
+## tpsF22:gestNP:psNP  -2.34940    8.61382  -0.273
+## tpsF23:gestNP:psNP  -3.12690    8.61382  -0.363
+## tpsF24:gestNP:psNP  -2.03720    8.61382  -0.237
+## tpsF25:gestNP:psNP  -2.90685    8.61382  -0.337
+## tpsF26:gestNP:psNP  -4.45506    8.61382  -0.517
+## tpsF27:gestNP:psNP  -2.36220    8.61382  -0.274
+## tpsF28:gestNP:psNP  -5.26935    8.61382  -0.612
+## tpsF29:gestNP:psNP  -5.71310    8.61382  -0.663
+## tpsF30:gestNP:psNP  -7.03631    8.61382  -0.817
+## tpsF31:gestNP:psNP  -2.94792    8.61382  -0.342
+## tpsF32:gestNP:psNP  -3.82113    8.61382  -0.444
+## tpsF33:gestNP:psNP  -7.59435    8.61382  -0.882
+## tpsF34:gestNP:psNP  -6.30506    8.61382  -0.732
+## tpsF35:gestNP:psNP  -3.23185    8.61382  -0.375
+## tpsF36:gestNP:psNP  -1.95833    8.61382  -0.227
+## tpsF37:gestNP:psNP  -1.03780    8.61382  -0.120
+## tpsF38:gestNP:psNP  -7.42470    8.61382  -0.862
+## tpsF39:gestNP:psNP  -3.12292    8.61382  -0.363
+## tpsF40:gestNP:psNP  -3.98185    8.61382  -0.462
+## tpsF41:gestNP:psNP  -5.08363    8.61382  -0.590
+## tpsF42:gestNP:psNP  -6.93363    8.61382  -0.805
+## tpsF43:gestNP:psNP  -0.09315    8.61382  -0.011
+## tpsF44:gestNP:psNP  -1.80208    8.61382  -0.209
+## tpsF45:gestNP:psNP  -3.68363    8.61382  -0.428
+## tpsF46:gestNP:psNP  -6.39970    8.61382  -0.743
+## tpsF47:gestNP:psNP  -5.95327    8.61382  -0.691
+## tpsF48:gestNP:psNP  -4.49970    8.61382  -0.522
+## tpsF49:gestNP:psNP  -3.23542    8.61382  -0.376
+## tpsF50:gestNP:psNP  -9.45208    8.61382  -1.097
+## tpsF51:gestNP:psNP  -7.73601    8.61382  -0.898
+## tpsF52:gestNP:psNP  -6.19077    8.61382  -0.719
+## tpsF53:gestNP:psNP  -3.96220    8.61382  -0.460
+## tpsF54:gestNP:psNP  -2.75863    8.61382  -0.320
+## tpsF55:gestNP:psNP  -2.46399    8.61382  -0.286
+## tpsF56:gestNP:psNP  -2.55149    8.61382  -0.296
+## tpsF57:gestNP:psNP   2.90565    8.61382   0.337
+## tpsF58:gestNP:psNP   0.76458    8.61382   0.089
+## tpsF59:gestNP:psNP  -1.66220    8.61382  -0.193
+## tpsF60:gestNP:psNP  -2.94613    8.61382  -0.342
+## tpsF61:gestNP:psNP  -5.94435    8.61382  -0.690
+## tpsF62:gestNP:psNP  -3.16220    8.61382  -0.367
+## tpsF63:gestNP:psNP  -4.39792    8.61382  -0.511
+## tpsF64:gestNP:psNP  -6.97351    8.61382  -0.810
+## tpsF65:gestNP:psNP  -6.30387    8.61382  -0.732
+## tpsF66:gestNP:psNP  -5.38542    8.61382  -0.625
+## tpsF67:gestNP:psNP  -4.26577    8.61382  -0.495
+## tpsF68:gestNP:psNP  -5.33720    8.61382  -0.620
+## tpsF69:gestNP:psNP  -7.71399    8.61382  -0.896
+## tpsF70:gestNP:psNP  -8.53899    8.61382  -0.991
+## tpsF71:gestNP:psNP  -7.64655    8.61382  -0.888
+## tpsF72:gestNP:psNP  -8.57565    8.61382  -0.996
+## tpsF73:gestNP:psNP  -8.56577    8.61382  -0.994
+## tpsF74:gestNP:psNP -10.28185    8.61382  -1.194
+## tpsF75:gestNP:psNP  -8.92827    8.61382  -1.037
+## tpsF76:gestNP:psNP  -8.03363    8.61382  -0.933
+## tpsF77:gestNP:psNP  -4.41577    8.61382  -0.513</code></pre>
+<pre><code>## 
+## Correlation matrix not shown by default, as p = 462 &gt; 12.
+## Use print(x, correlation=TRUE)  or
+##     vcov(x)        if you need it</code></pre>
+</div>
+<div id="demarrer-la-session-julia" class="section level2">
+<h2>Démarrer la session julia</h2>
+<p>Cette étape nécessite d’avoir installé Julia sur son système et d’avoir spécifié <code>JULIA_HOME</code> dans le <code>.Renviron</code>. Il faut également installer les packages <code>Rcall</code> et <code>MixedModels</code> dans Julia (comme indiqué sur la cette <a href="https://rpubs.com/dmbates/377897">page</a>). Parfois il faut également exécuter la commande <code>Pkg.build(&quot;Arpack&quot;)</code> dans Julia.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">library</span>(JuliaCall)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">jl &lt;-<span class="st"> </span><span class="kw">julia_setup</span>() </a></code></pre></div>
+<pre><code>## Julia version 1.2.0 at location /home/metienne/install/julia-1.2.0/bin will be used.</code></pre>
+<pre><code>## Loading setup script for JuliaCall...</code></pre>
+<pre><code>## Finish loading setup script for JuliaCall.</code></pre>
+</div>
+<div id="transferer-les-donnees-et-la-formule-du-modele-vers-la-session-julia" class="section level2">
+<h2>Transférer les données et la formule du modèle vers la session Julia</h2>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">jl<span class="op">$</span><span class="kw">assign</span>(<span class="st">&quot;form&quot;</span>, <span class="kw">formula</span>(model))</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">jl<span class="op">$</span><span class="kw">assign</span>(<span class="st">&quot;don&quot;</span>, don)</a></code></pre></div>
+</div>
+<div id="chargement-du-package-mixedmodels" class="section level2">
+<h2>Chargement du package MixedModels</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># julia_install_package(&quot;MixedModels&quot;)</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">jl<span class="op">$</span><span class="kw">library</span>(<span class="st">&quot;MixedModels&quot;</span>)</a></code></pre></div>
+</div>
+<div id="executer-la-fonction-julia" class="section level2">
+<h2>Exécuter la fonction julia</h2>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">jl<span class="op">$</span><span class="kw">eval</span>(<span class="st">&quot;@elapsed fm = fit(LinearMixedModel, form, don)&quot;</span>)</a></code></pre></div>
+<pre><code>## [1] 13.06439</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">jl<span class="op">$</span><span class="kw">eval</span>(<span class="st">&quot;fm&quot;</span>)</a></code></pre></div>
+<pre><code>## Julia Object of type LinearMixedModel{Float64}.
+## Linear mixed model fit by maximum likelihood
+##  gdp ~ 1 + tpsF + gest + ps + tpsF &amp; gest + tpsF &amp; ps + gest &amp; ps + tpsF &amp; gest &amp; ps + (1 | bbF)
+##      logLik        -2 logLik          AIC             BIC       
+##  -1.27451008×10⁴  2.54902016×10⁴  2.64182016×10⁴  2.92921958×10⁴
+## 
+## Variance components:
+##               Column    Variance  Std.Dev.  
+##  bbF      (Intercept)  183.97351 13.5636837
+##  Residual               62.49385  7.9053053
+##  Number of obs: 3619; levels of grouping factors: 47
+## 
+##   Fixed-effects parameters:
+## ──────────────────────────────────────────────────────────────────────────
+##                                  Estimate  Std.Error      z value  P(&gt;|z|)
+## ──────────────────────────────────────────────────────────────────────────
+## (Intercept)                     3.86042      5.55053   0.695504     0.4867
+## tpsF: 2                         5.80625      3.95265   1.46895      0.1418
+## tpsF: 3                        11.7146       3.95265   2.96373      0.0030
+## tpsF: 4                        17.2146       3.95265   4.3552       &lt;1e-4 
+## tpsF: 5                        23.3271       3.95265   5.90163      &lt;1e-8 
+## tpsF: 6                        28.6396       3.95265   7.24566      &lt;1e-12
+## tpsF: 7                        33.7896       3.95265   8.54858      &lt;1e-16
+## tpsF: 8                        38.4667       3.95265   9.73186      &lt;1e-21
+## tpsF: 9                        42.8929       3.95265  10.8517       &lt;1e-26
+## tpsF: 10                       47.0021       3.95265  11.8913       &lt;1e-31
+## tpsF: 11                       50.5375       3.95265  12.7857       &lt;1e-36
+## tpsF: 12                       50.8687       3.95265  12.8695       &lt;1e-37
+## tpsF: 13                       55.1521       3.95265  13.9532       &lt;1e-43
+## tpsF: 14                       61.2896       3.95265  15.5059       &lt;1e-53
+## tpsF: 15                       65.8781       3.95265  16.6668       &lt;1e-61
+## tpsF: 16                       70.9008       3.95265  17.9375       &lt;1e-71
+## tpsF: 17                       72.8771       3.95265  18.4375       &lt;1e-75
+## tpsF: 18                       75.8521       3.95265  19.1902       &lt;1e-81
+## tpsF: 19                       81.5021       3.95265  20.6196       &lt;1e-93
+## tpsF: 20                       83.9146       3.95265  21.2299       &lt;1e-99
+## tpsF: 21                       89.8021       3.95265  22.7194       &lt;1e-99
+## tpsF: 22                       93.5438       3.95265  23.6661       &lt;1e-99
+## tpsF: 23                       97.7963       3.95265  24.7419       &lt;1e-99
+## tpsF: 24                       99.3646       3.95265  25.1387       &lt;1e-99
+## tpsF: 25                      101.215        3.95265  25.6067       &lt;1e-99
+## tpsF: 26                      106.09         3.95265  26.8401       &lt;1e-99
+## tpsF: 27                      106.702        3.95265  26.9951       &lt;1e-99
+## tpsF: 28                      111.04         3.95265  28.0924       &lt;1e-99
+## tpsF: 29                      113.41         3.95265  28.6922       &lt;1e-99
+## tpsF: 30                      115.902        3.95265  29.3225       &lt;1e-99
+## tpsF: 31                      119.852        3.95265  30.3219       &lt;1e-99
+## tpsF: 32                      119.79         3.95265  30.3061       &lt;1e-99
+## tpsF: 33                      122.74         3.95265  31.0525       &lt;1e-99
+## tpsF: 34                      123.452        3.95265  31.2327       &lt;1e-99
+## tpsF: 35                      128.94         3.95265  32.621        &lt;1e-99
+## tpsF: 36                      132.848        3.95265  33.6098       &lt;1e-99
+## tpsF: 37                      135.467        3.95265  34.2723       &lt;1e-99
+## tpsF: 38                      132.627        3.95265  33.5539       &lt;1e-99
+## tpsF: 39                      133.84         3.95265  33.8607       &lt;1e-99
+## tpsF: 40                      136.052        3.95265  34.4205       &lt;1e-99
+## tpsF: 41                      136.127        3.95265  34.4394       &lt;1e-99
+## tpsF: 42                      137.502        3.95265  34.7873       &lt;1e-99
+## tpsF: 43                      142.596        3.95265  36.076        &lt;1e-99
+## tpsF: 44                      144.065        3.95265  36.4476       &lt;1e-99
+## tpsF: 45                      145.927        3.95265  36.9188       &lt;1e-99
+## tpsF: 46                      144.69         3.95265  36.6057       &lt;1e-99
+## tpsF: 47                      148.252        3.95265  37.507        &lt;1e-99
+## tpsF: 48                      145.502        3.95265  36.8112       &lt;1e-99
+## tpsF: 49                      149.752        3.95265  37.8865       &lt;1e-99
+## tpsF: 50                      146.965        3.95265  37.1813       &lt;1e-99
+## tpsF: 51                      149.465        3.95265  37.8137       &lt;1e-99
+## tpsF: 52                      153.065        3.95265  38.7245       &lt;1e-99
+## tpsF: 53                      152.265        3.95265  38.5221       &lt;1e-99
+## tpsF: 54                      158.065        3.95265  39.9895       &lt;1e-99
+## tpsF: 55                      156.627        3.95265  39.6258       &lt;1e-99
+## tpsF: 56                      160.227        3.95265  40.5366       &lt;1e-99
+## tpsF: 57                      164.575        3.95265  41.6366       &lt;1e-99
+## tpsF: 58                      164.144        3.95265  41.5275       &lt;1e-99
+## tpsF: 59                      164.19         3.95265  41.5391       &lt;1e-99
+## tpsF: 60                      162.327        3.95265  41.0679       &lt;1e-99
+## tpsF: 61                      163.327        3.95265  41.3209       &lt;1e-99
+## tpsF: 62                      162.865        3.95265  41.2039       &lt;1e-99
+## tpsF: 63                      166.877        3.95265  42.219        &lt;1e-99
+## tpsF: 64                      167.098        3.95265  42.2749       &lt;1e-99
+## tpsF: 65                      168.135        3.95265  42.5374       &lt;1e-99
+## tpsF: 66                      170.027        3.95265  43.0159       &lt;1e-99
+## tpsF: 67                      168.077        3.95265  42.5226       &lt;1e-99
+## tpsF: 68                      171.327        3.95265  43.3448       &lt;1e-99
+## tpsF: 69                      169.04         3.95265  42.7661       &lt;1e-99
+## tpsF: 70                      172.94         3.95265  43.7528       &lt;1e-99
+## tpsF: 71                      171.64         3.95265  43.4239       &lt;1e-99
+## tpsF: 72                      172.765        3.95265  43.7085       &lt;1e-99
+## tpsF: 73                      175.14         3.95265  44.3094       &lt;1e-99
+## tpsF: 74                      174.827        3.95265  44.2303       &lt;1e-99
+## tpsF: 75                      180.365        3.95265  45.6313       &lt;1e-99
+## tpsF: 76                      177.127        3.95265  44.8122       &lt;1e-99
+## tpsF: 77                      179.715        3.95265  45.4668       &lt;1e-99
+## gest: NP                        0.479167     7.84964   0.0610431    0.9513
+## ps: C2                          1.825        7.84964   0.232495     0.8162
+## ps: NP                          2.78006      8.12515   0.342155     0.7322
+## tpsF: 2 &amp; gest: NP             -0.0875       5.58989  -0.0156532    0.9875
+## tpsF: 3 &amp; gest: NP             -0.104167     5.58989  -0.0186348    0.9851
+## tpsF: 4 &amp; gest: NP             -0.404167     5.58989  -0.0723031    0.9424
+## tpsF: 5 &amp; gest: NP             -0.279167     5.58989  -0.0499413    0.9602
+## tpsF: 6 &amp; gest: NP             -0.729167     5.58989  -0.130444     0.8962
+## tpsF: 7 &amp; gest: NP             -0.479167     5.58989  -0.0857202    0.9317
+## tpsF: 8 &amp; gest: NP             -0.1          5.58989  -0.0178894    0.9857
+## tpsF: 9 &amp; gest: NP              0.61375      5.58989   0.109796     0.9126
+## tpsF: 10 &amp; gest: NP             0.770833     5.58989   0.137898     0.8903
+## tpsF: 11 &amp; gest: NP            -0.435417     5.58989  -0.0778935    0.9379
+## tpsF: 12 &amp; gest: NP             1.94167      5.58989   0.347353     0.7283
+## tpsF: 13 &amp; gest: NP             0.795833     5.58989   0.14237      0.8868
+## tpsF: 14 &amp; gest: NP             1.30833      5.58989   0.234053     0.8149
+## tpsF: 15 &amp; gest: NP             0.563542     5.58989   0.100814     0.9197
+## tpsF: 16 &amp; gest: NP             0.155833     5.58989   0.0278777    0.9778
+## tpsF: 17 &amp; gest: NP             0.745833     5.58989   0.133425     0.8939
+## tpsF: 18 &amp; gest: NP            -0.0291667    5.58989  -0.00521775   0.9958
+## tpsF: 19 &amp; gest: NP             0.258333     5.58989   0.0462143    0.9631
+## tpsF: 20 &amp; gest: NP             0.445833     5.58989   0.079757     0.9364
+## tpsF: 21 &amp; gest: NP             0.808333     5.58989   0.144606     0.8850
+## tpsF: 22 &amp; gest: NP             1.16667      5.58989   0.20871      0.8347
+## tpsF: 23 &amp; gest: NP             1.50917      5.58989   0.269981     0.7872
+## tpsF: 24 &amp; gest: NP             0.595833     5.58989   0.106591     0.9151
+## tpsF: 25 &amp; gest: NP             0.0583333    5.58989   0.0104355    0.9917
+## tpsF: 26 &amp; gest: NP             1.65833      5.58989   0.296666     0.7667
+## tpsF: 27 &amp; gest: NP             0.970833     5.58989   0.173676     0.8621
+## tpsF: 28 &amp; gest: NP             1.50833      5.58989   0.269832     0.7873
+## tpsF: 29 &amp; gest: NP             2.0625       5.58989   0.368969     0.7122
+## tpsF: 30 &amp; gest: NP             2.83625      5.58989   0.507389     0.6119
+## tpsF: 31 &amp; gest: NP             1.45833      5.58989   0.260887     0.7942
+## tpsF: 32 &amp; gest: NP             1.65833      5.58989   0.296666     0.7667
+## tpsF: 33 &amp; gest: NP             2.98333      5.58989   0.533701     0.5935
+## tpsF: 34 &amp; gest: NP             1.65833      5.58989   0.296666     0.7667
+## tpsF: 35 &amp; gest: NP             0.958333     5.58989   0.17144      0.8639
+## tpsF: 36 &amp; gest: NP            -0.772917     5.58989  -0.13827      0.8900
+## tpsF: 37 &amp; gest: NP            -0.916667     5.58989  -0.163986     0.8697
+## tpsF: 38 &amp; gest: NP             4.78333      5.58989   0.855711     0.3922
+## tpsF: 39 &amp; gest: NP             2.42083      5.58989   0.433073     0.6650
+## tpsF: 40 &amp; gest: NP             3.45833      5.58989   0.618676     0.5361
+## tpsF: 41 &amp; gest: NP             4.65833      5.58989   0.833349     0.4046
+## tpsF: 42 &amp; gest: NP             6.23333      5.58989   1.11511      0.2648
+## tpsF: 43 &amp; gest: NP             1.92708      5.58989   0.344744     0.7303
+## tpsF: 44 &amp; gest: NP             2.79583      5.58989   0.500158     0.6170
+## tpsF: 45 &amp; gest: NP             3.53333      5.58989   0.632093     0.5273
+## tpsF: 46 &amp; gest: NP             5.63333      5.58989   1.00777      0.3136
+## tpsF: 47 &amp; gest: NP             5.99583      5.58989   1.07262      0.2834
+## tpsF: 48 &amp; gest: NP             6.09583      5.58989   1.09051      0.2755
+## tpsF: 49 &amp; gest: NP             4.25833      5.58989   0.761791     0.4462
+## tpsF: 50 &amp; gest: NP            10.9542       5.58989   1.95964      0.0500
+## tpsF: 51 &amp; gest: NP             9.25417      5.58989   1.65552      0.0978
+## tpsF: 52 &amp; gest: NP             7.48333      5.58989   1.33873      0.1807
+## tpsF: 53 &amp; gest: NP             5.99583      5.58989   1.07262      0.2834
+## tpsF: 54 &amp; gest: NP             4.08333      5.58989   0.730485     0.4651
+## tpsF: 55 &amp; gest: NP             3.69583      5.58989   0.661163     0.5085
+## tpsF: 56 &amp; gest: NP             6.25833      5.58989   1.11958      0.2629
+## tpsF: 57 &amp; gest: NP             0.233333     5.58989   0.041742     0.9667
+## tpsF: 58 &amp; gest: NP             2.32083      5.58989   0.415184     0.6780
+## tpsF: 59 &amp; gest: NP             4.92083      5.58989   0.880309     0.3787
+## tpsF: 60 &amp; gest: NP             5.47083      5.58989   0.978701     0.3277
+## tpsF: 61 &amp; gest: NP             9.09583      5.58989   1.62719      0.1037
+## tpsF: 62 &amp; gest: NP             6.63333      5.58989   1.18667      0.2354
+## tpsF: 63 &amp; gest: NP             6.37083      5.58989   1.13971      0.2544
+## tpsF: 64 &amp; gest: NP             6.75         5.58989   1.20754      0.2272
+## tpsF: 65 &amp; gest: NP             6.5125       5.58989   1.16505      0.2440
+## tpsF: 66 &amp; gest: NP             6.53333      5.58989   1.16878      0.2425
+## tpsF: 67 &amp; gest: NP             7.17083      5.58989   1.28282      0.1996
+## tpsF: 68 &amp; gest: NP             7.97083      5.58989   1.42594      0.1539
+## tpsF: 69 &amp; gest: NP            10.9583       5.58989   1.96038      0.0500
+## tpsF: 70 &amp; gest: NP            10.5833       5.58989   1.8933       0.0583
+## tpsF: 71 &amp; gest: NP            11.4754       5.58989   2.05289      0.0401
+## tpsF: 72 &amp; gest: NP            11.4342       5.58989   2.04551      0.0408
+## tpsF: 73 &amp; gest: NP            11.0583       5.58989   1.97827      0.0479
+## tpsF: 74 &amp; gest: NP             9.97083      5.58989   1.78372      0.0745
+## tpsF: 75 &amp; gest: NP             7.74583      5.58989   1.38568      0.1658
+## tpsF: 76 &amp; gest: NP             9.32083      5.58989   1.66744      0.0954
+## tpsF: 77 &amp; gest: NP             7.52083      5.58989   1.34543      0.1785
+## tpsF: 2 &amp; ps: C2               -0.2          5.58989  -0.0357788    0.9715
+## tpsF: 3 &amp; ps: C2               -0.5875       5.58989  -0.1051       0.9163
+## tpsF: 4 &amp; ps: C2               -0.225        5.58989  -0.0402512    0.9679
+## tpsF: 5 &amp; ps: C2               -0.9875       5.58989  -0.176658     0.8598
+## tpsF: 6 &amp; ps: C2               -1.05         5.58989  -0.187839     0.8510
+## tpsF: 7 &amp; ps: C2               -0.15         5.58989  -0.0268341    0.9786
+## tpsF: 8 &amp; ps: C2                0.675        5.58989   0.120754     0.9039
+## tpsF: 9 &amp; ps: C2                1.89         5.58989   0.33811      0.7353
+## tpsF: 10 &amp; ps: C2               2.8          5.58989   0.500904     0.6164
+## tpsF: 11 &amp; ps: C2              -0.285417     5.58989  -0.0510594    0.9593
+## tpsF: 12 &amp; ps: C2               0.429167     5.58989   0.0767754    0.9388
+## tpsF: 13 &amp; ps: C2               0.575        5.58989   0.102864     0.9181
+## tpsF: 14 &amp; ps: C2               2.7875       5.58989   0.498668     0.6180
+## tpsF: 15 &amp; ps: C2               4.01354      5.58989   0.717999     0.4728
+## tpsF: 16 &amp; ps: C2               5.4275       5.58989   0.970948     0.3316
+## tpsF: 17 &amp; ps: C2               2.5625       5.58989   0.458416     0.6467
+## tpsF: 18 &amp; ps: C2               2.0625       5.58989   0.368969     0.7122
+## tpsF: 19 &amp; ps: C2               3.0          5.58989   0.536683     0.5915
+## tpsF: 20 &amp; ps: C2               1.95         5.58989   0.348844     0.7272
+## tpsF: 21 &amp; ps: C2               4.5125       5.58989   0.80726      0.4195
+## tpsF: 22 &amp; ps: C2               4.48542      5.58989   0.802415     0.4223
+## tpsF: 23 &amp; ps: C2               5.13292      5.58989   0.918249     0.3585
+## tpsF: 24 &amp; ps: C2               4.7375       5.58989   0.847511     0.3967
+## tpsF: 25 &amp; ps: C2               5.0125       5.58989   0.896707     0.3699
+## tpsF: 26 &amp; ps: C2               5.875        5.58989   1.051        0.2933
+## tpsF: 27 &amp; ps: C2               6.05         5.58989   1.08231      0.2791
+## tpsF: 28 &amp; ps: C2               9.3625       5.58989   1.6749       0.0940
+## tpsF: 29 &amp; ps: C2               9.98542      5.58989   1.78633      0.0740
+## tpsF: 30 &amp; ps: C2              11.2629       5.58989   2.01487      0.0439
+## tpsF: 31 &amp; ps: C2              10.575        5.58989   1.89181      0.0585
+## tpsF: 32 &amp; ps: C2              10.3875       5.58989   1.85826      0.0631
+## tpsF: 33 &amp; ps: C2              12.7375       5.58989   2.27867      0.0227
+## tpsF: 34 &amp; ps: C2              11.6625       5.58989   2.08635      0.0369
+## tpsF: 35 &amp; ps: C2              12.5625       5.58989   2.24736      0.0246
+## tpsF: 36 &amp; ps: C2              10.9083       5.58989   1.95144      0.0510
+## tpsF: 37 &amp; ps: C2              10.0083       5.58989   1.79043      0.0734
+## tpsF: 38 &amp; ps: C2              15.9625       5.58989   2.8556       0.0043
+## tpsF: 39 &amp; ps: C2              13.6875       5.58989   2.44861      0.0143
+## tpsF: 40 &amp; ps: C2              15.2875       5.58989   2.73485      0.0062
+## tpsF: 41 &amp; ps: C2              15.075        5.58989   2.69683      0.0070
+## tpsF: 42 &amp; ps: C2              16.65         5.58989   2.97859      0.0029
+## tpsF: 43 &amp; ps: C2              14.1604       5.58989   2.53322      0.0113
+## tpsF: 44 &amp; ps: C2              15.1042       5.58989   2.70205      0.0069
+## tpsF: 45 &amp; ps: C2              15.9875       5.58989   2.86007      0.0042
+## tpsF: 46 &amp; ps: C2              16.55         5.58989   2.9607       0.0031
+## tpsF: 47 &amp; ps: C2              17.425        5.58989   3.11723      0.0018
+## tpsF: 48 &amp; ps: C2              15.725        5.58989   2.81311      0.0049
+## tpsF: 49 &amp; ps: C2              16.0375       5.58989   2.86902      0.0041
+## tpsF: 50 &amp; ps: C2              20.8458       5.58989   3.7292       0.0002
+## tpsF: 51 &amp; ps: C2              19.8833       5.58989   3.55701      0.0004
+## tpsF: 52 &amp; ps: C2              18.5          5.58989   3.30954      0.0009
+## tpsF: 53 &amp; ps: C2              18.8          5.58989   3.36321      0.0008
+## tpsF: 54 &amp; ps: C2              16.575        5.58989   2.96517      0.0030
+## tpsF: 55 &amp; ps: C2              16.8375       5.58989   3.01213      0.0026
+## tpsF: 56 &amp; ps: C2              18.8125       5.58989   3.36545      0.0008
+## tpsF: 57 &amp; ps: C2              10.6208       5.58989   1.90001      0.0574
+## tpsF: 58 &amp; ps: C2              13.8958       5.58989   2.48588      0.0129
+## tpsF: 59 &amp; ps: C2              17.4625       5.58989   3.12394      0.0018
+## tpsF: 60 &amp; ps: C2              19.8625       5.58989   3.55329      0.0004
+## tpsF: 61 &amp; ps: C2              24.0125       5.58989   4.2957       &lt;1e-4 
+## tpsF: 62 &amp; ps: C2              21.9          5.58989   3.91778      &lt;1e-4 
+## tpsF: 63 &amp; ps: C2              22.6875       5.58989   4.05866      &lt;1e-4 
+## tpsF: 64 &amp; ps: C2              21.6125       5.58989   3.86635      0.0001
+## tpsF: 65 &amp; ps: C2              22.425        5.58989   4.0117       &lt;1e-4 
+## tpsF: 66 &amp; ps: C2              23.7875       5.58989   4.25545      &lt;1e-4 
+## tpsF: 67 &amp; ps: C2              23.3375       5.58989   4.17494      &lt;1e-4 
+## tpsF: 68 &amp; ps: C2              26.0875       5.58989   4.6669       &lt;1e-5 
+## tpsF: 69 &amp; ps: C2              27.2125       5.58989   4.86816      &lt;1e-5 
+## tpsF: 70 &amp; ps: C2              25.7875       5.58989   4.61324      &lt;1e-5 
+## tpsF: 71 &amp; ps: C2              29.8713       5.58989   5.34379      &lt;1e-7 
+## tpsF: 72 &amp; ps: C2              29.285        5.58989   5.23892      &lt;1e-6 
+## tpsF: 73 &amp; ps: C2              28.0125       5.58989   5.01127      &lt;1e-6 
+## tpsF: 74 &amp; ps: C2              26.4375       5.58989   4.72952      &lt;1e-5 
+## tpsF: 75 &amp; ps: C2              23.825        5.58989   4.26216      &lt;1e-4 
+## tpsF: 76 &amp; ps: C2              25.2375       5.58989   4.51484      &lt;1e-5 
+## tpsF: 77 &amp; ps: C2              22.6875       5.58989   4.05866      &lt;1e-4 
+## tpsF: 2 &amp; ps: NP               -0.299107     5.78609  -0.0516942    0.9588
+## tpsF: 3 &amp; ps: NP               -0.540774     5.78609  -0.093461     0.9255
+## tpsF: 4 &amp; ps: NP               -1.0122       5.78609  -0.174937     0.8611
+## tpsF: 5 &amp; ps: NP               -1.13899      5.78609  -0.196849     0.8439
+## tpsF: 6 &amp; ps: NP               -1.66577      5.78609  -0.287893     0.7734
+## tpsF: 7 &amp; ps: NP               -1.34435      5.78609  -0.232341     0.8163
+## tpsF: 8 &amp; ps: NP               -0.995238     5.78609  -0.172005     0.8634
+## tpsF: 9 &amp; ps: NP               -0.285774     5.78609  -0.0493898    0.9606
+## tpsF: 10 &amp; ps: NP              -0.385417     5.78609  -0.0666109    0.9469
+## tpsF: 11 &amp; ps: NP              -0.454167     5.78609  -0.0784928    0.9374
+## tpsF: 12 &amp; ps: NP              -0.980655     5.78609  -0.169485     0.8654
+## tpsF: 13 &amp; ps: NP              -0.678274     5.78609  -0.117225     0.9067
+## tpsF: 14 &amp; ps: NP              -0.258631     5.78609  -0.0446987    0.9643
+## tpsF: 15 &amp; ps: NP              -0.0876488    5.78609  -0.0151482    0.9879
+## tpsF: 16 &amp; ps: NP               0.171071     5.78609   0.029566     0.9764
+## tpsF: 17 &amp; ps: NP              -0.046131     5.78609  -0.00797273   0.9936
+## tpsF: 18 &amp; ps: NP               0.30744      5.78609   0.0531344    0.9576
+## tpsF: 19 &amp; ps: NP              -0.0568452    5.78609  -0.00982446   0.9922
+## tpsF: 20 &amp; ps: NP               1.03065      5.78609   0.178126     0.8586
+## tpsF: 21 &amp; ps: NP               0.843155     5.78609   0.145721     0.8841
+## tpsF: 22 &amp; ps: NP               1.66815      5.78609   0.288304     0.7731
+## tpsF: 23 &amp; ps: NP               2.21565      5.78609   0.382928     0.7018
+## tpsF: 24 &amp; ps: NP               2.36637      5.78609   0.408975     0.6826
+## tpsF: 25 &amp; ps: NP               3.87351      5.78609   0.669452     0.5032
+## tpsF: 26 &amp; ps: NP               2.88423      5.78609   0.498476     0.6181
+## tpsF: 27 &amp; ps: NP               2.22887      5.78609   0.385212     0.7001
+## tpsF: 28 &amp; ps: NP               4.54851      5.78609   0.786111     0.4318
+## tpsF: 29 &amp; ps: NP               4.69435      5.78609   0.811315     0.4172
+## tpsF: 30 &amp; ps: NP               5.62881      5.78609   0.972817     0.3306
+## tpsF: 31 &amp; ps: NP               2.96458      5.78609   0.512364     0.6084
+## tpsF: 32 &amp; ps: NP               4.3128       5.78609   0.745373     0.4560
+## tpsF: 33 &amp; ps: NP               7.14851      5.78609   1.23546      0.2167
+## tpsF: 34 &amp; ps: NP               6.82173      5.78609   1.17899      0.2384
+## tpsF: 35 &amp; ps: NP               4.44851      5.78609   0.768829     0.4420
+## tpsF: 36 &amp; ps: NP               3.11875      5.78609   0.539008     0.5899
+## tpsF: 37 &amp; ps: NP               2.63571      5.78609   0.455526     0.6487
+## tpsF: 38 &amp; ps: NP               8.60387      5.78609   1.48699      0.1370
+## tpsF: 39 &amp; ps: NP               6.97708      5.78609   1.20584      0.2279
+## tpsF: 40 &amp; ps: NP               8.63601      5.78609   1.49255      0.1356
+## tpsF: 41 &amp; ps: NP               8.6753       5.78609   1.49934      0.1338
+## tpsF: 42 &amp; ps: NP               9.7003       5.78609   1.67649      0.0936
+## tpsF: 43 &amp; ps: NP               7.3994       5.78609   1.27883      0.2010
+## tpsF: 44 &amp; ps: NP               8.45208      5.78609   1.46076      0.1441
+## tpsF: 45 &amp; ps: NP               9.4753       5.78609   1.6376       0.1015
+## tpsF: 46 &amp; ps: NP               9.94137      5.78609   1.71815      0.0858
+## tpsF: 47 &amp; ps: NP               8.00744      5.78609   1.38391      0.1664
+## tpsF: 48 &amp; ps: NP               9.02887      5.78609   1.56044      0.1187
+## tpsF: 49 &amp; ps: NP               9.16458      5.78609   1.5839       0.1132
+## tpsF: 50 &amp; ps: NP              11.7687       5.78609   2.03397      0.0420
+## tpsF: 51 &amp; ps: NP              11.0902       5.78609   1.9167       0.0553
+## tpsF: 52 &amp; ps: NP              10.0949       5.78609   1.74469      0.0810
+## tpsF: 53 &amp; ps: NP              10.3664       5.78609   1.7916       0.0732
+## tpsF: 54 &amp; ps: NP               8.7378       5.78609   1.51014      0.1310
+## tpsF: 55 &amp; ps: NP               9.41815      5.78609   1.62772      0.1036
+## tpsF: 56 &amp; ps: NP               8.21815      5.78609   1.42033      0.1555
+## tpsF: 57 &amp; ps: NP               5.84643      5.78609   1.01043      0.3123
+## tpsF: 58 &amp; ps: NP               7.90625      5.78609   1.36642      0.1718
+## tpsF: 59 &amp; ps: NP              10.2414       5.78609   1.77         0.0767
+## tpsF: 60 &amp; ps: NP              11.4753       5.78609   1.98326      0.0473
+## tpsF: 61 &amp; ps: NP              14.361        5.78609   2.48199      0.0131
+## tpsF: 62 &amp; ps: NP              13.2664       5.78609   2.2928       0.0219
+## tpsF: 63 &amp; ps: NP              13.6396       5.78609   2.35731      0.0184
+## tpsF: 64 &amp; ps: NP              14.7735       5.78609   2.55328      0.0107
+## tpsF: 65 &amp; ps: NP              14.9289       5.78609   2.58013      0.0099
+## tpsF: 66 &amp; ps: NP              14.9896       5.78609   2.59062      0.0096
+## tpsF: 67 &amp; ps: NP              13.8824       5.78609   2.39928      0.0164
+## tpsF: 68 &amp; ps: NP              15.0039       5.78609   2.59309      0.0095
+## tpsF: 69 &amp; ps: NP              16.2057       5.78609   2.8008       0.0051
+## tpsF: 70 &amp; ps: NP              17.7057       5.78609   3.06004      0.0022
+## tpsF: 71 &amp; ps: NP              21.8961       5.78609   3.78427      0.0002
+## tpsF: 72 &amp; ps: NP              21.514        5.78609   3.71822      0.0002
+## tpsF: 73 &amp; ps: NP              20.3199       5.78609   3.51186      0.0004
+## tpsF: 74 &amp; ps: NP              20.061        5.78609   3.46711      0.0005
+## tpsF: 75 &amp; ps: NP              16.3949       5.78609   2.83351      0.0046
+## tpsF: 76 &amp; ps: NP              18.3753       5.78609   3.17577      0.0015
+## tpsF: 77 &amp; ps: NP              13.8449       5.78609   2.3928       0.0167
+## gest: NP &amp; ps: C2              -1.75208     11.1011   -0.15783      0.8746
+## gest: NP &amp; ps: NP              -2.02173     11.2976   -0.178952     0.8580
+## tpsF: 2 &amp; gest: NP &amp; ps: C2    -0.51875      7.90531  -0.0656205    0.9477
+## tpsF: 3 &amp; gest: NP &amp; ps: C2    -0.947917     7.90531  -0.119909     0.9046
+## tpsF: 4 &amp; gest: NP &amp; ps: C2    -1.73542      7.90531  -0.219526     0.8262
+## tpsF: 5 &amp; gest: NP &amp; ps: C2    -1.98542      7.90531  -0.25115      0.8017
+## tpsF: 6 &amp; gest: NP &amp; ps: C2    -1.69792      7.90531  -0.214782     0.8299
+## tpsF: 7 &amp; gest: NP &amp; ps: C2    -2.17292      7.90531  -0.274868     0.7834
+## tpsF: 8 &amp; gest: NP &amp; ps: C2    -2.63542      7.90531  -0.333373     0.7389
+## tpsF: 9 &amp; gest: NP &amp; ps: C2    -3.48292      7.90531  -0.44058      0.6595
+## tpsF: 10 &amp; gest: NP &amp; ps: C2   -5.68542      7.90531  -0.71919      0.4720
+## tpsF: 11 &amp; gest: NP &amp; ps: C2   -2.03958      7.90531  -0.258002     0.7964
+## tpsF: 12 &amp; gest: NP &amp; ps: C2   -4.31319      7.90531  -0.545608     0.5853
+## tpsF: 13 &amp; gest: NP &amp; ps: C2   -4.91042      7.90531  -0.621155     0.5345
+## tpsF: 14 &amp; gest: NP &amp; ps: C2   -6.09792      7.90531  -0.77137      0.4405
+## tpsF: 15 &amp; gest: NP &amp; ps: C2   -7.29583      7.90531  -0.922903     0.3561
+## tpsF: 16 &amp; gest: NP &amp; ps: C2   -8.43056      7.90531  -1.06644      0.2862
+## tpsF: 17 &amp; gest: NP &amp; ps: C2   -6.17292      7.90531  -0.780857     0.4349
+## tpsF: 18 &amp; gest: NP &amp; ps: C2   -6.46042      7.90531  -0.817225     0.4138
+## tpsF: 19 &amp; gest: NP &amp; ps: C2   -6.67292      7.90531  -0.844106     0.3986
+## tpsF: 20 &amp; gest: NP &amp; ps: C2   -7.18542      7.90531  -0.908936     0.3634
+## tpsF: 21 &amp; gest: NP &amp; ps: C2   -8.77292      7.90531  -1.10975      0.2671
+## tpsF: 22 &amp; gest: NP &amp; ps: C2   -9.41458      7.90531  -1.19092      0.2337
+## tpsF: 23 &amp; gest: NP &amp; ps: C2  -10.3271       7.90531  -1.30635      0.1914
+## tpsF: 24 &amp; gest: NP &amp; ps: C2   -7.02292      7.90531  -0.88838      0.3743
+## tpsF: 25 &amp; gest: NP &amp; ps: C2  -10.5479       7.90531  -1.33428      0.1821
+## tpsF: 26 &amp; gest: NP &amp; ps: C2  -12.6979       7.90531  -1.60625      0.1082
+## tpsF: 27 &amp; gest: NP &amp; ps: C2  -14.5354       7.90531  -1.83869      0.0660
+## tpsF: 28 &amp; gest: NP &amp; ps: C2  -16.2854       7.90531  -2.06006      0.0394
+## tpsF: 29 &amp; gest: NP &amp; ps: C2  -18.6292       7.90531  -2.35654      0.0184
+## tpsF: 30 &amp; gest: NP &amp; ps: C2  -21.3204       7.90531  -2.69698      0.0070
+## tpsF: 31 &amp; gest: NP &amp; ps: C2  -16.4604       7.90531  -2.0822       0.0373
+## tpsF: 32 &amp; gest: NP &amp; ps: C2  -17.0604       7.90531  -2.1581       0.0309
+## tpsF: 33 &amp; gest: NP &amp; ps: C2  -17.8479       7.90531  -2.25771      0.0240
+## tpsF: 34 &amp; gest: NP &amp; ps: C2  -16.9354       7.90531  -2.14228      0.0322
+## tpsF: 35 &amp; gest: NP &amp; ps: C2  -16.6104       7.90531  -2.10117      0.0356
+## tpsF: 36 &amp; gest: NP &amp; ps: C2  -12.6042       7.90531  -1.59439      0.1108
+## tpsF: 37 &amp; gest: NP &amp; ps: C2  -11.5354       7.90531  -1.4592       0.1445
+## tpsF: 38 &amp; gest: NP &amp; ps: C2  -19.1604       7.90531  -2.42374      0.0154
+## tpsF: 39 &amp; gest: NP &amp; ps: C2  -17.9229       7.90531  -2.2672       0.0234
+## tpsF: 40 &amp; gest: NP &amp; ps: C2  -18.8104       7.90531  -2.37947      0.0173
+## tpsF: 41 &amp; gest: NP &amp; ps: C2  -20.7104       7.90531  -2.61981      0.0088
+## tpsF: 42 &amp; gest: NP &amp; ps: C2  -21.5354       7.90531  -2.72417      0.0064
+## tpsF: 43 &amp; gest: NP &amp; ps: C2  -19.4375       7.90531  -2.45879      0.0139
+## tpsF: 44 &amp; gest: NP &amp; ps: C2  -19.9687       7.90531  -2.52599      0.0115
+## tpsF: 45 &amp; gest: NP &amp; ps: C2  -20.3104       7.90531  -2.56921      0.0102
+## tpsF: 46 &amp; gest: NP &amp; ps: C2  -21.4479       7.90531  -2.7131       0.0067
+## tpsF: 47 &amp; gest: NP &amp; ps: C2  -22.4979       7.90531  -2.84593      0.0044
+## tpsF: 48 &amp; gest: NP &amp; ps: C2  -22.1854       7.90531  -2.8064       0.0050
+## tpsF: 49 &amp; gest: NP &amp; ps: C2  -20.6479       7.90531  -2.61191      0.0090
+## tpsF: 50 &amp; gest: NP &amp; ps: C2  -25.8187       7.90531  -3.266        0.0011
+## tpsF: 51 &amp; gest: NP &amp; ps: C2  -24.9687       7.90531  -3.15848      0.0016
+## tpsF: 52 &amp; gest: NP &amp; ps: C2  -23.9854       7.90531  -3.03409      0.0024
+## tpsF: 53 &amp; gest: NP &amp; ps: C2  -23.5354       7.90531  -2.97717      0.0029
+## tpsF: 54 &amp; gest: NP &amp; ps: C2  -22.2854       7.90531  -2.81905      0.0048
+## tpsF: 55 &amp; gest: NP &amp; ps: C2  -22.4729       7.90531  -2.84276      0.0045
+## tpsF: 56 &amp; gest: NP &amp; ps: C2  -26.0729       7.90531  -3.29815      0.0010
+## tpsF: 57 &amp; gest: NP &amp; ps: C2  -15.8271       7.90531  -2.00208      0.0453
+## tpsF: 58 &amp; gest: NP &amp; ps: C2  -19.6146       7.90531  -2.48119      0.0131
+## tpsF: 59 &amp; gest: NP &amp; ps: C2  -23.5229       7.90531  -2.97559      0.0029
+## tpsF: 60 &amp; gest: NP &amp; ps: C2  -26.9479       7.90531  -3.40884      0.0007
+## tpsF: 61 &amp; gest: NP &amp; ps: C2  -31.0979       7.90531  -3.9338       &lt;1e-4 
+## tpsF: 62 &amp; gest: NP &amp; ps: C2  -27.2604       7.90531  -3.44837      0.0006
+## tpsF: 63 &amp; gest: NP &amp; ps: C2  -28.7229       7.90531  -3.63337      0.0003
+## tpsF: 64 &amp; gest: NP &amp; ps: C2  -30.6021       7.90531  -3.87108      0.0001
+## tpsF: 65 &amp; gest: NP &amp; ps: C2  -30.2271       7.90531  -3.82365      0.0001
+## tpsF: 66 &amp; gest: NP &amp; ps: C2  -30.5479       7.90531  -3.86423      0.0001
+## tpsF: 67 &amp; gest: NP &amp; ps: C2  -30.6229       7.90531  -3.87372      0.0001
+## tpsF: 68 &amp; gest: NP &amp; ps: C2  -32.0979       7.90531  -4.0603       &lt;1e-4 
+## tpsF: 69 &amp; gest: NP &amp; ps: C2  -35.3479       7.90531  -4.47142      &lt;1e-5 
+## tpsF: 70 &amp; gest: NP &amp; ps: C2  -31.7729       7.90531  -4.01919      &lt;1e-4 
+## tpsF: 71 &amp; gest: NP &amp; ps: C2  -39.3533       7.90531  -4.97809      &lt;1e-6 
+## tpsF: 72 &amp; gest: NP &amp; ps: C2  -38.0096       7.90531  -4.80811      &lt;1e-5 
+## tpsF: 73 &amp; gest: NP &amp; ps: C2  -36.9104       7.90531  -4.66907      &lt;1e-5 
+## tpsF: 74 &amp; gest: NP &amp; ps: C2  -33.9229       7.90531  -4.29116      &lt;1e-4 
+## tpsF: 75 &amp; gest: NP &amp; ps: C2  -30.3854       7.90531  -3.84367      0.0001
+## tpsF: 76 &amp; gest: NP &amp; ps: C2  -33.8479       7.90531  -4.28167      &lt;1e-4 
+## tpsF: 77 &amp; gest: NP &amp; ps: C2  -31.0104       7.90531  -3.92273      &lt;1e-4 
+## tpsF: 2 &amp; gest: NP &amp; ps: NP     0.0991071    8.04523   0.0123187    0.9902
+## tpsF: 3 &amp; gest: NP &amp; ps: NP     0.20744      8.04523   0.0257843    0.9794
+## tpsF: 4 &amp; gest: NP &amp; ps: NP     0.278869     8.04523   0.0346626    0.9723
+## tpsF: 5 &amp; gest: NP &amp; ps: NP     0.405655     8.04523   0.0504218    0.9598
+## tpsF: 6 &amp; gest: NP &amp; ps: NP     0.65744      8.04523   0.081718     0.9349
+## tpsF: 7 &amp; gest: NP &amp; ps: NP     1.23601      8.04523   0.153633     0.8779
+## tpsF: 8 &amp; gest: NP &amp; ps: NP     0.916071     8.04523   0.113865     0.9093
+## tpsF: 9 &amp; gest: NP &amp; ps: NP     0.466607     8.04523   0.057998     0.9538
+## tpsF: 10 &amp; gest: NP &amp; ps: NP   -0.997917     8.04523  -0.124038     0.9013
+## tpsF: 11 &amp; gest: NP &amp; ps: NP    1.50208      8.04523   0.186705     0.8519
+## tpsF: 12 &amp; gest: NP &amp; ps: NP    0.0612103    8.04523   0.00760827   0.9939
+## tpsF: 13 &amp; gest: NP &amp; ps: NP    0.21994      8.04523   0.027338     0.9782
+## tpsF: 14 &amp; gest: NP &amp; ps: NP   -0.712202     8.04523  -0.0885248    0.9295
+## tpsF: 15 &amp; gest: NP &amp; ps: NP   -0.569643     8.04523  -0.070805     0.9436
+## tpsF: 16 &amp; gest: NP &amp; ps: NP   -0.747877     8.04523  -0.092959     0.9259
+## tpsF: 17 &amp; gest: NP &amp; ps: NP    0.100298     8.04523   0.0124667    0.9901
+## tpsF: 18 &amp; gest: NP &amp; ps: NP   -0.0407738    8.04523  -0.00506807   0.9960
+## tpsF: 19 &amp; gest: NP &amp; ps: NP   -0.563988     8.04523  -0.0701021    0.9441
+## tpsF: 20 &amp; gest: NP &amp; ps: NP   -1.03899      8.04523  -0.129143     0.8972
+## tpsF: 21 &amp; gest: NP &amp; ps: NP   -1.22649      8.04523  -0.152449     0.8788
+## tpsF: 22 &amp; gest: NP &amp; ps: NP   -2.3494       8.04523  -0.292024     0.7703
+## tpsF: 23 &amp; gest: NP &amp; ps: NP   -3.1269       8.04523  -0.388666     0.6975
+## tpsF: 24 &amp; gest: NP &amp; ps: NP   -2.0372       8.04523  -0.253219     0.8001
+## tpsF: 25 &amp; gest: NP &amp; ps: NP   -2.90685      8.04523  -0.361313     0.7179
+## tpsF: 26 &amp; gest: NP &amp; ps: NP   -4.45506      8.04523  -0.553751     0.5797
+## tpsF: 27 &amp; gest: NP &amp; ps: NP   -2.3622       8.04523  -0.293615     0.7691
+## tpsF: 28 &amp; gest: NP &amp; ps: NP   -5.26935      8.04523  -0.654965     0.5125
+## tpsF: 29 &amp; gest: NP &amp; ps: NP   -5.7131       8.04523  -0.710122     0.4776
+## tpsF: 30 &amp; gest: NP &amp; ps: NP   -7.03631      8.04523  -0.874594     0.3818
+## tpsF: 31 &amp; gest: NP &amp; ps: NP   -2.94792      8.04523  -0.366418     0.7141
+## tpsF: 32 &amp; gest: NP &amp; ps: NP   -3.82113      8.04523  -0.474956     0.6348
+## tpsF: 33 &amp; gest: NP &amp; ps: NP   -7.59435      8.04523  -0.943956     0.3452
+## tpsF: 34 &amp; gest: NP &amp; ps: NP   -6.30506      8.04523  -0.783701     0.4332
+## tpsF: 35 &amp; gest: NP &amp; ps: NP   -3.23185      8.04523  -0.401709     0.6879
+## tpsF: 36 &amp; gest: NP &amp; ps: NP   -1.95833      8.04523  -0.243415     0.8077
+## tpsF: 37 &amp; gest: NP &amp; ps: NP   -1.0378       8.04523  -0.128995     0.8974
+## tpsF: 38 &amp; gest: NP &amp; ps: NP   -7.4247       8.04523  -0.92287      0.3561
+## tpsF: 39 &amp; gest: NP &amp; ps: NP   -3.12292      8.04523  -0.38817      0.6979
+## tpsF: 40 &amp; gest: NP &amp; ps: NP   -3.98185      8.04523  -0.494932     0.6206
+## tpsF: 41 &amp; gest: NP &amp; ps: NP   -5.08363      8.04523  -0.631881     0.5275
+## tpsF: 42 &amp; gest: NP &amp; ps: NP   -6.93363      8.04523  -0.861831     0.3888
+## tpsF: 43 &amp; gest: NP &amp; ps: NP   -0.0931548    8.04523  -0.0115789    0.9908
+## tpsF: 44 &amp; gest: NP &amp; ps: NP   -1.80208      8.04523  -0.223994     0.8228
+## tpsF: 45 &amp; gest: NP &amp; ps: NP   -3.68363      8.04523  -0.457865     0.6470
+## tpsF: 46 &amp; gest: NP &amp; ps: NP   -6.3997       8.04523  -0.795465     0.4263
+## tpsF: 47 &amp; gest: NP &amp; ps: NP   -5.95327      8.04523  -0.739975     0.4593
+## tpsF: 48 &amp; gest: NP &amp; ps: NP   -4.4997       8.04523  -0.5593       0.5760
+## tpsF: 49 &amp; gest: NP &amp; ps: NP   -3.23542      8.04523  -0.402153     0.6876
+## tpsF: 50 &amp; gest: NP &amp; ps: NP   -9.45208      8.04523  -1.17487      0.2400
+## tpsF: 51 &amp; gest: NP &amp; ps: NP   -7.73601      8.04523  -0.961565     0.3363
+## tpsF: 52 &amp; gest: NP &amp; ps: NP   -6.19077      8.04523  -0.769496     0.4416
+## tpsF: 53 &amp; gest: NP &amp; ps: NP   -3.9622       8.04523  -0.492491     0.6224
+## tpsF: 54 &amp; gest: NP &amp; ps: NP   -2.75863      8.04523  -0.34289      0.7317
+## tpsF: 55 &amp; gest: NP &amp; ps: NP   -2.46399      8.04523  -0.306267     0.7594
+## tpsF: 56 &amp; gest: NP &amp; ps: NP   -2.55149      8.04523  -0.317143     0.7511
+## tpsF: 57 &amp; gest: NP &amp; ps: NP    2.90565      8.04523   0.361165     0.7180
+## tpsF: 58 &amp; gest: NP &amp; ps: NP    0.764583     8.04523   0.0950356    0.9243
+## tpsF: 59 &amp; gest: NP &amp; ps: NP   -1.6622       8.04523  -0.206607     0.8363
+## tpsF: 60 &amp; gest: NP &amp; ps: NP   -2.94613      8.04523  -0.366196     0.7142
+## tpsF: 61 &amp; gest: NP &amp; ps: NP   -5.94435      8.04523  -0.738866     0.4600
+## tpsF: 62 &amp; gest: NP &amp; ps: NP   -3.1622       8.04523  -0.393053     0.6943
+## tpsF: 63 &amp; gest: NP &amp; ps: NP   -4.39792      8.04523  -0.546649     0.5846
+## tpsF: 64 &amp; gest: NP &amp; ps: NP   -6.97351      8.04523  -0.866788     0.3861
+## tpsF: 65 &amp; gest: NP &amp; ps: NP   -6.30387      8.04523  -0.783553     0.4333
+## tpsF: 66 &amp; gest: NP &amp; ps: NP   -5.38542      8.04523  -0.669392     0.5032
+## tpsF: 67 &amp; gest: NP &amp; ps: NP   -4.26577      8.04523  -0.530224     0.5960
+## tpsF: 68 &amp; gest: NP &amp; ps: NP   -5.3372       8.04523  -0.663399     0.5071
+## tpsF: 69 &amp; gest: NP &amp; ps: NP   -7.71399      8.04523  -0.958827     0.3376
+## tpsF: 70 &amp; gest: NP &amp; ps: NP   -8.53899      8.04523  -1.06137      0.2885
+## tpsF: 71 &amp; gest: NP &amp; ps: NP   -7.64655      8.04523  -0.950445     0.3419
+## tpsF: 72 &amp; gest: NP &amp; ps: NP   -8.57565      8.04523  -1.06593      0.2865
+## tpsF: 73 &amp; gest: NP &amp; ps: NP   -8.56577      8.04523  -1.0647       0.2870
+## tpsF: 74 &amp; gest: NP &amp; ps: NP  -10.2818       8.04523  -1.278        0.2012
+## tpsF: 75 &amp; gest: NP &amp; ps: NP   -8.92827      8.04523  -1.10976      0.2671
+## tpsF: 76 &amp; gest: NP &amp; ps: NP   -8.03363      8.04523  -0.998558     0.3180
+## tpsF: 77 &amp; gest: NP &amp; ps: NP   -4.41577      8.04523  -0.548868     0.5831
+## ──────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
