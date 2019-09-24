@@ -1,0 +1,248 @@
+---
+title: "Utilisation GitHub"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction 
+
+Git is a version management software. The idea is to save the different changements made on a projet, and create an historic of it. To do so, between two saved versions, changements will be added on git with the "add" command, and a little comment on the modification will be joint with the "commit" command as explained later.
+
+Github is a remote service, to save the different git versions. It also enable several people to work on a same project. To use it, you have to :   
+* create a Git hub account
+* make a link (ssh) between your computer and your account
+* create or join a repository
+* use the "push" and "pull" commands to share your work and get the advanced from others. 
+
+To have a global idea of Git and GitHub : 
+![Caption for the picture.](img/d-schema_git.png)
+
+
+The goal of this little course is to get the basis of this tool, and its use. 
+
+
+
+## 1. Get started
+### 1.1 Installation of git 
+**On Linux and MacOS :**
+To use git on Linux or MacOS, you'll need to install the software with some command like :
+
+```bash
+$ sudo apt-get update
+$ sudo apt-get install git
+```
+
+**On Windows**
+Install git for windows https://gitforwindows.org
+
+Search *git bash* on your computer and open the terminal. 
+
+Let's play.
+
+### 1.2 GitHub :
+#### Create an account
+First of all, you need to create a github account. This is where your remote git repository is stored. 
+
+#### Create a link between your account and your computer with a SSH Key :
+To make a secure link between your account and your computer, you need to generate a ssh key, and add it to your git account.
+
+**First step :** create a ssh key 
+
+```bash
+$ ssh-keygen -t rsa -b 4096 -C "my_email_github@email.com"
+$ eval $(ssh-agent -s)
+
+$ ssh-add ~/.ssh/id_rsa
+```
+You can add a password.
+
+Save the key :
+```bash
+$ clip < ~/.ssh/id_rsa.pub
+```
+And you can past this key on your gitHub account :
+
+- click on the bottom right
+- SSH and GPG keys
+- past key on the SSH emplacement
+
+Well done you can continue.
+
+**Second step : **save file from GitHub with *clone*
+```bash
+$ git clone git@github.com:StateOfTheR/finistR2019.git
+```
+
+#### Where is my project ? 
+On GitHub, the project can be :
+
+* On one of your repository : Create a new repository on github
+  
+* On an existing project in another person account : In a project, your can choose to have collaborators (settings/collaborators). To be a collaborator enable to push/pull on the project. 
+
+
+
+## 2. Basis commands on Git and GitHub 
+
+### 2.1 The different Git status
+Git is based on different status. The status is the state of the object in git. There are 4 different status : "untracked", "unmodified", "modified", "staged". 
+
+* untracked = the object is in the git file, but not tracked by git (yet). To be tacked, you need to "add" the object. The other status are tracked.
+* unmodified = tracked object, not modified since the last "add".
+* modified = tracked object, modified since the last "add".
+* staged = tracked object with the last modification commented by a commit 
+
+You can display the differences between the local file and the current commit with git status.
+```bash
+$ git status
+```
+
+### 2.2 Add a file in your repository 
+
+Add a local document named "utilisation_GitHub.Rmd" in your git repository.
+
+```bash
+$ git add utilisation_GitHub.Rmd
+```
+
+### 2.3 Commit a file in your repository 
+Create a new commit containing the current contents of the index and the given log message describing the changes. The following command is used to record what has been changed in the document :
+
+```bash
+$ git commit -m "Add my latest version of the document"
+```
+The modified file is not on the server yet. 
+
+### 2.3 Synchronizing the file with the server
+
+To upload the files from the server to your local repository, your need to have saved your work (```bash git add . ```  et ```bash git commit ```). Then, to update your local repository with what is on the remote one, the command is :
+
+```bash
+$ git pull
+```
+
+Finally, to upload your file to the server, the command is :
+
+```bash
+$ git push
+```
+
+Note that pushing/pulling your work can create some conflits with the work of other. We'll see how to manage the conflit errors in the next part.
+
+The different steps can be summarized by the figure displayed at the beginning.
+
+
+
+## 3. Conflicts 
+
+A conflict will merge when 2 users has modified the same part (at the same time) of a file. For example, user A modifies part 1. of a document, add, commits and pushes the changes and user B modifies the same part of the document, add, commits and want to push before pulling the changements of user A. A conflict will then merge and user B will not be able to push its changes. \\
+
+When user B tries to push its changes, the following will happen:  
+```{bash, eval = F}
+git add FILE.EXTENSION
+git commit -m "add changes of user B"
+git push
+```
+
+An error message will then appear:
+` ! [rejected]        master -> master (non-fast-forward)`     
+`error: failed to push some refs to 'REPOSITORY'`   
+`hint: Updates were rejected because the tip of your current branch is behind`   
+`hint: its remote counterpart. Integrate the remote changes (e.g.`   
+`hint: 'git pull ...') before pushing again.`    
+`hint: See the 'Note about fast-forwards' in 'git push --help' for details.`    
+ 
+If user B now try to do pull, the following message will appear: 
+
+```{bash, eval = F}
+git pull
+```
+ 
+
+`CONFLICT (content): Merge conflict in FILE.extension        ` 
+`Automatic merge failed; fix conflicts and then commit the result.     `    
+`(base) DIRECTORY/IN_LOCAL_COMPUTER$ git status   `        
+`On branch master`    
+`Your branch and 'origin/master' have diverged,`          
+`and have 1 and 1 different commits each, respectively.`        
+`(use "git pull" to merge the remote branch into yours)`    
+    
+To resolve the conflict the changes have to be merged, for this mergetool can be used:  
+```{bash, eval = F}
+git mergetool
+```
+  
+In the local document of user B, the conclict will now be merged and user B will see his/her own changes **and** the changes of user A. 
+   
+This will be indicated by:
+
+`<<<<<<< HEAD`   
+`my version (user B)`   
+`=======`   
+`the other version (user A)`  
+`>>>>>>> 05009543925932...`    
+
+To resolve the conflict you have to resolve it manually, descide what version (B or A) to keep, or merge them both (manually). You can now commit and push your changes and the conflict is solved.
+
+
+```{bash, eval = F}
+git add FILE.extension
+git commit -m "added changes of user B and resolved conflict with user A"
+git push
+```
+
+
+## 4. Work with several people
+
+When working together on a github project, the good use is not to push directly on the principal branch, called "master". It is linked to the management of conflicts : as it is steneous to manage conflicts (add, commit, pull, mergetools ...), the common use of git, working with several people, is to create one's own branch. Let's call it "my_branch". 
+Then, working on a github project means modifing a branch. To get the current branch, the command is :
+<!-- In GitHub you can work on different branches. The original branch is called « master ». To know on with branch you are type: -->
+
+```{bash, eval = F}
+git branch
+```
+`* master`       
+
+To create your new branch use the command:
+
+```{bash, eval = F}
+git push origin my_branch
+```
+
+To change the branch that you work on, type:
+
+```{bash, eval = F}
+git checkout my_branch
+git branch # to check the current branch == my_branch
+```
+
+Working on another branch than the master branch allows to develop the original project in to different directions or to keep the master version in the present state and still continue to develop the project in the new branches. 
+The command are the same as on master branch push, pull, add, commit, ... And you can specify on the branch you push, pull, add ... with adding the origin on your command :
+
+```{bash, eval = F}
+git pull origin my_branch
+git branch # to check the current branch
+```
+
+When your branch is good enough to be added to the main branch, you merge it into the master branch. To do so, you need to save your work : 
+```{bash, eval = F}
+git add .
+git commit -m "mon commit message"
+```
+Then, you need to go to the master branch : 
+```{bash, eval = F}
+git checkout master
+git branch # to check the current branch == master
+```
+
+Finally, with the command : 
+
+```{bash, eval = F}
+git merge my_branch
+```
+
+
+

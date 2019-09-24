@@ -1,0 +1,148 @@
+---
+title: "Grosses matrices"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+library(tictoc)
+library(dplyr)
+library(bigstatsr)
+```
+
+
+
+Comment manipuler des grandes matrices en R ? Nous avons comparé l'association vroom & bigstsr v.c. Spark
+
+vroom est très efficace pour lire des gros fichiers en R ([benchmarks](https://cran.r-project.org/web/packages/vroom/vignettes/benchmarks.html)). 
+
+bigstatr a été développer pour pouvoir effectuer certains traitements statistique efficacement sur de grosses matrices.
+
+Spark (package sparklyr) traite les grosses données en dehors de la machine locale, et redonner le résultat. Beaucoup de traitemetns statistiques sont disponibles.
+
+On a d'abord essayé sur des données netflix https://www.kaggle.com/netflix-inc/netflix-prize-data, volumineuses (plus de 100 millions de lignes au total) mais par pratiques pour l'import (le nombre de colonnes varie dans un fichier), puis avec des données de vols d'avion https://github.com/BuzzFeedNews/2016-04-federal-surveillance-planes/tree/master/data/feds (1 million de lignes).
+
+
+
+# La lecture des données
+
+## Comparaison des temps (pas spark) :
+
+- data.table 12.4s
+- bigmemory 17s
+- vroom 5s
+
+
+```{r, eval=FALSE}
+library(data.table)
+
+tic()
+data_netflix_dt <- fread("netflix-prize-data/combined_data_1.txt", sep = ",", fill = TRUE, col.names = c("id", "note", "date"), skip = 1)
+toc()
+
+```
+
+
+```{r, eval=FALSE}
+ library(bigmemory)
+tic()
+ data_netflix_bm <- read.big.matrix("netflix-prize-data/combined_data_1.txt", sep = ",",col.names = c("id", "note", "date"))
+ toc()
+```
+
+
+```{r}
+library(vroom)
+tic()
+netflix_data_vroom <- vroom("netflix-prize-data/combined_data_1.txt", delim = ",",skip=1,
+  col_names = c("id", "note", "date"))
+toc()
+```
+
+
+## Vroom permet de lire plusieurs fichiers et de les mettre ensemble.
+
+Cette liste de fichiers est celle des flights.
+
+```{r}
+# cnstruire une liste de fichiers à donner à vroom
+files <- fs::dir_ls(path = ".", glob ="*.csv")
+files
+tic()
+netf_multui <- vroom::vroom(rep(files))
+toc()
+```
+
+```{r}
+tic()
+head(netf_multui)
+toc()
+
+tic()
+dim(netf_multui)
+toc()
+```
+
+
+## type des colonnes  
+
+
+```{r}
+tic()
+str(netf_multui)
+toc()
+
+tic()
+netf_multui %>% summary()
+toc()
+```
+
+
+# Calculs stat 
+
+## avec bigstatsr
+
+bigstsr ustilise un nouveau format de données, le  Filebacked Big Matrices (FBM) qui est stocké sur la mémoire du disque dur.
+
+Ce package a été développé par un étudiant en thèse, afin de traiter ses données génomiques volumineuses. Les traitements implémentés sont ceux dont il a eu besoin adns sa thèse : régressions linéaire et logistique, svd partielle et svd partielle aléatoire.
+
+Essais sur données de flights.
+
+```{r,eval=FALSE}
+library(bigstatsr)
+require(tidyverse)
+
+# régression linéaire
+X <- netf_multui %>% select_if(is.numeric) %>% select(-year_mfr)%>% as_FBM()
+y <- netf_multui %>% pull(speed)
+tic()
+mod <- big_univLinReg(X, y)
+toc()
+
+
+tic()
+plot(mod)
+toc()
+```
+```{r}
+# SVD
+X <- netf_multui %>% select_if(is.numeric) %>% select(-year_mfr, -mfr_mdl_code) %>% as_FBM()
+tic()
+mod <- big_SVD(X, k =3)
+toc()
+attr(mod, "transfo")
+attr(mod, "predict")
+tic()
+plot(mod, type= "loadings", loadings = 1:3)
+toc()
+```
+
+# Comparaison avec Spark
+
+L'import des données flights (3 fichiers) avec spark a pris environ 20 secondes, l'estimation de la régression linaire environ 6 secondes.
+
+
+Pour conclure, la combinaison vroom & bigstatsr est beaucoup plus rapide que spark dans l'import et le traitement des données. Cependant spark permet d'effectuer une plus grande diversité de traitements statistiques que bigstatsr.

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Utilisation GitHub</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">FinistR 2019</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Accueil
+  </a>
+</li>
+<li>
+  <a href="https://github.com/StateOfTheR/finistR2019">
+    <span class="fa fa-github"></span>
+     
+    Dépôt GitHub
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-microphone"></span>
+     
+    Communication
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="i-Recosystem.html">Ecosystème R</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="c-distill_presentation.html">Distill</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../finistr2019_website/c-bookdown/_book/index.html">Bookdown en HTML</a>
+    </li>
+    <li>
+      <a href="../finistr2019_website/c-bookdown/_book/bookdown.pdf">Bookdown en PDF</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="c-tables.html">Tables</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-box-open"></span>
+     
+    Développement
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="d-utilisation_GitHub.html">Versionning</a>
+    </li>
+    <li>
+      <a href="d-mypkg.html">Création de Package</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="d-rcpp_rappels.html">Rappels de Rcpp</a>
+    </li>
+    <li>
+      <a href="d-RcppModules.html">Rcpp Modules</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../finistr2019_website/d-slides-repro/R_repro.html">Reproductibilité</a>
+    </li>
+    <li>
+      <a href="d-docker.html">Docker</a>
+    </li>
+    <li>
+      <a href="d-renv.html">Renv</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-chart-bar"></span>
+     
+    Statistiques
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="s-sparse_matrix.html">Matrices creuses</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="s-lme4-exemples-dragons.html">Modèles mixtes avec lme4</a>
+    </li>
+    <li>
+      <a href="s-julia_mixed_models.html">Modèles mixtes avec Julia depuis R</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="s-tidymodels.html">Tidymodels</a>
+    </li>
+    <li class="dropdown-header">Intégration dans Parsnip</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-wrench"></span>
+     
+    Manipulation des données
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Tidyverse</li>
+    <li>
+      <a href="m-rlang.html">Rlang</a>
+    </li>
+    <li>
+      <a href="m-spark.html">Spark</a>
+    </li>
+    <li class="dropdown-header">BigStatR</li>
+    <li class="dropdown-header">Rlang</li>
+    <li class="dropdown-header">Reticulate</li>
+    <li class="dropdown-header">future</li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Utilisation GitHub</h1>
+
+</div>
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>Git is a version management software. The idea is to save the different changements made on a projet, and create an historic of it. To do so, between two saved versions, changements will be added on git with the “add” command, and a little comment on the modification will be joint with the “commit” command as explained later.</p>
+<p>Github is a remote service, to save the different git versions. It also enable several people to work on a same project. To use it, you have to :<br />
+* create a Git hub account * make a link (ssh) between your computer and your account * create or join a repository * use the “push” and “pull” commands to share your work and get the advanced from others.</p>
+<p>To have a global idea of Git and GitHub : <img src="img/d-schema_git.png" alt="Caption for the picture." /></p>
+<p>The goal of this little course is to get the basis of this tool, and its use.</p>
+</div>
+<div id="get-started" class="section level2">
+<h2>1. Get started</h2>
+<div id="installation-of-git" class="section level3">
+<h3>1.1 Installation of git</h3>
+<p><strong>On Linux and MacOS :</strong> To use git on Linux or MacOS, you’ll need to install the software with some command like :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1">$ <span class="fu">sudo</span> apt-get update</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">$ <span class="fu">sudo</span> apt-get install git</a></code></pre></div>
+<p><strong>On Windows</strong> Install git for windows <a href="https://gitforwindows.org" class="uri">https://gitforwindows.org</a></p>
+<p>Search <em>git bash</em> on your computer and open the terminal.</p>
+<p>Let’s play.</p>
+</div>
+<div id="github" class="section level3">
+<h3>1.2 GitHub :</h3>
+<div id="create-an-account" class="section level4">
+<h4>Create an account</h4>
+<p>First of all, you need to create a github account. This is where your remote git repository is stored.</p>
+</div>
+<div id="create-a-link-between-your-account-and-your-computer-with-a-ssh-key" class="section level4">
+<h4>Create a link between your account and your computer with a SSH Key :</h4>
+<p>To make a secure link between your account and your computer, you need to generate a ssh key, and add it to your git account.</p>
+<p><strong>First step :</strong> create a ssh key</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1">$ <span class="fu">ssh-keygen</span> -t rsa -b 4096 -C <span class="st">&quot;my_email_github@email.com&quot;</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">$ <span class="bu">eval</span> <span class="va">$(</span><span class="fu">ssh-agent</span> -s<span class="va">)</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">$ <span class="fu">ssh-add</span> ~/.ssh/id_rsa</a></code></pre></div>
+<p>You can add a password.</p>
+<p>Save the key :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="ex">clip</span> <span class="op">&lt;</span> ~/.ssh/id_rsa.pub</a></code></pre></div>
+<p>And you can past this key on your gitHub account :</p>
+<ul>
+<li>click on the bottom right</li>
+<li>SSH and GPG keys</li>
+<li>past key on the SSH emplacement</li>
+</ul>
+<p>Well done you can continue.</p>
+<p><strong>Second step : </strong>save file from GitHub with <em>clone</em></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="fu">git</span> clone git@github.com:StateOfTheR/finistR2019.git</a></code></pre></div>
+</div>
+<div id="where-is-my-project" class="section level4">
+<h4>Where is my project ?</h4>
+<p>On GitHub, the project can be :</p>
+<ul>
+<li><p>On one of your repository : Create a new repository on github</p></li>
+<li><p>On an existing project in another person account : In a project, your can choose to have collaborators (settings/collaborators). To be a collaborator enable to push/pull on the project.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="basis-commands-on-git-and-github" class="section level2">
+<h2>2. Basis commands on Git and GitHub</h2>
+<div id="the-different-git-status" class="section level3">
+<h3>2.1 The different Git status</h3>
+<p>Git is based on different status. The status is the state of the object in git. There are 4 different status : “untracked”, “unmodified”, “modified”, “staged”.</p>
+<ul>
+<li>untracked = the object is in the git file, but not tracked by git (yet). To be tacked, you need to “add” the object. The other status are tracked.</li>
+<li>unmodified = tracked object, not modified since the last “add”.</li>
+<li>modified = tracked object, modified since the last “add”.</li>
+<li>staged = tracked object with the last modification commented by a commit</li>
+</ul>
+<p>You can display the differences between the local file and the current commit with git status.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">$ <span class="fu">git</span> status</a></code></pre></div>
+</div>
+<div id="add-a-file-in-your-repository" class="section level3">
+<h3>2.2 Add a file in your repository</h3>
+<p>Add a local document named “utilisation_GitHub.Rmd” in your git repository.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1">$ <span class="fu">git</span> add utilisation_GitHub.Rmd</a></code></pre></div>
+</div>
+<div id="commit-a-file-in-your-repository" class="section level3">
+<h3>2.3 Commit a file in your repository</h3>
+<p>Create a new commit containing the current contents of the index and the given log message describing the changes. The following command is used to record what has been changed in the document :</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1">$ <span class="fu">git</span> commit -m <span class="st">&quot;Add my latest version of the document&quot;</span></a></code></pre></div>
+<p>The modified file is not on the server yet.</p>
+</div>
+<div id="synchronizing-the-file-with-the-server" class="section level3">
+<h3>2.3 Synchronizing the file with the server</h3>
+<p>To upload the files from the server to your local repository, your need to have saved your work (<code>bash git add .</code> et <code>bash git commit</code>). Then, to update your local repository with what is on the remote one, the command is :</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1">$ <span class="fu">git</span> pull</a></code></pre></div>
+<p>Finally, to upload your file to the server, the command is :</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1">$ <span class="fu">git</span> push</a></code></pre></div>
+<p>Note that pushing/pulling your work can create some conflits with the work of other. We’ll see how to manage the conflit errors in the next part.</p>
+<p>The different steps can be summarized by the figure displayed at the beginning.</p>
+</div>
+</div>
+<div id="conflicts" class="section level2">
+<h2>3. Conflicts</h2>
+<p>A conflict will merge when 2 users has modified the same part (at the same time) of a file. For example, user A modifies part 1. of a document, add, commits and pushes the changes and user B modifies the same part of the document, add, commits and want to push before pulling the changements of user A. A conflict will then merge and user B will not be able to push its changes. \</p>
+<p>When user B tries to push its changes, the following will happen:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="fu">git</span> add FILE.EXTENSION</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="fu">git</span> commit -m <span class="st">&quot;add changes of user B&quot;</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="fu">git</span> push</a></code></pre></div>
+<p>An error message will then appear: <code>! [rejected]        master -&gt; master (non-fast-forward)</code><br />
+<code>error: failed to push some refs to 'REPOSITORY'</code><br />
+<code>hint: Updates were rejected because the tip of your current branch is behind</code><br />
+<code>hint: its remote counterpart. Integrate the remote changes (e.g.</code><br />
+<code>hint: 'git pull ...') before pushing again.</code><br />
+<code>hint: See the 'Note about fast-forwards' in 'git push --help' for details.</code></p>
+<p>If user B now try to do pull, the following message will appear:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="fu">git</span> pull</a></code></pre></div>
+<p><code>CONFLICT (content): Merge conflict in FILE.extension</code> <code>Automatic merge failed; fix conflicts and then commit the result.</code><br />
+<code>(base) DIRECTORY/IN_LOCAL_COMPUTER$ git status</code><br />
+<code>On branch master</code><br />
+<code>Your branch and 'origin/master' have diverged,</code><br />
+<code>and have 1 and 1 different commits each, respectively.</code><br />
+<code>(use &quot;git pull&quot; to merge the remote branch into yours)</code></p>
+<p>To resolve the conflict the changes have to be merged, for this mergetool can be used:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="fu">git</span> mergetool</a></code></pre></div>
+<p>In the local document of user B, the conclict will now be merged and user B will see his/her own changes <strong>and</strong> the changes of user A.</p>
+<p>This will be indicated by:</p>
+<p><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code><br />
+<code>my version (user B)</code><br />
+<code>=======</code><br />
+<code>the other version (user A)</code><br />
+<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; 05009543925932...</code></p>
+<p>To resolve the conflict you have to resolve it manually, descide what version (B or A) to keep, or merge them both (manually). You can now commit and push your changes and the conflict is solved.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="fu">git</span> add FILE.extension</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="fu">git</span> commit -m <span class="st">&quot;added changes of user B and resolved conflict with user A&quot;</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="fu">git</span> push</a></code></pre></div>
+</div>
+<div id="work-with-several-people" class="section level2">
+<h2>4. Work with several people</h2>
+<p>When working together on a github project, the good use is not to push directly on the principal branch, called “master”. It is linked to the management of conflicts : as it is steneous to manage conflicts (add, commit, pull, mergetools …), the common use of git, working with several people, is to create one’s own branch. Let’s call it “my_branch”. Then, working on a github project means modifing a branch. To get the current branch, the command is : <!-- In GitHub you can work on different branches. The original branch is called « master ». To know on with branch you are type: --></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="fu">git</span> branch</a></code></pre></div>
+<p><code>* master</code></p>
+<p>To create your new branch use the command:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="fu">git</span> push origin my_branch</a></code></pre></div>
+<p>To change the branch that you work on, type:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="fu">git</span> checkout my_branch</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="fu">git</span> branch <span class="co"># to check the current branch == my_branch</span></a></code></pre></div>
+<p>Working on another branch than the master branch allows to develop the original project in to different directions or to keep the master version in the present state and still continue to develop the project in the new branches. The command are the same as on master branch push, pull, add, commit, … And you can specify on the branch you push, pull, add … with adding the origin on your command :</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="fu">git</span> pull origin my_branch</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="fu">git</span> branch <span class="co"># to check the current branch</span></a></code></pre></div>
+<p>When your branch is good enough to be added to the main branch, you merge it into the master branch. To do so, you need to save your work :</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="fu">git</span> add .</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="fu">git</span> commit -m <span class="st">&quot;mon commit message&quot;</span></a></code></pre></div>
+<p>Then, you need to go to the master branch :</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="fu">git</span> checkout master</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="fu">git</span> branch <span class="co"># to check the current branch == master</span></a></code></pre></div>
+<p>Finally, with the command :</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="fu">git</span> merge my_branch</a></code></pre></div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

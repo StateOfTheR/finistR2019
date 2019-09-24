@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Pierre Gestraud" />
+
+<meta name="date" content="2019-09-12" />
+
+<title>renv</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">FinistR 2019</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Accueil
+  </a>
+</li>
+<li>
+  <a href="https://github.com/StateOfTheR/finistR2019">
+    <span class="fa fa-github"></span>
+     
+    Dépôt GitHub
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-microphone"></span>
+     
+    Communication
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="i-Recosystem.html">Ecosystème R</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="c-distill_presentation.html">Distill</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../finistr2019_website/c-bookdown/_book/index.html">Bookdown en HTML</a>
+    </li>
+    <li>
+      <a href="../finistr2019_website/c-bookdown/_book/bookdown.pdf">Bookdown en PDF</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="c-tables.html">Tables</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-box-open"></span>
+     
+    Développement
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="d-utilisation_GitHub.html">Versionning</a>
+    </li>
+    <li>
+      <a href="d-mypkg.html">Création de Package</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="d-rcpp_rappels.html">Rappels de Rcpp</a>
+    </li>
+    <li>
+      <a href="d-RcppModules.html">Rcpp Modules</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../finistr2019_website/d-slides-repro/R_repro.html">Reproductibilité</a>
+    </li>
+    <li>
+      <a href="d-docker.html">Docker</a>
+    </li>
+    <li>
+      <a href="d-renv.html">Renv</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-chart-bar"></span>
+     
+    Statistiques
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="s-sparse_matrix.html">Matrices creuses</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="s-lme4-exemples-dragons.html">Modèles mixtes avec lme4</a>
+    </li>
+    <li>
+      <a href="s-julia_mixed_models.html">Modèles mixtes avec Julia depuis R</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="s-tidymodels.html">Tidymodels</a>
+    </li>
+    <li class="dropdown-header">Intégration dans Parsnip</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-wrench"></span>
+     
+    Manipulation des données
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Tidyverse</li>
+    <li>
+      <a href="m-rlang.html">Rlang</a>
+    </li>
+    <li>
+      <a href="m-spark.html">Spark</a>
+    </li>
+    <li class="dropdown-header">BigStatR</li>
+    <li class="dropdown-header">Rlang</li>
+    <li class="dropdown-header">Reticulate</li>
+    <li class="dropdown-header">future</li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">renv</h1>
+<h4 class="author">Pierre Gestraud</h4>
+<h4 class="date">2019-09-12</h4>
+
+</div>
+
+
+<p><code>renv</code> is a package to manage locally packages library by projet. <code>renv</code> is:</p>
+<ul>
+<li><p><strong>Isolated</strong>: Installing a new or updated package for one project won’t break your other projects, and vice versa. That’s because renv gives each project its own private package library.</p></li>
+<li><p><strong>Portable</strong>: Easily transport your projects from one computer to another, even across different platforms. renv makes it easy to install the packages your project depends on.</p></li>
+<li><p><strong>Reproducible</strong>: renv records the exact package versions you depend on, and ensures those exact versions are the ones that get installed wherever you go.</p></li>
+</ul>
+<p><a href="https://rstudio.github.io/renv/index.html" class="uri">https://rstudio.github.io/renv/index.html</a></p>
+<div id="workflow" class="section level1">
+<h1>Workflow</h1>
+<p>The general workflow for renv is:</p>
+<ol style="list-style-type: decimal">
+<li><p>Initialise the project with <code>renv::init</code>. It creates a new <em>renv</em> directory inside the project and a <em>.Rprofile</em> to activate renv when is launched. A the begining this library contains only base packages.</p></li>
+<li><p>Work as usual, installing and removing packages as needed.</p></li>
+<li><p>Call <code>renv::restore()</code> to save the state of the current library environment. This populate the <em>renv.lock</em> file with the version and source of each package.</p></li>
+</ol>
+</div>
+<div id="reproduce-the-environment" class="section level1">
+<h1>Reproduce the environment</h1>
+<p>To reproduce the environment (re-installing the same packages) we only need to keep the <em>renv.lock</em> file. The function <code>renv::restore()</code> will restore the state from this lockfile.</p>
+</div>
+<div id="cache" class="section level1">
+<h1>Cache</h1>
+<p>By default, renv installs package in a cache (location varies according to OS) and then only create links from this cache to the project library.</p>
+<p>Cache location:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Platform</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Linux</td>
+<td><code>~/.local/share/renv</code></td>
+</tr>
+<tr class="even">
+<td>macOS</td>
+<td><code>~/Library/Application Support/renv</code></td>
+</tr>
+<tr class="odd">
+<td>Windows</td>
+<td><code>%LOCALAPPDATA%/renv</code></td>
+</tr>
+</tbody>
+</table>
+<p>The cache can be shared accross users.</p>
+</div>
+<div id="python-support" class="section level1">
+<h1>Python support</h1>
+<p>python is supported through <code>reticulate</code> and the creation of a virtual env.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

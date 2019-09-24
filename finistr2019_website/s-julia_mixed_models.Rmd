@@ -1,0 +1,82 @@
+---
+title: "Utilisation du package Julia MixedModels depuis R"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      cache = TRUE)
+```
+
+Antoine Jardin, dans un [post](http://osc.cnrs.fr/RT20/2015/local/documents/S4_Jardin.html) 
+de 2015, compare les performances du package R `lme4` et 
+[MixedModels](https://github.com/dmbates/MixedModels) écrit en Julia.
+La version Julia peut être plus beaucoup rapide.
+
+Douglas Bates, ancien développeur de lme4, et créateur du  
+package Julia MixedModels montre dans ce [post](https://rpubs.com/dmbates/377897) 
+comment appeler ce package depuis R.
+
+Pour apprendre à utiliser MixedModels il y a la [documentation](https://dmbates.github.io/MixedModels.jl/stable/)
+et [une collection de notebooks](https://github.com/dmbates/MixedModelsinJulia) très détaillés.
+
+Pour exécuter la suite vous devez installer [Julia](https://julialang.org/downloads/).
+
+## Bibliothèque `lme4` pour les modèles mixtes en R
+
+```{r package}
+library(lme4)
+```
+
+## Données sur les rats fournies par Pierre Barbillon
+
+```{r data}
+don <- read.table("data/gdpcumjour.csv", dec = ",", sep = ";", header = TRUE)
+
+don$tpsF <- as.factor(don$tps)
+don$bbF <- as.factor(don$bb)
+don$tpsN <- as.numeric(don$tpsF)
+don$mereF <- as.factor(don$mere)
+```
+
+```{r computemixedmodel}
+system.time(model <- lmer(gdp ~ tpsF * gest * ps + (1 | bbF), data = don))
+```
+
+```{r summary}
+summary(model)
+```
+
+## Démarrer la session julia
+
+Cette étape nécessite d'avoir installé Julia sur son système et d'avoir spécifié `JULIA_HOME` dans le `.Renviron`. Il faut également installer les packages `Rcall` et `MixedModels` dans Julia (comme indiqué sur la cette [page](https://rpubs.com/dmbates/377897)). Parfois il faut également exécuter la commande `Pkg.build("Arpack")` dans Julia.
+
+
+```{r calljulia}
+library(JuliaCall)
+jl <- julia_setup() 
+```
+
+## Transférer les données et la formule du modèle vers la session Julia 
+
+```{r transfer}
+jl$assign("form", formula(model))
+jl$assign("don", don)
+```
+
+## Chargement du package MixedModels
+
+```{r juliapackage}
+# julia_install_package("MixedModels")
+jl$library("MixedModels")
+```
+
+## Exécuter la fonction julia
+
+```{r fitjulia}
+jl$eval("@elapsed fm = fit(LinearMixedModel, form, don)")
+```
+
+```{r results}
+jl$eval("fm")
+```

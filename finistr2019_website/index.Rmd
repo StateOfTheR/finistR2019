@@ -8,7 +8,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
 library(tidyverse)
 library(DT)
 ```
@@ -16,13 +16,45 @@ library(DT)
 ## Où ? Quand ?
 
 
-La station biologique de Roscoff accueillera la troisième édition du R Bootcamp  du groupe  [State Of The R](https://stateofther.github.io/) **du 26 août  au 30 août 2019**.
+La station biologique de Roscoff a accueilli  la troisième édition du R Bootcamp  du groupe  [State Of The R](https://stateofther.github.io/) **du 26 août  au 30 août 2019**.
 
 <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m11!1m3!1d863.0230997053625!2d-3.987533179360306!3d48.72647094495075!2m2!1f0!2f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4813e153cbdda967%3A0x6cd2956ee2bb8cfb!2sStation+Biologique+de+Roscoff!5e1!3m2!1sfr!2sfr!4v1557410926937!5m2!1sfr!2sfr" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
 
-## Quoi ?
 
-Cette semaine sera consacrée à l'approfondissement de diverses thématiques (méthodologiques, techniques) autour du logiciel `R`: ce site proposera un compte rendu des différents thèmes abordés. Les participants collaborent tous au contenu de ce site lors d'ateliers organisés en petits groupes.
+## Qui
+
+![Équipe finistR2019](img/finistr_team_2019.jpeg)
+
+### 1er rang
+
+- [Timothée Tabouy](https://tabouyt.github.io/) (UMR MIA Paris)
+- [Marie Perrot](https://www6.inra.fr/mia-paris/Equipes/Membres/Marie-Perrot-Dockes) (UMR MIA Paris)
+- [Mathieu Carmassi](https://mathieucarmassi.github.io/) (UMR MIA Paris - EDF)
+
+### 2ème rang
+
+- [Félix Cheysson](Félix Cheysson • Research - Institut Pasteur) (UMR MIA Paris)
+- [Antoine Bichat](https://github.com/abichat) (UMR Maiage - INRA)
+- [Marie-Pierre Étienne](https://marieetienne.github.io/) (IRMAR - Agrocampus Ouest)
+- [Sophie Donnet](https://www6.inra.fr/mia-paris/Equipes/Membres/Sophie-Donnet) (UMR MIA Paris - INRA), 
+- [Julie Aubert](https://www6.inra.fr/mia-paris/Equipes/Membres/Julie-Aubert) (UMR MIA Paris - INRA), 
+- [Marie Morvan](https://irmar.univ-rennes1.fr/interlocuteurs/marie-morvan) (IRMAR - Université de Rennes 1), 
+- [Marine Marjou](https://informatique-mia.inra.fr/biosp/homepage-marine-marjou) (UMR BioSP - INRA), 
+- [Claire Gayral](http://pbil.univ-lyon1.fr/members/cgayral) (UMR CNRS 5558 - LBBE), 
+
+
+### 3ème rang
+
+- [Gabriel Lang](https://www6.inra.fr/mia-paris/Equipes/Membres/Gabriel-Lang) (UMR MIA Paris - Agroparistech)
+- [Pierre Barbillon](https://www6.inra.fr/mia-paris/Equipes/Membres/Pierre-Barbillon) (UMR MIA Paris - Agroparistech)
+- [Pierre Gestraud](https://science.curie.fr/members/pierre-gestraud/) (Institut Curie)
+- [Pierre Gloaguen](https://papayoun.github.io/) (UMR MIA Paris - Agroparistech)
+- [Pierre Navaro](https://irmar.univ-rennes1.fr/interlocuteurs/pierre-navaro) (IRMAR - CNRS)
+
+
+## Quoi
+
+Cette semaine a été consacrée à l'approfondissement de diverses thématiques (méthodologiques, techniques) autour du logiciel `R`: ce site proposera un compte rendu des différents thèmes abordés. Les participants collaborent tous au contenu de ce site lors d'ateliers organisés en petits groupes.
 
 Le compte rendu des éditions précédentes sont disponibles 
 
@@ -30,19 +62,19 @@ Le compte rendu des éditions précédentes sont disponibles
   - [Finist'R 2017](https://stateofther.github.io/finistR2017/)
 
 
-```{r}
-participants <- read_csv("ListeParticipants_feuille3.csv", col_types = "cccc")
-```
+<!-- ```{r} -->
+<!-- participants <- read_csv("ListeParticipants_feuille3.csv", col_types = "cccc") -->
+<!-- ``` -->
 
-## Participants 
+<!-- ## Participants  -->
 
-L'atelier Finist'R 2019 se tient à la Station Biologique de Roscoff du 26 au 30 août 2018. Les participants sont
+<!-- L'atelier Finist'R 2019 se tient à la Station Biologique de Roscoff du 26 au 30 août 2018. Les participants sont -->
 
-```{r}
-datatable(participants, options = list(pageLength = 17, dom = "t"))
-```
+<!-- ```{r} -->
+<!-- datatable(participants, options = list(pageLength = 17, dom = "t")) -->
+<!-- ``` -->
 
-
+## Programme 
 
 Le programme proposé est le suivant
 
@@ -83,7 +115,6 @@ prog %>%
 Les séquences en vert correspondent à des séances d'atelier en sous groupes. Les séquences en orange correspondent à un panorama du sujet indiqué, tandis que les séquences en bleu correspondent à des temps de réflexion et rédaction sur le rendu final.
 
 
-## Programme 
 
 ### Atelier 1 : Distill, communication et diffusion avec R
 

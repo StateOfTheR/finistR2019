@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Navaro Pierre, Sophie Donnet, Pierre Barbillon, Martina Sundqvist, Timothée Tabouy" />
+
+
+<title>Spark</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">FinistR 2019</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Accueil
+  </a>
+</li>
+<li>
+  <a href="https://github.com/StateOfTheR/finistR2019">
+    <span class="fa fa-github"></span>
+     
+    Dépôt GitHub
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-microphone"></span>
+     
+    Communication
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="i-Recosystem.html">Ecosystème R</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="c-distill_presentation.html">Distill</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../finistr2019_website/c-bookdown/_book/index.html">Bookdown en HTML</a>
+    </li>
+    <li>
+      <a href="../finistr2019_website/c-bookdown/_book/bookdown.pdf">Bookdown en PDF</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="c-tables.html">Tables</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-box-open"></span>
+     
+    Développement
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="d-utilisation_GitHub.html">Versionning</a>
+    </li>
+    <li>
+      <a href="d-mypkg.html">Création de Package</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="d-rcpp_rappels.html">Rappels de Rcpp</a>
+    </li>
+    <li>
+      <a href="d-RcppModules.html">Rcpp Modules</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../finistr2019_website/d-slides-repro/R_repro.html">Reproductibilité</a>
+    </li>
+    <li>
+      <a href="d-docker.html">Docker</a>
+    </li>
+    <li>
+      <a href="d-renv.html">Renv</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-chart-bar"></span>
+     
+    Statistiques
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="s-sparse_matrix.html">Matrices creuses</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="s-lme4-exemples-dragons.html">Modèles mixtes avec lme4</a>
+    </li>
+    <li>
+      <a href="s-julia_mixed_models.html">Modèles mixtes avec Julia depuis R</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="s-tidymodels.html">Tidymodels</a>
+    </li>
+    <li class="dropdown-header">Intégration dans Parsnip</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-wrench"></span>
+     
+    Manipulation des données
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Tidyverse</li>
+    <li>
+      <a href="m-rlang.html">Rlang</a>
+    </li>
+    <li>
+      <a href="m-spark.html">Spark</a>
+    </li>
+    <li class="dropdown-header">BigStatR</li>
+    <li class="dropdown-header">Rlang</li>
+    <li class="dropdown-header">Reticulate</li>
+    <li class="dropdown-header">future</li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Spark</h1>
+<h4 class="author">Navaro Pierre, Sophie Donnet, Pierre Barbillon, Martina Sundqvist, Timothée Tabouy</h4>
+<h4 class="date">28/08/2019</h4>
+
+</div>
+
+
+<p>Spark offre la possibilité de travailler <em>à distance</em> sur un jeu de données sans l’importer dans l’environnement <code>R</code>. Ce jeu de données peut être réparti sur plusieurs coeurs de notre machine, ou bien se trouver sur des clusters à distance. Deux solutions permettent d’utiliser Spark sous R.</p>
+<pre><code>- Sparklyr est un package développé par Rstudio
+- SparkR est un pacakge développé par Spark. </code></pre>
+<p>Nous présentons l’utilisation des deux packages (<code>Sparklyr</code> d’abord puis <code>SparkR</code>).</p>
+<div id="sparklyr" class="section level1">
+<h1>Sparklyr</h1>
+<p>R studio gère entièrement l’installation de spark (librairie qui permet de gérer des taches) et sparklyr (package R qui permet d’utiliser un cluster spark). Pour ceci il suffit d’aller dans Connections -&gt; new Connection -&gt; spark. Une fois ceci fait on crée un cluster spark (local si on travaille sur notre propre machine, en changeant l’option master il peut ne pas être local). En local, il crée une collection parallèle en découpant les données sur un certain nombre de coeurs (par défaut tous les coeurs de la machine). Les intructions <em>presse-boutons</em> fournies ci-dessous correspondent aux instructions <code>R</code> suivantes:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(sparklyr)</a></code></pre></div>
+<pre><code>FALSE 
+FALSE Attaching package: &#39;sparklyr&#39;</code></pre>
+<pre><code>FALSE The following object is masked from &#39;package:purrr&#39;:
+FALSE 
+FALSE     invoke</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">sc &lt;-<span class="st"> </span><span class="kw">spark_connect</span>(<span class="dt">master =</span> <span class="st">&quot;local&quot;</span>)</a></code></pre></div>
+<p>Il est possible de spécifier le nombre de coeurs en utilisant la commande suivante:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">sc &lt;-<span class="st"> </span><span class="kw">spark_connect</span>(<span class="dt">master =</span> <span class="st">&quot;local[4]&quot;</span>)</a></code></pre></div>
+<p>pour 4 coeurs.</p>
+<p>Si les données sont sur un serveur, on y accède en remplaçant local par l’adresse du serveur.</p>
+<p>En cliquant sur l’onglet Spark on a accès automatiquement à une interface web qui contient toutes les taches effectuées sur le cluster spark. Cette feuille peut-être partagé, si les données sont sur un cluster, entre plusieurs personnes.</p>
+<p><em>Remarque</em> : il existe un tutoriel ici <a href="https://spark.rstudio.com/" class="uri">https://spark.rstudio.com/</a>, nous l’avons suivi en commençant à la section “Using dplyr” car spark et sparklyr ont été installé par la manipulation précédente.</p>
+<p>L’intérêt d’utiliser le serveur spark est d’avoir accès à des fonctions parallélisées et puissantes pour gérer les grosses données.</p>
+<p>Sont mis à disposition les fonctions du package dplyr, on peut aussi exécuter des requêtes SQL, faire du machine learning avec sparklyr (voir <a href="https://spark.rstudio.com/mlib/" class="uri">https://spark.rstudio.com/mlib/</a> pour une liste complète des fonctions à disposition).</p>
+<div id="remarque-sous-mac" class="section level4">
+<h4>Remarque sous Mac</h4>
+<p>Spark utilise la version 8 de Java. Si Java n’est pas installé sur votre Mac ou la version n’est pas la 8, les commandes à taper dans le terminal (console linux, terminal mac) pour installer la version 8 de Java :</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># desinstaller java</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">brew cask remove java</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># reinstaller java version 8.0</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">brew cask install homebrew<span class="op">/</span>cask<span class="op">-</span>versions<span class="op">/</span>adoptopenjdk8</a></code></pre></div>
+<p>Puis dans la console R :</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">Sys.setenv</span>(<span class="dt">JAVA_HOME =</span> <span class="st">&quot;/path/to/java/installation&quot;</span>)</a></code></pre></div>
+<p>Pour installer java 8 sur Ubuntu</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">sudo apt install openjdk<span class="dv">-8</span><span class="op">-</span>jdk</a></code></pre></div>
+</div>
+<div id="les-donnees-avec-spark" class="section level2">
+<h2>Les données avec Spark</h2>
+<p>L’objet <code>sc</code> est en gros l’adresse du cluster spark. C’est un objet de type <code>list</code>.</p>
+<p>On va maintenant chercher à envoyer des données vers le serveur. Pour notre cas, nous allons utiliser des données contenues dans les packages suivants:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co">########### packages de données</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;nycflights13&quot;</span>)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;Lahman&quot;</span>)</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="kw">library</span>(dplyr)</a></code></pre></div>
+<p>Pour les envoyer dans le <code>sc</code>, nous utilisons la commande <code>copy_to</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">iris_tbl &lt;-<span class="st"> </span><span class="kw">copy_to</span>(sc, iris) <span class="co"># on copie les données </span></a></code></pre></div>
+<p>Les données <code>iris</code>n’apparaissent pas dans l’environnement Rstudio. L’objet <code>iris_tbl</code> est une liste contenant <em>en gros</em> l’adresse des données sur le sc.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">names</span>(iris_tbl)</a></code></pre></div>
+<pre><code>## [1] &quot;src&quot; &quot;ops&quot;</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">iris_tbl<span class="op">$</span>src</a></code></pre></div>
+<pre><code>## spark connection master=local[16] app=sparklyr local=TRUE</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">iris_tbl<span class="op">$</span>ops</a></code></pre></div>
+<pre><code>## From: iris
+## &lt;Table: iris&gt;</code></pre>
+<p>On peut afficher les données. On obtient alors un aperçu de la table dans lequel il est spécifié que c’est un objet spark.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">iris_tbl</a></code></pre></div>
+<pre><code>## # Source: spark&lt;iris&gt; [?? x 5]
+##    Sepal_Length Sepal_Width Petal_Length Petal_Width Species
+##           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;  
+##  1          5.1         3.5          1.4         0.2 setosa 
+##  2          4.9         3            1.4         0.2 setosa 
+##  3          4.7         3.2          1.3         0.2 setosa 
+##  4          4.6         3.1          1.5         0.2 setosa 
+##  5          5           3.6          1.4         0.2 setosa 
+##  6          5.4         3.9          1.7         0.4 setosa 
+##  7          4.6         3.4          1.4         0.3 setosa 
+##  8          5           3.4          1.5         0.2 setosa 
+##  9          4.4         2.9          1.4         0.2 setosa 
+## 10          4.9         3.1          1.5         0.1 setosa 
+## # … with more rows</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">flights_tbl &lt;-<span class="st"> </span><span class="kw">copy_to</span>(sc, nycflights13<span class="op">::</span>flights, <span class="st">&quot;flights&quot;</span>) </a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">batting_tbl &lt;-<span class="st"> </span><span class="kw">copy_to</span>(sc, Lahman<span class="op">::</span>Batting, <span class="st">&quot;batting&quot;</span>)</a></code></pre></div>
+<p>Il est aussi possible d’envoyer sur <code>sc</code> des données contenues dans un fichier (par exemple <code>.csv</code>) sans qu’elles ne passent dans l’envrionnement <code>Rstudio</code>. A l’inverse, il est possible d’écrire des données du Spark dans un fichier type <code>.csv</code>.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">temp_csv &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">spark_write_csv</span>(iris_tbl, temp_csv)</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">iris_csv_tbl &lt;-<span class="st"> </span><span class="kw">spark_read_csv</span>(sc, <span class="st">&quot;iris_csv&quot;</span>, temp_csv)</a></code></pre></div>
+<p>Enfin il est possible d’importer dans un seul objet une base de données découpée en plusieurs fichiers (car trop lourde). Pour cela il faut donner un dossier.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">feds_tbl &lt;-<span class="st"> </span><span class="kw">spark_read_csv</span>(sc, <span class="dt">name =</span> <span class="st">&quot;feds&quot;</span>, <span class="dt">path =</span> <span class="st">&#39;/feds/feds*.csv&#39;</span>)</a></code></pre></div>
+<p>On obtient la liste des données dans le <code>sc</code> avec la commande suivante:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">src_tbls</span>(sc) <span class="co"># liste les objects sur sc. </span></a></code></pre></div>
+<pre><code>## [1] &quot;batting&quot;  &quot;flights&quot;  &quot;iris&quot;     &quot;iris_csv&quot;</code></pre>
+</div>
+<div id="manipulation-des-donnees-sous-spark-avec-sparklyr" class="section level2">
+<h2>Manipulation des données sous Spark avec sparklyr</h2>
+<p>Une fois les données sur le Spark, on utilise la fonction de <code>dplyr</code> de la même façon. Toutes les opérations se font sur les clusters (en parallèle). Aucun objet n’apparaît dans l’environnement Rstudio.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="co"># flights_tbl %&gt;% filter(dep_delay == 2)</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">flights_tbl <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(tailnum) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">count =</span> <span class="kw">n</span>(), <span class="dt">dist =</span> <span class="kw">mean</span>(distance), <span class="dt">delay =</span> <span class="kw">mean</span>(arr_delay)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(count <span class="op">&gt;</span><span class="st"> </span><span class="dv">20</span>, dist <span class="op">&lt;</span><span class="st"> </span><span class="dv">2000</span>, <span class="op">!</span><span class="kw">is.na</span>(delay)) </a></code></pre></div>
+<pre><code>## # Source: spark&lt;?&gt; [?? x 4]
+##    tailnum count  dist delay
+##    &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 N318NB    202  814. -1.12
+##  2 N4WRAA     21 1010.  2.32
+##  3 N12540    225  481. 19.7 
+##  4 N820UA    133 1166. -1.69
+##  5 N17139     91 1548. -2.90
+##  6 N5EXAA    109 1298. -8.03
+##  7 N346JB    314  482. 14.8 
+##  8 N900DE    105  933. 18.7 
+##  9 N586UA     67 1734.  9.35
+## 10 N565JB    267 1337. 12.1 
+## # … with more rows</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">ls</span>()</a></code></pre></div>
+<pre><code>##  [1] &quot;activites&quot;    &quot;batting_tbl&quot;  &quot;color_used&quot;   &quot;flex_gtcars&quot; 
+##  [5] &quot;flights_tbl&quot;  &quot;gtcars&quot;       &quot;iris_csv_tbl&quot; &quot;iris_tbl&quot;    
+##  [9] &quot;max_by&quot;       &quot;prog&quot;         &quot;rw_test&quot;      &quot;sc&quot;          
+## [13] &quot;simulated_rw&quot; &quot;tab&quot;          &quot;temp_csv&quot;</code></pre>
+<p>Remarque : Si une erreur apparaît mentionnant la fonction switch_lang, il faut sans doute mettre à jour les packages <code>dplyr</code> et <code>dbplyr</code>, puis redémarrer R.</p>
+<p>Si on veut avoir des objets dans R, il faut faire utiliser <code>collect</code>.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">delay &lt;-<span class="st"> </span>flights_tbl <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(tailnum) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">count =</span> <span class="kw">n</span>(), <span class="dt">dist =</span> <span class="kw">mean</span>(distance), <span class="dt">delay =</span> <span class="kw">mean</span>(arr_delay)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb29-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(count <span class="op">&gt;</span><span class="st"> </span><span class="dv">20</span>, dist <span class="op">&lt;</span><span class="st"> </span><span class="dv">2000</span>, <span class="op">!</span><span class="kw">is.na</span>(delay)) <span class="op">%&gt;%</span><span class="st"> </span>collect</a></code></pre></div>
+<p><code>delay</code> apparaît dans l’environnement. On peut maintenant faire des graphes.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">ggplot</span>(delay, <span class="kw">aes</span>(dist, delay)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size =</span> count), <span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb30-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_smooth</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb30-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_size_area</span>(<span class="dt">max_size =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="m-spark_files/figure-html/plot-1.png" width="672" /></p>
+<p>Afin de créer une nouvelle colonne on utilise</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">mutate</span>(flights, <span class="dt">speed =</span> distance <span class="op">/</span><span class="st"> </span>air_time <span class="op">*</span><span class="st"> </span><span class="dv">60</span>)</a></code></pre></div>
+<pre><code>## # A tibble: 336,776 x 20
+##     year month   day dep_time sched_dep_time dep_delay arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
+##  1  2013     1     1      517            515         2      830
+##  2  2013     1     1      533            529         4      850
+##  3  2013     1     1      542            540         2      923
+##  4  2013     1     1      544            545        -1     1004
+##  5  2013     1     1      554            600        -6      812
+##  6  2013     1     1      554            558        -4      740
+##  7  2013     1     1      555            600        -5      913
+##  8  2013     1     1      557            600        -3      709
+##  9  2013     1     1      557            600        -3      838
+## 10  2013     1     1      558            600        -2      753
+## # … with 336,766 more rows, and 13 more variables: sched_arr_time &lt;int&gt;,
+## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
+## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
+## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, speed &lt;dbl&gt;</code></pre>
+</div>
+<div id="machine-learning-sous-spark." class="section level2">
+<h2>Machine Learning sous Spark.</h2>
+<p>Beaucoup de méthodes de machine Leanring sont codées pour spark. Elles sont listées ici <a href="https://spark.rstudio.com/mlib/">https://spark.rstudio.com/mlib/</a>.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">mtcars_tbl &lt;-<span class="st"> </span><span class="kw">copy_to</span>(sc, mtcars)</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="co"># transform our data set, and then partition into &#39;training&#39;, &#39;test&#39;</span></a>
+<a class="sourceLine" id="cb34-3" data-line-number="3">partitions &lt;-<span class="st"> </span>mtcars_tbl <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(hp <span class="op">&gt;=</span><span class="st"> </span><span class="dv">100</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cyl8 =</span> cyl <span class="op">==</span><span class="st"> </span><span class="dv">8</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-6" data-line-number="6"><span class="st">  </span><span class="kw">sdf_random_split</span>(<span class="dt">training =</span> <span class="fl">0.5</span>, <span class="dt">test =</span> <span class="fl">0.5</span>, <span class="dt">seed =</span> <span class="dv">1099</span>)</a></code></pre></div>
+<p>Tout est dans <code>sc</code> tant qu’on n’a pas utilisé <code>collect</code>.<br />
+On ajuste maintenant un modèle linéaire sur le Spark. Les fonctions s’appellent <code>ml_***</code>.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">fit &lt;-<span class="st"> </span>partitions<span class="op">$</span>training <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb35-2" data-line-number="2"><span class="st">  </span><span class="kw">ml_linear_regression</span>(<span class="dt">response =</span> <span class="st">&quot;mpg&quot;</span>, <span class="dt">features =</span> <span class="kw">c</span>(<span class="st">&quot;wt&quot;</span>, <span class="st">&quot;cyl&quot;</span>))</a>
+<a class="sourceLine" id="cb35-3" data-line-number="3">fit</a></code></pre></div>
+<pre><code>## Formula: mpg ~ wt + cyl
+## 
+## Coefficients:
+## (Intercept)          wt         cyl 
+##   33.499452   -2.818463   -0.923187</code></pre>
+<p><code>fit</code> est un objet dans l’environnement de R. Les objets légers (estimation..) sont bien dans l’environnement. Par contre les choses lourdes (prédiction, données) restent sur <code>sc</code>.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">summary</span>(fit)</a></code></pre></div>
+<pre><code>## Deviance Residuals:
+##    Min     1Q Median     3Q    Max 
+## -1.752 -1.134 -0.499  1.296  2.282 
+## 
+## Coefficients:
+## (Intercept)          wt         cyl 
+##   33.499452   -2.818463   -0.923187 
+## 
+## R-Squared: 0.8274
+## Root Mean Squared Error: 1.422</code></pre>
+<p>Pour avoir accès aux prédictions, on doit utiliser :</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">pred =<span class="st"> </span><span class="kw">ml_predict</span>(fit,partitions<span class="op">$</span>test)</a>
+<a class="sourceLine" id="cb39-2" data-line-number="2"><span class="kw">collect</span>(<span class="kw">select</span>(pred,prediction))</a></code></pre></div>
+<pre><code>## # A tibble: 15 x 1
+##    prediction
+##         &lt;dbl&gt;
+##  1       11.3
+##  2       15.3
+##  3       11.0
+##  4       15.5
+##  5       16.4
+##  6       16.2
+##  7       15.6
+##  8       18.3
+##  9       18.2
+## 10       18.3
+## 11       15.3
+## 12       20.2
+## 13       20.6
+## 14       18.9
+## 15       25.5</code></pre>
+</div>
+</div>
+<div id="sparkr" class="section level1">
+<h1>SparkR</h1>
+<p>** A compléter par Pierre Navaro????**</p>
+<p>SparkR est une autre package pour utiliser la bibliothèque Apache Spark. Pour lancer le cluster, il faut utiliser la commande</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">library</span>(SparkR, <span class="dt">lib.loc =</span> <span class="kw">c</span>(<span class="kw">file.path</span>(<span class="kw">Sys.getenv</span>(<span class="st">&quot;SPARK_HOME&quot;</span>), <span class="st">&quot;R&quot;</span>, <span class="st">&quot;lib&quot;</span>)))</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2"><span class="kw">sparkR.session</span>(<span class="dt">master =</span> <span class="st">&quot;local[*]&quot;</span>, <span class="dt">sparkConfig =</span> <span class="kw">list</span>(<span class="dt">spark.driver.memory =</span> <span class="st">&quot;2g&quot;</span>))</a></code></pre></div>
+<p><code>SPARK_HOME</code> est une variable d’environement qui désigne le lieu d’installation de la bibliothèque Spark.</p>
+<div id="dataframe-sparkr" class="section level2">
+<h2>DataFrame SparkR</h2>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">df &lt;-<span class="st"> </span><span class="kw">as.DataFrame</span>(faithful)</a>
+<a class="sourceLine" id="cb42-2" data-line-number="2">waiting_counts &lt;-<span class="st"> </span><span class="kw">summarize</span>(<span class="kw">groupBy</span>(df, df<span class="op">$</span>waiting), <span class="dt">count =</span> <span class="kw">n</span>(df<span class="op">$</span>waiting))</a>
+<a class="sourceLine" id="cb42-3" data-line-number="3"><span class="kw">head</span>(<span class="kw">arrange</span>(waiting_counts, <span class="kw">desc</span>(waiting_counts<span class="op">$</span>count)))</a></code></pre></div>
+</div>
+<div id="exemple-de-modele-de-regression-avec-mlib" class="section level2">
+<h2>Exemple de modèle de régression avec MLib</h2>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">data.path &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">Sys.getenv</span>(<span class="st">&quot;SPARK_HOME&quot;</span>), <span class="st">&quot;data&quot;</span>, <span class="st">&quot;mllib&quot;</span>,<span class="st">&quot;sample_multiclass_classification_data.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb43-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb43-3" data-line-number="3">training &lt;-<span class="st"> </span><span class="kw">read.df</span>(data.path, <span class="dt">source =</span> <span class="st">&quot;libsvm&quot;</span>)</a>
+<a class="sourceLine" id="cb43-4" data-line-number="4"><span class="co"># Fit a generalized linear model of family &quot;gaussian&quot; with spark.glm</span></a>
+<a class="sourceLine" id="cb43-5" data-line-number="5">df_list &lt;-<span class="st"> </span><span class="kw">randomSplit</span>(training, <span class="kw">c</span>(<span class="dv">7</span>, <span class="dv">3</span>), <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb43-6" data-line-number="6">gaussianDF &lt;-<span class="st"> </span>df_list[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb43-7" data-line-number="7">gaussianTestDF &lt;-<span class="st"> </span>df_list[[<span class="dv">2</span>]]</a>
+<a class="sourceLine" id="cb43-8" data-line-number="8">gaussianGLM &lt;-<span class="st"> </span><span class="kw">spark.glm</span>(gaussianDF, label <span class="op">~</span><span class="st"> </span>features, <span class="dt">family =</span> <span class="st">&quot;gaussian&quot;</span>)</a>
+<a class="sourceLine" id="cb43-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb43-10" data-line-number="10"><span class="co"># Model summary</span></a>
+<a class="sourceLine" id="cb43-11" data-line-number="11"><span class="kw">summary</span>(gaussianGLM)</a>
+<a class="sourceLine" id="cb43-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb43-13" data-line-number="13"><span class="co"># Prediction</span></a>
+<a class="sourceLine" id="cb43-14" data-line-number="14">gaussianPredictions &lt;-<span class="st"> </span><span class="kw">predict</span>(gaussianGLM, gaussianTestDF)</a>
+<a class="sourceLine" id="cb43-15" data-line-number="15"><span class="kw">head</span>(gaussianPredictions)</a></code></pre></div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

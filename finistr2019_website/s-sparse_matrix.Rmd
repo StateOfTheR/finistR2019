@@ -1,0 +1,166 @@
+---
+title: "Utilisation des matrices creuses"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# 1. Qu'est ce que c'est ?
+
+Les matrices creuses ou *sparse matrix* sont des matrices qui contiennent beaucoup de zéros (ex : matrice d'adjacence, matrice diagonale...). Ces matrices peuvent prendre beaucoup de place et il est donc judicieux d'utiliser des fonctions spéciales pour ce genre de matrice afin de les rendre plus *légères* : les valeurs nulles vont être remplacées par un point `.`.
+
+# 2. Utilisation des matrices creuses
+
+## 2.1 Avec le package `Matrix`
+
+```{r}
+library(Matrix)
+```
+
+
+```{r}
+m1 <- matrix(0, nrow = 1000, ncol = 1000)
+m2 <- Matrix(0, nrow = 1000, ncol = 1000, sparse = TRUE)
+
+m1[1:5, 1:5]
+object.size(m1)
+m2[1:5, 1:5]
+object.size(m2)
+```
+
+Selon le type de données que l'on possède plusieurs stratégies de création de matrice creuse sont possibles.
+
+### 2.1.1- Transformer à l'aide des fonctions `as` ou `Matrix`
+
+```{r}
+mat <- matrix(rbinom(10000, 1, 0.1), ncol = 100, nrow = 100)
+object.size(mat)
+
+mat_sparse <- as(mat, "sparseMatrix")
+object.size(mat_sparse)
+
+mat_sparse2 <- Matrix(mat, sparse = TRUE)
+object.size(mat_sparse2)
+```
+
+Par défaut, lorsque l'on renseigne la classe `sparseMatrix` la compression se fera automatiquement par colonne, mais il est possible de choisir entre une compression par ligne ou par colonne avec les arguments suivant :
+
+- par colonne avec `as(dt, "dgCMatrix")` 
+- par ligne avec `as(dt, "dgRMatrix")`
+
+Ce choix de compression peut s'avérer utile si l'on veut travailler par ligne ou par colonne.
+
+Autre choix de compression :
+
+Class | Compression | Type
+------|-------------|----------------
+ngeMatrix	|none	|logicals
+dgeMatrix	|none	|real numbers
+dgCMatrix	|compressed sparse column	|real numbers
+dgRMatrix	|compressed sparse row   	|real numbers
+ngCMatrix	|compressed sparse column	|logicals
+ngRMatrix	|compressed sparse row	    |real numbers
+
+
+### 2.1.2- Transformation avec un stockage en triplet avec `sparseMatrix`:
+
+```{r}
+# Génération de la matrice sous forme de triplet
+    # Avec :  
+    # - i : indices des lignes  
+    # - j : indices des colonnes  
+    # - k : valeurs non-nulles 
+
+i <- c(1, 1, 5, 4, 2, 1, 3)
+j <- c(3, 4, 4, 1, 2, 2, 4)
+k <- c(4, 5, 7, 1, 3, 2, 6)
+
+i <- sample(100, 50, replace = FALSE)
+j <- sample(100, 50, replace = FALSE)
+k <- sample(100, 50, replace = FALSE)
+
+my.matrix <- matrix(ncol = 100, nrow = 100, 0)
+
+s <- sapply(1:100, function(ii) {
+    my.matrix[i[ii], j[ii]] <<- k[ii]
+})
+
+object.size(my.matrix)
+```
+
+Pour transformer notre matrice en *sparseMatrix*, on utilise sa décomposition en triplet :
+
+```{r}
+mat_sparse_triplet <- sparseMatrix(i = i, j = j, x = k)
+object.size(mat_sparse_triplet)
+```
+
+ou comme expliqué auparavant avec :
+
+```{r}
+mat_sparse4 <- as(my.matrix, "sparseMatrix")
+object.size(mat_sparse4)
+
+mat_sparse5 <- Matrix(my.matrix, sparse = TRUE)
+object.size(mat_sparse5)
+```
+
+
+### 2.1.3 Enregistrer/charger une sparseMatrix
+
+```{r eval=FALSE, include=TRUE}
+writeMM(obj = mat_spars_triplet, file = "sparse_matrix.mtx")
+
+sp_matrix_read <- readMM("sparse_matrix.mtx")
+```
+
+
+## 2.2 Avec le package `slam`
+
+```{r}
+library(slam)
+```
+
+
+```{r}
+slam.matrix <- simple_triplet_matrix(i = i, j = j, v = k)
+# ou
+slam.matrix <- as.simple_triplet_matrix(my.matrix)
+object.size(slam.matrix)
+```
+
+Attention :
+```{r}
+slam.matrix
+```
+`slam` ne permet pas de visualiser *la forme de la matrice* comme on a pu le voir avec `Matrix`, mais l'ensemble du triplet est renseigné dans les arguments de la fonction :
+```{r eval=FALSE, include=TRUE}
+slam.matrix$i
+slam.matrix$j
+slam.matrix$v
+```
+
+
+# 3. Quelques infos utiles 
+
+La taille des matrice obtenue précédemment à l'aide de `slam`et `Matrix` ne sont pas de taille similaire mais sela peut s'expliquer par la simulation d'une petite matrice. Il est important de savoir que transformer une matrice pleine en matrice creuse n'est intéressant que si on travaille sur de très grosses matrices et au moins 50% de présence de valeurs nulles.   
+Les matrices creuses prennent donc moins de place et se stockent dans l'environnement R plus facilement ce qui peut entrainer une réduction considérable du temps de calcul.   
+
+
+
+# Liens utiles
+
+https://www.gormanalysis.com/blog/sparse-matrix-construction-and-use-in-r/  
+https://r2014-mtp.sciencesconf.org/file/92662  
+
+
+
+
+
+
+
+
+

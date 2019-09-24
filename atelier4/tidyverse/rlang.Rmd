@@ -1,0 +1,92 @@
+---
+title: "Les opérateurs de rlang pour passer les variables colonnes aux fonctions tidyverse"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(error = TRUE)
+```
+Rlang par Herr Lang
+
+Source https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/
+
+## Syntaxe Tidyverse
+
+La syntaxe Tidyverse permet d'utiliser les noms de colonnes du tableau de données comme des noms de variables globales tout le long du tuyau. Cette compréhension est perdue dans les définitions de fonction au moment où la variable est appelée dans la fonction. Pour récupérer cette possibilité, il faut présenter le nom de variable différemment dans la définition de fonction. L'ancienne solution consistait à utiliser des opérateurs peu clairs qui provenaient des méthodes de programmations internes. Le package rlang 4.0.4 propose un opérateur double accolade qui est équivalent. De la même façon, il est possible de passer les variables colonne arguments par leur nom sous forme de chaînes mais l'appel dans la fonction se fait par .data double crochet.
+```{r, message=FALSE}
+library(tidyverse)
+```
+
+## Variable colonne appelée en mode commande
+Dans le contexte d'un tuyau en mode commande, les colonnes "gender" et "mass" peuvent être appelées comme des variables :
+
+
+```{r }
+starwars %>%
+  group_by(gender) %>%
+  summarise(mass_maximum = max(mass, na.rm = TRUE))
+```
+
+## Variable colonne appelée dans une fonction
+On définit une fonction qui effectue la même tâche que précédemment:
+```{r pressure, echo=TRUE}
+max_by <- function(data, var, clef) {
+  data %>%
+    group_by(clef) %>%
+    summarise(maximum = max(var, na.rm = TRUE))
+}
+
+starwars %>% max_by(mass, gender)
+
+```
+
+La variable colonne n'est plus trouvée car dans l'exécution de la fonction, l'environnement de la variable (c'est-à-dire l'indication qu'il s'agit d'une colonne du tableau de données)  est perdu. Pour conserver cette indication, on emploie la fonction enquo qui garde en mémoire l'environnement de la variable
+
+```{r , echo=TRUE}
+max_by <- function(data, var, clef) {
+  data %>%
+    group_by(enquo(clef) )%>%
+    summarise(maximum = max(var, na.rm = TRUE))
+}
+
+starwars %>% max_by(mass, gender)
+
+```
+Le message d'erreur a changé : la sortie de  la fonction enquo  n'est pas interprétable immédiatement par la fonction tidyverse. il faut utiliser l'opérateur !! pour  présenter cette sortie aux fonctions tidyverse :
+
+```{r , echo=TRUE}
+max_by <- function(data, var, clef) {
+  data %>%
+    group_by(!!enquo(clef))%>%
+    summarise(maximum = max(var, na.rm = TRUE))
+}
+
+starwars%>% max_by(mass, gender)
+
+```
+La colonne mass n'est pas trouvée car nous n'avons pas encore corrigé cette partie du code. Le code enquo()  est assez mystérieux pour un utilisateur; une petite visite dans l'aide confirme la difficulté : la fonction   enquo ( et ses amis UQ, "!", "!!") est prévue pour écrire des fonctions internes. Utilisée sans maîtrise, elle génère des erreurs dificiles à interpréter. Le package rlang propose un opérateur compact double accolade qui remplace "!!enquo()". 
+```{r , echo=TRUE}
+max_by <- function(data, var, clef) {
+  data %>%
+    group_by({{clef}}) %>%
+    summarise(maximum = max(!!enquo(var), na.rm = TRUE))
+}
+
+starwars %>% max_by(mass, gender)
+```
+## Appel des variables colonne par passage d'une chaîne de caractère
+Si les variables sont désignées par des chaînes, il faut  utiliser l'opérateur double crochet avec un préfixe particulier ".data[[ ]]". Le préfixe "." n'est pas utilisé car il réfère à la structure de données initiale et pas à celle courante au moment de l'exécution de la fonction tidyverse.
+```{r , echo=TRUE}
+max_by <- function(data, var, chaineclef) {
+    data %>%
+      group_by(.data[[chaineclef]]) %>%
+      summarise(maximum = max(.data[[var]], na.rm = TRUE))
+  }
+  
+  starwars %>% max_by("height", "gender")
+```
+  
+  
+  
+  

@@ -1,0 +1,307 @@
+---
+title: "Rcpp Modules, suite et mise à jour de la version FinistR2018"
+description: |
+  Cette présentation de Rcpp Modules est une mise à jour et correctif de la [version FinistR2018](https://stateofther.github.io/finistR2018/atelier2_rcpp_modules.html)  
+author:
+  - name: Marie-Pierre Etienne 
+    url: https://marieetienne.github.io/
+    affiliation: Agrocampus Ouest
+    affiliation_url: http://agrocampus-ouest.fr
+  - name: Pierre Gloaguen 
+    url: https://papayoun.github.io/
+    affiliation: AgroParisTech
+    affiliation_url: http://agroparistech.fr
+  - name: Gabriel Lang
+    affiliation: AgroParisTech
+    affiliation_url: http://agroparistech.fr
+date: "`r Sys.Date()`"
+bibliography: biblio.bib
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+# Introduction
+
+Pour des raisons de performance, on est fréquemment amené à écrire  une partie de son code dans un langage compilé, notamment C++.
+Pour faire communiquer R et C++, il faut écrire une interface pour passer les objets R à C++ et à l'inverse passer les résultats de C++ à R.
+Le package Rcpp a été développé pour faciliter l'interfaçage entre les deux langages.
+
+Par ailleurs, la programmation objet permet une structuration forte du code et assure un développement modulaire.  Il est intéressant de partager au moins partiellement la structure d'objets entre les deux langages. RcppModules permet d'exposer des classes C++ et les rendre visibles et accessibles depuis R. 
+
+L'installation de Rcpp et son utilisation sont décrites dans le [document de 2018](https://stateofther.github.io/finistR2018/atelier2_rcpp_modules.html). On se concentre ici sur la partie RcppModules intégrée au sein d'un package. 
+
+
+## Création d'un package contenant des sources C++ au sein d'un package
+
+`usethis` permet de créer facilement les éléments essentiels du package.
+ Pour ce faire, il suffit d'exécuter la suite de commandes suivantes (dans l'ordre indiqué)
+
+```{r creation_package, eval = FALSE}
+path <- '~/git/myPackage'
+usethis::create_package(path) # Crée  l'architecture du projet et les fichiers principaux
+```
+
+
+
+On peut ouvrir le fichier  `DESCRIPTION` et éxécuter ensuite la commande pour constater les modifications qu'il subit.
+
+```{r, eval = FALSE}
+usethis::use_roxygen_md() # met en place le système de documentation à l'aide de roxygen2
+devtools::document() # génère les fichiers d'aide, le NAMESPACE, 
+```
+
+Le fichier DESCRIPTION est modifié pour ajouter le lien avec roxygen2. Pour indiquer que l'on souhaite utiliser des codes C++, il faut ensuite exécuter la commande suivante:
+
+```{r rcpp_desc, eval = FALSE}
+use_rcpp() # crée le dossier src/ 
+
+```
+
+Le fichier  `DESCRIPTION` a été modifié pour indiquer la dépendance à Rcpp.
+
+
+Et comme indiqué dans les sorties R de la commande `use_rcpp()`, il est **indispensable** de créer un fichier `myPackage-package.R` (le nom importe peu, mais on adoptera la convention `nomPackage-package.R`) dans le sous répertoire `R` du package.
+
+Dans ce fichier `myPackage-package.R`, il faut copier ce qui est conseillé dans la sortie de la commande précédente, i.e :
+
+```{r contenu_fichier_package, eval = FALSE}
+## usethis namespace: start
+#' @importFrom Rcpp sourceCpp
+#' @useDynLib myPackage, .registration = TRUE
+## usethis namespace: end
+NULL
+```
+
+ 
+ Pour illustrer le fonctionnement du package, on veut créer une classe Random_walk. Commençons par une fontion qui simule la position à linstant t, partant de x0. 
+ 
+## Création d'une fonction  C++ 
+
+Dans RStudio, on peut demander à créer un nouveau fichier C++ contenant
+
+```{cpp, eval = FALSE}
+# include <Rcpp.h>
+  
+  double compute_next_pos(double x0, double delta){
+      return x0 + Rcpp::rnorm(1, 0, 1)[0] * pow(delta, .5);
+   }
+
+```
+
+et enregistrer ce fichier dans `src\random_walk.cpp`.
+
+On peut ensuite compiler ce package, en cliquant INSTALL and Restart ou avec le raccourci CTL + SHIFT + b.
+
+A l'issue de la compilation plusieurs fichiers sont créés, notamment
+`src\RcppExports.cpp` et `R\RcppExports.R` qui permettent de faire le lien entre R et C++.
+
+Il faut mettre à jour les fichiers de config (NAMESPACE,  RcppExports.R, RcppExports.cpp) avec la commande  `devtools:document()`, puis copiler et reinstaller le package avec CTL + SHIFT + b .
+
+La fonction compute_next_pos existe maintenant dans R, elle appelle la fonction du même nom codée en C et passe les arguments.
+
+```{r example_function, eval = FALSE}
+compute_next_pos(0, 1)
+```
+
+La marche aléatoire dépend d'un parametre, on veut créer une classe avec un membre (la variance) et des méthodes pour simuler et accéder au membre. 
+
+## Création d'une classe en C++
+
+
+Il faut effacer le fichier NAMESPACE et modifier  le fichier `Random_walk.cpp` de la manière suivante :
+
+
+```{cpp}
+#include <Rcpp.h>
+
+//' @title Class Random_walk
+//' @name Random_walk
+//' @description random walk class
+//' @export Random_walk
+class Random_walk
+{
+  // Access specifier
+private:
+  // membres
+  double sigma ;
+
+
+public:
+
+  // constructeur
+  Random_walk(  double sigma_){
+    sigma = sigma_;
+  }
+
+  // setter
+  void set_sigma(double sigma_){
+    sigma = sigma_;
+  }
+  //getter
+  double get_sigma(){
+    return sigma ;
+  }
+
+  double compute_next_pos(double x0, double delta){
+    return x0 + Rcpp::rnorm(1, 0, 1)[0] * sigma * pow(delta, .5);
+  }
+  
+  Rcpp::NumericVector simulate(Rcpp::NumericVector times, double x0){
+    int n = times.size();
+    Rcpp::NumericVector out(n);
+    out[0] = x0;
+    for(int i = 0; i < n - 1 ; ++i ){
+      out[i+1] =  compute_next_pos(out[i], times[i+1]-times[i]);
+    }
+    return out;
+  }
+
+};
+
+
+```
+
+Enfin, on génère à nouveau le NAMESPACE avec `devtools::document()` et on recompile, réinstalle. 
+
+
+La classe n'est pas exportée et n'est pas visible depuis R. Il faut écrire des fonctions supplémentaires pour interfacer. La logique à ce stade est d'écrire une fonction c++ qui va faire le travail et notamment créer une instance de la classe Random_walk et d'exporter cette fonction en R  pour la rendre accessible à l'utilisateur. Dans ce cas la classe C++ n'a de pas du tout de vocation à être modifié par un code R. 
+
+Si on souhaite pouvoir depuis R choisir et/ou modifier la variance de notre objet marche aléatoire il faut exposer la classe dans R. C'est l'objectif de RcppModule. 
+
+
+
+## RcppModules
+
+Pour utiliser RcppModules, il faut ajouter 
+
+
+```{cpp}
+
+RCPP_MODULE(rw_Module) {
+  using namespace Rcpp;
+  class_<Random_walk>("Random_walk")
+  .constructor< double>()
+  .property( "sigma_R", &Random_walk::get_sigma, &Random_walk::set_sigma )
+  .method( "simulate_R", &Random_walk::simulate )
+  ;
+}
+```
+
+On va ensuite écrire une fonction R qui a pour rôle de créer l'objet de classe Random_walk dans R et de le rendre accessible dans R. On crée ainsi le fichier `create_class.R` dans le répertoire R
+
+```{r, eval = FALSE}
+
+#' @title Pour créer un objet de type Random_walk
+#'
+#' @param sigma un double qui contient l'écart type de la marche aléatoire.
+#'
+#' @return un objet de class Random_walk
+#' @export
+#'
+#' @examples create(2)
+#'
+create <- function(sigma){
+
+  ok <- new(Random_walk, sigma)
+  ok
+}
+
+```
+
+
+
+
+Le fichier NAMESPACE doit être modifié pour exporter correctement le module. Pour que roxygen s'en charge il faut documenter l'export de la class et ajouter au début du fichier `random_walk.cpp`.
+
+```{cpp}
+
+//' @title Class Random_walk
+//' @name Random_walk
+//' @description drifted random walk class
+//' @export Random_walk
+
+```
+
+
+Dans le fichier `DESCRIPTION` il faut indiquer que l'on utilise RcppModules et ajouter la ligne ` RcppModules: rw_Module` pour obtenir le fichier suivant.
+
+
+```{cpp}
+Package: myPackage
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "First",
+           family = "Last",
+           role = c("aut", "cre"),
+           email = "first.last@example.com",
+           comment = structure("YOUR-ORCID-ID", .Names = "ORCID"))
+Description: What the package does (one paragraph).
+License: What license it uses
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RcppModules: rw_Module
+RoxygenNote: 6.1.1
+LinkingTo: 
+    Rcpp
+Imports: 
+    Rcpp
+```
+
+Il faut ensuite générer à nouveau le NAMESPACE avec devtools::document() et enuiste compiler le package avec CTL + SHIFT + b.
+
+
+Enfin on peut maintenant créer un objet de type Random_walk dans R
+
+```{r}
+library(myPackage)
+rw_test <- create(3)
+rw_test
+```
+
+
+C'est une réferérence sur un objet C++.
+
+On a exposé les accesseurs et on peut donc demander la valeur de l'écart type
+
+```{r}
+rw_test$sigma_R
+
+```
+
+
+On peut aussi modifier cette valeur
+
+```{r}
+rw_test$sigma_R <- 2
+rw_test$sigma_R 
+```
+
+
+Enfin on peut utiliser les méthodes de la classe qui ont été exposées
+
+```{r}
+library(tidyverse)
+tibble(times =seq(0, 1, length.out = 100)) %>% mutate( pos = rw_test$simulate_R(times, 0)) -> simulated_rw
+
+simulated_rw %>% ggplot(aes(x=times, y =pos)) + geom_point()
+
+```
+
+En cas de problème, et si des erreurs se produisent et avant de perdre son calme, il faut nettoyer manuellement le répertoire de développement du package. C'est à dire, il faut supprimer les fichiers
+
+- `NAMESPACE`
+- `R/RcppExports.R`
+- `src/RcppExports.cpp`
+- `src/*.so`
+- `src/*.o`
+
+
+
+Pour plus de détails sur la syntaxe de RcppModules, on peut consulter [@RcppModulesvignette].

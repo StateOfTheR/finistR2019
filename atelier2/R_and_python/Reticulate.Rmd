@@ -19,7 +19,7 @@ Le package "reticulate" permet de lier R et Python en utilisant des appels Pytho
 Commençons par faire appel à la bibliothèque et donner à le "path" de python (c'est à dire le chemin où est installé la version de python)
 ```{r}
 library(reticulate)
-use_python("/home/claire/Applications/python/conda/bin/python")
+use_python("/home/metienne/conda/bin/python3")
 # on prend un jeu de donnée jouet : 
 data(cars)
 ```
@@ -61,7 +61,7 @@ Le problème est que ça ne marche pas dans un markedown. Cette approche a l'air
 La dernière façon est de charger un script '.py' dans le script R/Rmd : les fonctions sont alors directement appelée comme dans 1.1, et on n'a le problème de typage que sur les variables d'entrées et de sortie (on reste dans le langage python. 
 Pour lancer par exemple le script "test.py", la commande est la suivante :
 ```{r}
-use_python("/home/claire/Applications/python/conda/bin/python")
+use_python("/home/metienne/conda/bin/python3")
 source_python('test.py')
 my_mean(cars)
 ```
