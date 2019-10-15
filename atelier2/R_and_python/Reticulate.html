@@ -400,7 +400,7 @@ exit</code></pre>
 <h2>1.3 Appel d’un script python</h2>
 <p>La dernière façon est de charger un script .py dans le script : les fonctions sont alors directement appelée comme dans 1.1</p>
 <pre class="r"><code>use_python(&quot;/home/claire/Applications/python/conda/bin/python&quot;)
-source_python(&#39;test.py&#39;)
+source_python('test.py')
 my_mean(cars)</code></pre>
 <pre><code>## speed  dist 
 ## 15.40 42.98</code></pre>
@@ -450,9 +450,9 @@ t1r = Sys.time()
 tcalc_r = t1r - t0r
 
 tcalc_rF</code></pre>
-<pre><code>## Time difference of 1.340775 secs</code></pre>
+<pre><code>## Time difference of 0.8076236 secs</code></pre>
 <pre class="r"><code>tcalc_r</code></pre>
-<pre><code>## Time difference of 0.5925188 secs</code></pre>
+<pre><code>## Time difference of 0.1693296 secs</code></pre>
 <pre class="r"><code>RFrF</code></pre>
 <pre><code>## 
 ## Call:
@@ -464,9 +464,9 @@ tcalc_rF</code></pre>
 ##         OOB estimate of  error rate: 4.71%
 ## Confusion matrix:
 ##     ei  ie   n class.error
-## ei 353  14  14  0.07349081
-## ie   9 363  15  0.06201550
-## n    6  17 802  0.02787879</code></pre>
+## ei 360  11  13  0.06250000
+## ie  15 354  15  0.07812500
+## n    6  15 804  0.02545455</code></pre>
 <pre class="r"><code>RFr</code></pre>
 <pre><code>## Ranger result
 ## 
@@ -481,7 +481,7 @@ tcalc_rF</code></pre>
 ## Target node size:                 1 
 ## Variable importance mode:         none 
 ## Splitrule:                        gini 
-## OOB prediction error:             4.52 %</code></pre>
+## OOB prediction error:             4.65 %</code></pre>
 </div>
 <div id="avec-parsnip" class="section level3">
 <h3>3.1.2 Avec parsnip</h3>
@@ -503,16 +503,16 @@ rf_ranger &lt;-
 pred_r = predict(rf_ranger, DNA[test, ])
 
 library(mclust)</code></pre>
-<pre><code>## Package &#39;mclust&#39; version 5.4.5
-## Type &#39;citation(&quot;mclust&quot;)&#39; for citing this R package in publications.</code></pre>
+<pre><code>## Package 'mclust' version 5.4.1
+## Type 'citation(&quot;mclust&quot;)' for citing this R package in publications.</code></pre>
 <pre class="r"><code>adjustedRandIndex(DNA$Class[test], pred_rF$.pred_class)</code></pre>
-<pre><code>## [1] 0.8604855</code></pre>
+<pre><code>## [1] 0.8924465</code></pre>
 <pre class="r"><code>adjustedRandIndex(DNA$Class[test], pred_r$.pred_class)</code></pre>
-<pre><code>## [1] 0.8533368</code></pre>
+<pre><code>## [1] 0.8867833</code></pre>
 <pre class="r"><code>sum(DNA$Class[test] != pred_rF$.pred_class)/length(test)*100</code></pre>
-<pre><code>## [1] 5.14752</code></pre>
+<pre><code>## [1] 3.892028</code></pre>
 <pre class="r"><code>sum(DNA$Class[test] != pred_r$.pred_class)/length(test)*100</code></pre>
-<pre><code>## [1] 5.461394</code></pre>
+<pre><code>## [1] 4.080352</code></pre>
 </div>
 </div>
 <div id="avec-python" class="section level2">
@@ -534,7 +534,7 @@ Xnew      = as.matrix(DNA[test, -ncol(DNA)])
 Ynew      = np$array(DNA$Class[test])
 pred_py   = RFpy$predict(Xnew)
 adjustedRandIndex(pred_py, Ynew)</code></pre>
-<pre><code>## [1] 0.8581665</code></pre>
+<pre><code>## [1] 0.8952832</code></pre>
 <div id="utiliser-une-fenetre-interactive-python-dans-la-session-r" class="section level3">
 <h3>3.2.2 Utiliser une fenêtre interactive Python dans la session R</h3>
 <pre class="r"><code>repl_python()

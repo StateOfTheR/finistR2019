@@ -89,7 +89,7 @@ NumericMatrix gibbs_cpp(int N, int thin) {
 
 ```
 
-La fonction `gibbs_cpp`est écrite dans un fichier `my_functions_cpp.cpp`. Ce fichier peut contenir plusieurs fonctions `cpp`, il faut spécifier de l'exporter avant chaque fonction par l'instruction  `// [[Rcpp::export]]`.  
+La fonction `gibbs_cpp`est écrite dans un fichier `my_functions_cpp.cpp`. Ce fichier peut contenir plusieurs fonctions ` cpp` , il faut spécifier de l'exporter avant chaque fonction par l'instruction  `// [[Rcpp::export]]`.  
 
 *Quelques remarques utiles sur le code Rcpp* : 
 

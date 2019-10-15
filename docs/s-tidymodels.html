@@ -12,7 +12,7 @@
 
 <meta name="author" content="Pierre Gestraud" />
 
-<meta name="date" content="2019-09-12" />
+<meta name="date" content="2019-10-15" />
 
 <title>tidymodels</title>
 
@@ -487,7 +487,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">tidymodels</h1>
 <h4 class="author">Pierre Gestraud</h4>
-<h4 class="date">2019-09-12</h4>
+<h4 class="date">2019-10-15</h4>
 
 </div>
 
@@ -550,24 +550,43 @@ $(document).ready(function () {
 <p><code>yardstick</code> is a package to get metrics on model performance. By default on classification problem <code>yardstick::metrics</code> returns accuracy and kappa.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">metrics</span>(<span class="kw">bind_cols</span>(forest_test, pred_logit_test), <span class="dt">truth =</span> Cover_Type, <span class="dt">estimate =</span> .pred_class)</a></code></pre></div>
 <div class="kable-table">
+
 <table>
 <thead>
-<tr class="header">
-<th align="left">.metric</th>
-<th align="left">.estimator</th>
-<th align="right">.estimate</th>
+<tr>
+<th style="text-align:left;">
+.metric
+</th>
+<th style="text-align:left;">
+.estimator
+</th>
+<th style="text-align:right;">
+.estimate
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">accuracy</td>
-<td align="left">binary</td>
-<td align="right">0.7771853</td>
+<tr>
+<td style="text-align:left;">
+accuracy
+</td>
+<td style="text-align:left;">
+binary
+</td>
+<td style="text-align:right;">
+0.7771853
+</td>
 </tr>
-<tr class="even">
-<td align="left">kap</td>
-<td align="left">binary</td>
-<td align="right">0.5401555</td>
+<tr>
+<td style="text-align:left;">
+kap
+</td>
+<td style="text-align:left;">
+binary
+</td>
+<td style="text-align:right;">
+0.5401555
+</td>
 </tr>
 </tbody>
 </table>
@@ -576,54 +595,109 @@ $(document).ready(function () {
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">multimetric &lt;-<span class="st"> </span><span class="kw">metric_set</span>(accuracy, bal_accuracy, sens, yardstick<span class="op">::</span>spec, precision, recall, ppv, npv)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">multimetric</span>(<span class="kw">bind_cols</span>(forest_test, pred_logit_test), <span class="dt">truth =</span> Cover_Type, <span class="dt">estimate =</span> .pred_class)  </a></code></pre></div>
 <div class="kable-table">
+
 <table>
 <thead>
-<tr class="header">
-<th align="left">.metric</th>
-<th align="left">.estimator</th>
-<th align="right">.estimate</th>
+<tr>
+<th style="text-align:left;">
+.metric
+</th>
+<th style="text-align:left;">
+.estimator
+</th>
+<th style="text-align:right;">
+.estimate
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">accuracy</td>
-<td align="left">binary</td>
-<td align="right">0.7771853</td>
+<tr>
+<td style="text-align:left;">
+accuracy
+</td>
+<td style="text-align:left;">
+binary
+</td>
+<td style="text-align:right;">
+0.7771853
+</td>
 </tr>
-<tr class="even">
-<td align="left">bal_accuracy</td>
-<td align="left">binary</td>
-<td align="right">0.7678956</td>
+<tr>
+<td style="text-align:left;">
+bal_accuracy
+</td>
+<td style="text-align:left;">
+binary
+</td>
+<td style="text-align:right;">
+0.7678956
+</td>
 </tr>
-<tr class="odd">
-<td align="left">sens</td>
-<td align="left">binary</td>
-<td align="right">0.7066667</td>
+<tr>
+<td style="text-align:left;">
+sens
+</td>
+<td style="text-align:left;">
+binary
+</td>
+<td style="text-align:right;">
+0.7066667
+</td>
 </tr>
-<tr class="even">
-<td align="left">spec</td>
-<td align="left">binary</td>
-<td align="right">0.8291246</td>
+<tr>
+<td style="text-align:left;">
+spec
+</td>
+<td style="text-align:left;">
+binary
+</td>
+<td style="text-align:right;">
+0.8291246
+</td>
 </tr>
-<tr class="odd">
-<td align="left">precision</td>
-<td align="left">binary</td>
-<td align="right">0.7528409</td>
+<tr>
+<td style="text-align:left;">
+precision
+</td>
+<td style="text-align:left;">
+binary
+</td>
+<td style="text-align:right;">
+0.7528409
+</td>
 </tr>
-<tr class="even">
-<td align="left">recall</td>
-<td align="left">binary</td>
-<td align="right">0.7066667</td>
+<tr>
+<td style="text-align:left;">
+recall
+</td>
+<td style="text-align:left;">
+binary
+</td>
+<td style="text-align:right;">
+0.7066667
+</td>
 </tr>
-<tr class="odd">
-<td align="left">ppv</td>
-<td align="left">binary</td>
-<td align="right">0.7528409</td>
+<tr>
+<td style="text-align:left;">
+ppv
+</td>
+<td style="text-align:left;">
+binary
+</td>
+<td style="text-align:right;">
+0.7528409
+</td>
 </tr>
-<tr class="even">
-<td align="left">npv</td>
-<td align="left">binary</td>
-<td align="right">0.7932886</td>
+<tr>
+<td style="text-align:left;">
+npv
+</td>
+<td style="text-align:left;">
+binary
+</td>
+<td style="text-align:right;">
+0.7932886
+</td>
 </tr>
 </tbody>
 </table>
@@ -631,19 +705,32 @@ $(document).ready(function () {
 <p><code>yardstick::roc_auc</code> computes the area under the roc and <code>yardstick::roc_curve</code> data to plot the roc.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">roc_auc</span>(<span class="kw">bind_cols</span>(forest_test, prob_logit_test), <span class="dt">truth =</span> Cover_Type, .pred_<span class="dv">1</span>)</a></code></pre></div>
 <div class="kable-table">
+
 <table>
 <thead>
-<tr class="header">
-<th align="left">.metric</th>
-<th align="left">.estimator</th>
-<th align="right">.estimate</th>
+<tr>
+<th style="text-align:left;">
+.metric
+</th>
+<th style="text-align:left;">
+.estimator
+</th>
+<th style="text-align:right;">
+.estimate
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">roc_auc</td>
-<td align="left">binary</td>
-<td align="right">0.8519712</td>
+<tr>
+<td style="text-align:left;">
+roc_auc
+</td>
+<td style="text-align:left;">
+binary
+</td>
+<td style="text-align:right;">
+0.8519712
+</td>
 </tr>
 </tbody>
 </table>
@@ -654,7 +741,7 @@ $(document).ready(function () {
 <a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_path</span>() <span class="op">+</span></a>
 <a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">lty =</span> <span class="dv">3</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">  </span><span class="kw">coord_equal</span>()</a></code></pre></div>
-<p><img src="s-tidymodels_files/figure-html/auc-1.png" /><!-- --></p>
+<p><img src="s-tidymodels_files/figure-html/auc-1.png" width="672" /></p>
 </div>
 </div>
 <div id="cross-validation" class="section level1">
@@ -716,8 +803,10 @@ $(document).ready(function () {
 ## 
 ## This warning is displayed once per session.</code></pre>
 <div class="figure">
-<img src="s-tidymodels_files/figure-html/performance_fold-1.png" alt="Model performance on each fold" />
-<p class="caption">Model performance on each fold</p>
+<img src="s-tidymodels_files/figure-html/performance_fold-1.png" alt="Model performance on each fold" width="672" />
+<p class="caption">
+Model performance on each fold
+</p>
 </div>
 <p>ROC curve on each fold:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">res_cv_train <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -728,8 +817,10 @@ $(document).ready(function () {
 <a class="sourceLine" id="cb18-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_path</span>() <span class="op">+</span></a>
 <a class="sourceLine" id="cb18-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">lty =</span> <span class="dv">3</span>) <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>id)</a></code></pre></div>
 <div class="figure">
-<img src="s-tidymodels_files/figure-html/roc_fold-1.png" alt="ROC curves on each fold" />
-<p class="caption">ROC curves on each fold</p>
+<img src="s-tidymodels_files/figure-html/roc_fold-1.png" alt="ROC curves on each fold" width="672" />
+<p class="caption">
+ROC curves on each fold
+</p>
 </div>
 </div>
 

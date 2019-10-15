@@ -12,7 +12,8 @@ Nous allons vous présenter brièvement comment utiliser la bibliothèque Reticu
 
 # 1. Comment ça marche ? 
 
-Le package reticulate permet de lier R et Python en utilisant des appels Python dans R.
+Le package reticulate permet de lier R et Python en utilisant des appels Python dans R. Pour que le code présenté ici fonctionne, il faut s'assurer d'avoir [Python 3](https://www.python.org/downloads/).
+
 ```{r}
 library(reticulate)
 use_python("/home/metienne/conda/bin/python3")

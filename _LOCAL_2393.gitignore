@@ -1,9 +1,0 @@
-.DS_Store
-.Rproj.user
-.Rhistory
-.Rapp.history
-.RData
-spark/*_cache/
-spark/logs/
-spark/*_files/
-spark/derby.log
